@@ -1,8 +1,5 @@
 import csv
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib import colors
-import os
+
 
 def creer_eleves_pdf(input_csv_file, output_pdf_file):
     # Vérifier si le fichier d'entrée existe

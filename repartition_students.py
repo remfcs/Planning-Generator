@@ -4,7 +4,7 @@ import csv
 student_list = []
 
 # Import the csv file
-with open('eleves/Anglais.csv', mode='r', newline='') as file:
+with open('eleves/csv/Anglais.csv', mode='r', newline='') as file:
     list = csv.reader(file, delimiter=';')
     next(list)
     for row in list:
