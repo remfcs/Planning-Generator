@@ -78,7 +78,7 @@
     },
     {
         "Nom": "LAURENT",
-        "Pr\u00e9nom": "In\u00e9s",
+        "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "isabella.anderson@example.com",
         "Class": "1A"
@@ -127,7 +127,7 @@
     },
     {
         "Nom": "FOURNIER",
-        "Pr\u00e9nom": "Rapha\u00e9l",
+        "Pr\u00e9nom": "Rapha\u00ebl",
         "ID": "",
         "mail": "daniel.garcia@example.com",
         "Class": "1A"
@@ -147,7 +147,7 @@
         "Class": "1A"
     },
     {
-        "Nom": "ANDR\u00e9",
+        "Nom": "ANDR\u00c9",
         "Pr\u00e9nom": "Emma",
         "ID": "",
         "mail": "amelia.clark@example.com",
@@ -189,7 +189,7 @@
         "Class": "1A"
     },
     {
-        "Nom": "FRAN\u00e9OIS",
+        "Nom": "FRAN\u00c7OIS",
         "Pr\u00e9nom": "Lina",
         "ID": "",
         "mail": "grace.phillips@example.com",
@@ -295,7 +295,7 @@
     },
     {
         "Nom": "MARCHAND",
-        "Pr\u00e9nom": "Ma\u00e9l",
+        "Pr\u00e9nom": "Ma\u00ebl",
         "ID": "",
         "mail": "liam.howard@example.com",
         "Class": "1A"
@@ -330,7 +330,7 @@
     },
     {
         "Nom": "DUPUIS",
-        "Pr\u00e9nom": "In\u00e9s",
+        "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "ella.cooper@example.com",
         "Class": "1A"
@@ -490,8 +490,8 @@
         "Class": "1A"
     },
     {
-        "Nom": "G\u00e9RARD",
-        "Pr\u00e9nom": "Ma\u00e9l",
+        "Nom": "G\u00c9RARD",
+        "Pr\u00e9nom": "Ma\u00ebl",
         "ID": "",
         "mail": "sophia.ward@example.com",
         "Class": "1A"
@@ -519,7 +519,7 @@
     },
     {
         "Nom": "PONS",
-        "Pr\u00e9nom": "Rapha\u00e9l",
+        "Pr\u00e9nom": "Rapha\u00ebl",
         "ID": "",
         "mail": "harper.perez@example.com",
         "Class": "1A"
@@ -546,15 +546,15 @@
         "Class": "1A"
     },
     {
-        "Nom": "LEV\u00e9QUE",
+        "Nom": "LEV\u00caQUE",
         "Pr\u00e9nom": "Hugo",
         "ID": "",
         "mail": "mia.wood@example.com",
         "Class": "1A"
     },
     {
-        "Nom": "RIVI\u00e9RE",
-        "Pr\u00e9nom": "In\u00e9s",
+        "Nom": "RIVI\u00c8RE",
+        "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "daniel.cooper@example.com",
         "Class": "1A"
@@ -686,7 +686,7 @@
         "Class": "2A"
     },
     {
-        "Nom": "HERV\u00e9",
+        "Nom": "HERV\u00c9",
         "Pr\u00e9nom": "Adam",
         "ID": "",
         "mail": "lily.barnes@example.com",
@@ -729,7 +729,7 @@
     },
     {
         "Nom": "NAUDIN",
-        "Pr\u00e9nom": "Ma\u00e9l",
+        "Pr\u00e9nom": "Ma\u00ebl",
         "ID": "",
         "mail": "amelia.campbell@example.com",
         "Class": "2A"
@@ -757,7 +757,7 @@
     },
     {
         "Nom": "ROLLAND",
-        "Pr\u00e9nom": "Rapha\u00e9l",
+        "Pr\u00e9nom": "Rapha\u00ebl",
         "ID": "",
         "mail": "olivia.bell@example.com",
         "Class": "2A"
@@ -792,7 +792,7 @@
     },
     {
         "Nom": "TESSIER",
-        "Pr\u00e9nom": "In\u00e9s",
+        "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "madison.bailey@example.com",
         "Class": "2A"
@@ -967,7 +967,7 @@
     },
     {
         "Nom": "NICOLAS",
-        "Pr\u00e9nom": "Ma\u00e9l",
+        "Pr\u00e9nom": "Ma\u00ebl",
         "ID": "",
         "mail": "amelia.bennett@example.com",
         "Class": "2A"
@@ -995,7 +995,7 @@
     },
     {
         "Nom": "BESNARD",
-        "Pr\u00e9nom": "Rapha\u00e9l",
+        "Pr\u00e9nom": "Rapha\u00ebl",
         "ID": "",
         "mail": "emily.flores@example.com",
         "Class": "2A"
@@ -1030,7 +1030,7 @@
     },
     {
         "Nom": "ROUX",
-        "Pr\u00e9nom": "In\u00e9s",
+        "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "logan.myers@example.com",
         "Class": "2A"
@@ -1106,7 +1106,7 @@
         "Class": "2A"
     },
     {
-        "Nom": "CL\u00e9MENT",
+        "Nom": "CL\u00c9MENT",
         "Pr\u00e9nom": "Gabriel",
         "ID": "",
         "mail": "jacob.henry@example.com",
@@ -1205,7 +1205,7 @@
     },
     {
         "Nom": "LECLERCQ",
-        "Pr\u00e9nom": "Ma\u00e9l",
+        "Pr\u00e9nom": "Ma\u00ebl",
         "ID": "",
         "mail": "lucas.owens@example.com",
         "Class": "1AFT"
@@ -1233,7 +1233,7 @@
     },
     {
         "Nom": "GAUTHIER",
-        "Pr\u00e9nom": "Rapha\u00e9l",
+        "Pr\u00e9nom": "Rapha\u00ebl",
         "ID": "",
         "mail": "daniel.kim@example.com",
         "Class": "1AFT"
@@ -1268,7 +1268,7 @@
     },
     {
         "Nom": "COSTE",
-        "Pr\u00e9nom": "In\u00e9s",
+        "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "mia.washington@example.com",
         "Class": "1AFT"
@@ -1344,7 +1344,7 @@
         "Class": "1AFT"
     },
     {
-        "Nom": "PR\u00e9VOST",
+        "Nom": "PR\u00c9VOST",
         "Pr\u00e9nom": "Gabriel",
         "ID": "",
         "mail": "mia.bryant@example.com",
