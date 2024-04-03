@@ -1,32 +1,32 @@
-Nom,Pr�nom,ID,mail,Langues
+Nom,Prénom,ID,mail,Langues
 MARTIN,Lucas,,john.doe@example.com,ESPAGNOL
 BERNARD,Emma,,emma.smith@example.com,ESPAGNOL
 DUBOIS,Gabriel,,david.johnson@example.com,ESPAGNOL
-THOMAS,L�a,,sarah.williams@example.com,ESPAGNOL
+THOMAS,LÉa,,sarah.williams@example.com,ESPAGNOL
 ROBERT,Louis,,james.brown@example.com,ESPAGNOL
-RICHARD,Chlo�,,emily.jones@example.com,ESPAGNOL
+RICHARD,ChloÉ,,emily.jones@example.com,ESPAGNOL
 PETIT,Adam,,michael.davis@example.com,ESPAGNOL
 DURAND,Manon,,olivia.miller@example.com,ESPAGNOL
 LEROY,Hugo,,robert.wilson@example.com,ESPAGNOL
 MOREAU,Jade,,sophia.moore@example.com,ESPAGNOL
 SIMON,Nathan,,william.taylor@example.com,ESPAGNOL
-LAURENT,In�s,,isabella.anderson@example.com,ESPAGNOL
+LAURENT,InÉs,,isabella.anderson@example.com,ESPAGNOL
 LEFEBVRE,Ethan,,benjamin.thomas@example.com,ESPAGNOL
 MICHEL,Camille,,mia.jackson@example.com,ESPAGNOL
-GARCIA,L�o,,ethan.white@example.com,ESPAGNOL
+GARCIA,LÉo,,ethan.white@example.com,ESPAGNOL
 DAVID,Sarah,,ava.harris@example.com,ESPAGNOL
-ROUX,Th�o,,alexander.martin@example.com,ESPAGNOL
-VINCENT,Zo�,,madison.thompson@example.com,ESPAGNOL
-FOURNIER,Rapha�l,,daniel.garcia@example.com,ESPAGNOL
+ROUX,ThÉo,,alexander.martin@example.com,ESPAGNOL
+VINCENT,ZoÉ,,madison.thompson@example.com,ESPAGNOL
+FOURNIER,RaphaÉl,,daniel.garcia@example.com,ESPAGNOL
 MOREL,Louise,,chloe.martinez@example.com,ESPAGNOL
 GIRARD,Arthur,,matthew.robinson@example.com,ESPAGNOL
-ANDR�,Emma,,amelia.clark@example.com,ESPAGNOL
+ANDRÉ,Emma,,amelia.clark@example.com,ESPAGNOL
 LEFEVRE,Jules,,joseph.rodriguez@example.com,ESPAGNOL
 MERCIER,Alice,,harper.lewis@example.com,ESPAGNOL
 DUPONT,Tom,,samuel.hall@example.com,ESPAGNOL
 LAMBERT,Eva,,elizabeth.allen@example.com,ESPAGNOL
 BONNET,Noah,,jacob.young@example.com,ESPAGNOL
-FRAN�OIS,Lina,,grace.phillips@example.com,ESPAGNOL
+FRANÉOIS,Lina,,grace.phillips@example.com,ESPAGNOL
 MARTINEZ,Liam,,michael.king@example.com,ESPAGNOL
 BRUN,Clara,,lily.cook@example.com,ESPAGNOL
 ROUSSEAU,Mathis,,logan.lopez@example.com,ESPAGNOL
@@ -34,34 +34,34 @@ ROUSSEL,Rose,,mia.hill@example.com,ESPAGNOL
 PIERRE,Nathan,,lucas.scott@example.com,ESPAGNOL
 GUERIN,Anna,,avery.green@example.com,ESPAGNOL
 MALLET,Enzo,,jack.adams@example.com,ESPAGNOL
-DUMAS,L�na,,sophia.mitchell@example.com,ESPAGNOL
+DUMAS,LÉna,,sophia.mitchell@example.com,ESPAGNOL
 LEMAIRE,Sacha,,benjamin.carter@example.com,ESPAGNOL
 FAURE,Elsa,,riley.perez@example.com,ESPAGNOL
 DESCHAMPS,Gabin,,dylan.roberts@example.com,ESPAGNOL
 NOEL,Juliette,,ella.turner@example.com,ESPAGNOL
-MENARD,Tim�o,,noah.wright@example.com,ESPAGNOL
+MENARD,TimÉo,,noah.wright@example.com,ESPAGNOL
 MEUNIER,Manon,,charlotte.garcia@example.com,ESPAGNOL
-MARCHAND,Ma�l,,liam.howard@example.com,ESPAGNOL
+MARCHAND,MaÉl,,liam.howard@example.com,ESPAGNOL
 NICOLAS,Emma,,amelia.morris@example.com,ESPAGNOL
 HUBERT,Noah,,jackson.baker@example.com,ESPAGNOL
-RENAULT,Chlo�,,abigail.bailey@example.com,ESPAGNOL
+RENAULT,ChloÉ,,abigail.bailey@example.com,ESPAGNOL
 LEMOINE,Ethan,,lucas.rivera@example.com,ESPAGNOL
-DUPUIS,In�s,,ella.cooper@example.com,ESPAGNOL
+DUPUIS,InÉs,,ella.cooper@example.com,ESPAGNOL
 CHEVALIER,Noah,,oliver.wood@example.com,ESPAGNOL
-BOUCHARD,L�a,,emma.reed@example.com,ESPAGNOL
+BOUCHARD,LÉa,,emma.reed@example.com,ESPAGNOL
 MORIN,Liam,,ethan.ross@example.com,ESPAGNOL
-LECLERC,Zo�,,isabella.ortiz@example.com,ESPAGNOL
+LECLERC,ZoÉ,,isabella.ortiz@example.com,ESPAGNOL
 LACROIX,Arthur,,aiden.gomez@example.com,ESPAGNOL
 POIRIER,Jade,,mia.bell@example.com,ESPAGNOL
 GAUTHIER,Lucas,,james.murray@example.com,ESPAGNOL
 ROUILLARD,Camille,,sophia.collins@example.com,ESPAGNOL
 BOYER,Gabriel,,logan.flores@example.com,ESPAGNOL
 BONNIN,Louise,,olivia.washington@example.com,ESPAGNOL
-GARNIER,L�o,,michael.nguyen@example.com,ESPAGNOL
+GARNIER,LÉo,,michael.nguyen@example.com,ESPAGNOL
 RENARD,Sarah,,emily.nelson@example.com,ESPAGNOL
 LOUIS,Louis,,jacob.hughes@example.com,ESPAGNOL
 MASSON,Eva,,amelia.murphy@example.com,ESPAGNOL
-BRUNET,Th�o,,benjamin.sullivan@example.com,ESPAGNOL
+BRUNET,ThÉo,,benjamin.sullivan@example.com,ESPAGNOL
 ADAM,Clara,,mia.cooper@example.com,ESPAGNOL
 JOLY,Adam,,william.henderson@example.com,ESPAGNOL
 PICARD,Juliette,,madison.simmons@example.com,ESPAGNOL
@@ -69,133 +69,133 @@ HUET,Tom,,daniel.ross@example.com,ESPAGNOL
 LE GALL,Rose,,avery.russell@example.com,ESPAGNOL
 LE ROUX,Jules,,olivia.peterson@example.com,ESPAGNOL
 LE GOFF,Lina,,matthew.kelly@example.com,ESPAGNOL
-G�RARD,Ma�l,,sophia.ward@example.com,ESPAGNOL
+GÉRARD,MaÉl,,sophia.ward@example.com,ESPAGNOL
 MATHIEU,Anna,,lucas.gonzalez@example.com,ESPAGNOL
 BERTRAND,Enzo,,isabella.long@example.com,ESPAGNOL
 BARREAU,Elsa,,jacob.evans@example.com,ESPAGNOL
-PONS,Rapha�l,,harper.perez@example.com,ESPAGNOL
+PONS,RaphaÉl,,harper.perez@example.com,ESPAGNOL
 GUILLAUME,Manon,,alexander.collins@example.com,ESPAGNOL
 CARON,Nathan,,lily.richardson@example.com,ESPAGNOL
 MARCHAL,Emma,,ethan.parker@example.com,ESPAGNOL
-LEV�QUE,Hugo,,mia.wood@example.com,ESPAGNOL
-RIVI�RE,In�s,,daniel.cooper@example.com,ESPAGNOL
+LEVÉQUE,Hugo,,mia.wood@example.com,ESPAGNOL
+RIVIÉRE,InÉs,,daniel.cooper@example.com,ESPAGNOL
 RENOU,Ethan,,grace.brooks@example.com,ESPAGNOL
-MICHEL,Chlo�,,logan.alexander@example.com,ESPAGNOL
+MICHEL,ChloÉ,,logan.alexander@example.com,ESPAGNOL
 GUILLOT,Noah,,ava.sanchez@example.com,ESPAGNOL
-LE ROY,L�a,,jack.wright@example.com,ESPAGNOL
+LE ROY,LÉa,,jack.wright@example.com,ESPAGNOL
 GILBERT,Liam,,sophia.howard@example.com,ESPAGNOL
-JULIEN,Zo�,,noah.foster@example.com,ESPAGNOL
+JULIEN,ZoÉ,,noah.foster@example.com,ESPAGNOL
 VASSEUR,Arthur,,emily.gonzalez@example.com,ESPAGNOL
 JOUBERT,Jade,,benjamin.hill@example.com,ESPAGNOL
 PICHON,Lucas,,emma.torres@example.com,ESPAGNOL
 DESCHAMPS,Camille,,lucas.nguyen@example.com,ESPAGNOL
 LEJEUNE,Gabriel,,ava.flores@example.com,ESPAGNOL
 RENAULT,Louise,,michael.cook@example.com,ESPAGNOL
-LEJEUNE,L�o,,madison.murphy@example.com,ESPAGNOL
+LEJEUNE,LÉo,,madison.murphy@example.com,ESPAGNOL
 MARIN,Sarah,,william.lee@example.com,ALLEMAND
 LEFORT,Louis,,mia.rivera@example.com,ALLEMAND
 ROUSSEAU,Eva,,daniel.gonzalez@example.com,ALLEMAND
-DEBRAY,Th�o,,olivia.wright@example.com,ALLEMAND
+DEBRAY,ThÉo,,olivia.wright@example.com,ALLEMAND
 HENIN,Clara,,james.morgan@example.com,ALLEMAND
-HERV�,Adam,,lily.barnes@example.com,ALLEMAND
+HERVÉ,Adam,,lily.barnes@example.com,ALLEMAND
 GOSSELIN,Juliette,,ethan.walker@example.com,ALLEMAND
 AUVRAY,Tom,,sophia.morris@example.com,ALLEMAND
 PIERRE,Rose,,alexander.hernandez@example.com,ALLEMAND
 MALLET,Jules,,grace.rogers@example.com,ALLEMAND
 THIERRY,Lina,,jacob.howard@example.com,ALLEMAND
-NAUDIN,Ma�l,,amelia.campbell@example.com,ALLEMAND
+NAUDIN,MaÉl,,amelia.campbell@example.com,ALLEMAND
 BONNIN,Anna,,benjamin.young@example.com,ALLEMAND
 BERTRAND,Enzo,,mia.king@example.com,ALLEMAND
 GAUTHIER,Elsa,,lucas.adams@example.com,ALLEMAND
-ROLLAND,Rapha�l,,olivia.bell@example.com,ALLEMAND
+ROLLAND,RaphaÉl,,olivia.bell@example.com,ALLEMAND
 POIRIER,Manon,,william.garcia@example.com,ALLEMAND
 RENAULT,Nathan,,emma.hughes@example.com,ALLEMAND
 PROUST,Emma,,daniel.russell@example.com,ALLEMAND
 BARBIER,Hugo,,avery.carter@example.com,ALLEMAND
-TESSIER,In�s,,madison.bailey@example.com,ALLEMAND
+TESSIER,InÉs,,madison.bailey@example.com,ALLEMAND
 HEBERT,Ethan,,ethan.hall@example.com,ALLEMAND
-RENARD,Chlo�,,lily.ortiz@example.com,ALLEMAND
+RENARD,ChloÉ,,lily.ortiz@example.com,ALLEMAND
 DUPONT,Noah,,jack.sullivan@example.com,ALLEMAND
-MATHIEU,L�a,,sophia.lopez@example.com,ALLEMAND
+MATHIEU,LÉa,,sophia.lopez@example.com,ALLEMAND
 CARPENTIER,Liam,,noah.peterson@example.com,ALLEMAND
-LEGROS,Zo�,,emily.morgan@example.com,ALLEMAND
+LEGROS,ZoÉ,,emily.morgan@example.com,ALLEMAND
 NOEL,Arthur,,logan.lee@example.com,ALLEMAND
 ROBIN,Jade,,mia.ward@example.com,ALLEMAND
 GARNIER,Lucas,,lucas.campbell@example.com,ALLEMAND
 MOREAU,Camille,,isabella.foster@example.com,ALLEMAND
 MASSON,Gabriel,,oliver.evans@example.com,ALLEMAND
 MOREL,Louise,,ava.sullivan@example.com,ALLEMAND
-LEFEBVRE,L�o,,michael.butler@example.com,ALLEMAND
+LEFEBVRE,LÉo,,michael.butler@example.com,ALLEMAND
 LAURENT,Sarah,,grace.thomas@example.com,ALLEMAND
 MOREL,Louis,,jacob.nguyen@example.com,ALLEMAND
 PERRIN,Eva,,emma.parker@example.com,ALLEMAND
-PERROT,Th�o,,alexander.hall@example.com,ALLEMAND
+PERROT,ThÉo,,alexander.hall@example.com,ALLEMAND
 REMY,Clara,,sophia.gray@example.com,ALLEMAND
-GUILLAUME,Adam,,daniel.brooks@example.com,CHINOIS -d�butant (jamais �tudi�)
-DUPUIS,Juliette,,lily.roberts@example.com,CHINOIS -d�butant (jamais �tudi�)
-ROUSSEAU,Tom,,ethan.bell@example.com,CHINOIS -d�butant (jamais �tudi�)
-LEMAIRE,Rose,,mia.collins@example.com,CHINOIS -d�butant (jamais �tudi�)
-LEROY,Jules,,olivia.richardson@example.com,CHINOIS -d�butant (jamais �tudi�)
-BERNARD,Lina,,james.mitchell@example.com,CHINOIS -d�butant (jamais �tudi�)
-NICOLAS,Ma�l,,amelia.bennett@example.com,CHINOIS -d�butant (jamais �tudi�)
-PHILIPPE,Anna,,benjamin.james@example.com,CHINOIS -d�butant (jamais �tudi�)
-GIRARD,Enzo,,oliver.young@example.com,CHINOIS -d�butant (jamais �tudi�)
-BESNARD,Elsa,,william.murphy@example.com,CHINOIS -d�butant (jamais �tudi�)
-BESNARD,Rapha�l,,emily.flores@example.com,CHINOIS -d�butant (jamais �tudi�)
-DUFOUR,Manon,,jack.hill@example.com,CHINOIS -d�butant (jamais �tudi�)
-BOUVIER,Nathan,,sophia.lopez@example.com,CHINOIS -d�butant (jamais �tudi�)
-GUYOT,Emma,,noah.russell@example.com,CHINOIS -d�butant (jamais �tudi�)
-HUET,Hugo,,lily.diaz@example.com,CHINOIS -d�butant (jamais �tudi�)
-ROUX,In�s,,logan.myers@example.com,CHINOIS -d�butant (jamais �tudi�)
-PARIS,Ethan,,mia.cole@example.com,CHINOIS -d�butant (jamais �tudi�)
-ANDRE,Chlo�,,olivia.kelly@example.com,CHINOIS -d�butant (jamais �tudi�)
-DENIS,Noah,,lucas.henderson@example.com,CHINOIS -d�butant (jamais �tudi�)
-ROGER,L�a,,amelia.perry@example.com,CHINOIS -d�butant (jamais �tudi�)
-OLIVIER,Liam,,ethan.gomez@example.com,CHINOIS -d�butant (jamais �tudi�)
-THOMAS,Zo�,,sophia.mcdonald@example.com,CHINOIS -d�butant (jamais �tudi�)
-ROY,Arthur,,daniel.holmes@example.com,CHINOIS -d�butant (jamais �tudi�)
-SCHMITT,Jade,,emma.simpson@example.com,CHINOIS -d�butant (jamais �tudi�)
-LAURENT,Lucas,,alexander.cook@example.com,CHINOIS -d�butant (jamais �tudi�)
-HENRY,Camille,,grace.brooks@example.com,CHINOIS -d�butant (jamais �tudi�)
-CL�MENT,Gabriel,,jacob.henry@example.com,CHINOIS -d�butant (jamais �tudi�)
-LUCAS,Louise,,mia.davis@example.com,CHINOIS -d�butant (jamais �tudi�)
-PELLETIER,L�o,,olivia.wright@example.com,CHINOIS -d�butant (jamais �tudi�)
-BOULANGER,Sarah,,james.wood@example.com,CHINOIS -d�butant (jamais �tudi�)
-FERREIRA,Louis,,lily.cruz@example.com,CHINOIS -d�butant (jamais �tudi�)
-PERRIN,Eva,,oliver.foster@example.com,CHINOIS -d�butant (jamais �tudi�)
-GALLET,Th�o,,emily.perez@example.com,CHINOIS -d�butant (jamais �tudi�)
-GUERIN,Clara,,jack.bailey@example.com,CHINOIS -d�butant (jamais �tudi�)
-LUCAS,Adam,,sophia.hernandez@example.com,CHINOIS -d�butant (jamais �tudi�)
-MAILLARD,Juliette,,noah.dixon@example.com,CHINOIS -d�butant (jamais �tudi�)
-LEGER,Tom,,lily.long@example.com,CHINOIS -d�butant (jamais �tudi�)
-AUBERT,Rose,,logan.gordon@example.com,CHINOIS -d�butant (jamais �tudi�)
-LENOIR,Jules,,mia.fisher@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MULLER,Lina,,olivia.murray@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-LECLERCQ,Ma�l,,lucas.owens@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-LECLERC,Anna,,amelia.jordan@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MERCIER,Enzo,,ethan.brooks@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-BLAISE,Elsa,,sophia.arnold@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-GAUTHIER,Rapha�l,,daniel.kim@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-DELATTRE,Manon,,emma.willis@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MARCHAND,Nathan,,alexander.garcia@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-LECLERC,Emma,,grace.pierce@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-BARREAU,Hugo,,jacob.patterson@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-COSTE,In�s,,mia.washington@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-NOEL,Ethan,,olivia.richards@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-OLIVIER,Chlo�,,james.ramirez@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-PETIT,Noah,,lily.myers@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-GALLOIS,L�a,,oliver.brown@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MARCHAL,Liam,,emily.reyes@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-PELTIER,Zo�,,jack.hall@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-BARRE,Arthur,,sophia.stewart@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-HENRY,Jade,,noah.wells@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-CARLIER,Lucas,,lily.hudson@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-GAUTIER,Camille,,logan.burns@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-PR�VOST,Gabriel,,mia.bryant@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MICHEL,Louise,,olivia.russell@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MASSON,L�o,,lucas.welch@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-PETIT,Sarah,,amelia.warren@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-BOURGEOIS,Louis,,ethan.fowler@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MOREAU,Eva,,sophia.knight@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-BESNARD,Th�o,,daniel.hayes@example.com,ESPAGNOL -d�butant (jamais �tudi�)
-MICHE,Clara,,emma.hanson@example.com,ESPAGNOL -d�butant (jamais �tudi�)
+GUILLAUME,Adam,,daniel.brooks@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+DUPUIS,Juliette,,lily.roberts@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+ROUSSEAU,Tom,,ethan.bell@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+LEMAIRE,Rose,,mia.collins@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+LEROY,Jules,,olivia.richardson@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+BERNARD,Lina,,james.mitchell@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+NICOLAS,MaÉl,,amelia.bennett@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+PHILIPPE,Anna,,benjamin.james@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+GIRARD,Enzo,,oliver.young@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+BESNARD,Elsa,,william.murphy@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+BESNARD,RaphaÉl,,emily.flores@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+DUFOUR,Manon,,jack.hill@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+BOUVIER,Nathan,,sophia.lopez@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+GUYOT,Emma,,noah.russell@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+HUET,Hugo,,lily.diaz@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+ROUX,InÉs,,logan.myers@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+PARIS,Ethan,,mia.cole@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+ANDRE,ChloÉ,,olivia.kelly@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+DENIS,Noah,,lucas.henderson@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+ROGER,LÉa,,amelia.perry@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+OLIVIER,Liam,,ethan.gomez@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+THOMAS,ZoÉ,,sophia.mcdonald@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+ROY,Arthur,,daniel.holmes@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+SCHMITT,Jade,,emma.simpson@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+LAURENT,Lucas,,alexander.cook@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+HENRY,Camille,,grace.brooks@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+CLÉMENT,Gabriel,,jacob.henry@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+LUCAS,Louise,,mia.davis@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+PELLETIER,LÉo,,olivia.wright@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+BOULANGER,Sarah,,james.wood@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+FERREIRA,Louis,,lily.cruz@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+PERRIN,Eva,,oliver.foster@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+GALLET,ThÉo,,emily.perez@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+GUERIN,Clara,,jack.bailey@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+LUCAS,Adam,,sophia.hernandez@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+MAILLARD,Juliette,,noah.dixon@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+LEGER,Tom,,lily.long@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+AUBERT,Rose,,logan.gordon@example.com,CHINOIS -dÉbutant (jamais ÉtudiÉ)
+LENOIR,Jules,,mia.fisher@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MULLER,Lina,,olivia.murray@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+LECLERCQ,MaÉl,,lucas.owens@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+LECLERC,Anna,,amelia.jordan@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MERCIER,Enzo,,ethan.brooks@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+BLAISE,Elsa,,sophia.arnold@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+GAUTHIER,RaphaÉl,,daniel.kim@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+DELATTRE,Manon,,emma.willis@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MARCHAND,Nathan,,alexander.garcia@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+LECLERC,Emma,,grace.pierce@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+BARREAU,Hugo,,jacob.patterson@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+COSTE,InÉs,,mia.washington@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+NOEL,Ethan,,olivia.richards@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+OLIVIER,ChloÉ,,james.ramirez@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+PETIT,Noah,,lily.myers@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+GALLOIS,LÉa,,oliver.brown@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MARCHAL,Liam,,emily.reyes@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+PELTIER,ZoÉ,,jack.hall@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+BARRE,Arthur,,sophia.stewart@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+HENRY,Jade,,noah.wells@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+CARLIER,Lucas,,lily.hudson@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+GAUTIER,Camille,,logan.burns@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+PRÉVOST,Gabriel,,mia.bryant@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MICHEL,Louise,,olivia.russell@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MASSON,LÉo,,lucas.welch@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+PETIT,Sarah,,amelia.warren@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+BOURGEOIS,Louis,,ethan.fowler@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MOREAU,Eva,,sophia.knight@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+BESNARD,ThÉo,,daniel.hayes@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
+MICHE,Clara,,emma.hanson@example.com,ESPAGNOL -dÉbutant (jamais ÉtudiÉ)
