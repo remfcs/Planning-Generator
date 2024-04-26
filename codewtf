@@ -1,0 +1,40 @@
+import sqlite3
+import pandas as pd
+import numpy as np
+import json
+import os
+import function_create_groups
+import function_read_folder 
+import function_database
+import random
+
+Data = 'data/data.sqlite3'
+depot_info_folder = './data/input_info'
+db_path = './data/data.sqlite3' 
+depot_note_folder ='./data/input_notes'
+nb_by_class = 16
+nb_forecast_by_class = {
+        '1A': 30,
+        '2A' : 0
+    }
+#DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') 
+DAYS = ('Wednesday', 'Thursday') 
+nb_slot = 6
+Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104') 
+list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
+
+
+
+df = function_read_folder.file_data_Student(depot_info_folder)
+students_info = function_read_folder.add_student_grade(depot_note_folder, df)
+
+function_database.Delete_data_table(Data, "Student")
+
+for student in students_info.values:
+    conn = sqlite3.connect(db_path)
+    #cursor_destination.execute("UPDATE Student SET LV2=?, STATUS=? WHERE (NAME = ? AND SURNAME = ?) OR EMAIL = ? ;", (ligne_filtered["Langues"],"PRESENT", ligne_filtered["Nom"], ligne_filtered["Prénom"], ligne_filtered["mail"]))
+    print(student)
+    function_database.insert_new_student(conn, student)
+    
+function_create_groups.made_LV2_groupe(Data,nb_forecast_by_class, nb_by_class)
+
