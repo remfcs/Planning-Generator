@@ -1,6 +1,6 @@
 import sqlite3
 # Fonction pour supprimer toutes les données d'une table donnée
-def Delete_data_table(filename, table):
+def delete_table_data(filename, table):
     # Connexion à la base de données
     conn = sqlite3.connect(filename)
     cursor = conn.cursor()
@@ -11,15 +11,14 @@ def Delete_data_table(filename, table):
     # Fermeture de la connexion à la base de données
     conn.close()
     # La fonction ne retourne rien, elle modifie la base de données directement
+ 
 
 
-
-def insert_new_student(conn, student):
-    cursor = conn.cursor()
-    #SQL query to insert data
-    #cursor.execute("")
-    conn.commit()
+def insert_df_into_db(conn, students_info, table):
+    conn.cursor()
+    students_info.to_sql(table, conn, if_exists='append', index=False)
     conn.close()
+    
     
 def find_list_CLASS(Data):
     conn = sqlite3.connect(Data)
@@ -49,10 +48,10 @@ def find_list_LV1(Data):
     return list_lv1
 
 
-def get_all_students_from_a_year_and_lv2(Data, year, lv2):
+def get_all_students_from_a_year_and_lv2(Data, promo, lv2):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
-    cursor.execute("SELECT EMAIL FROM Student WHERE CLASS='" + year + "'AND LV2='" + lv2 + "';")
+    cursor.execute("SELECT EMAIL, GRADE_LV2 FROM Student WHERE CLASS='" + promo + "'AND LV2='" + lv2 + "' ORDER BY GRADE_LV2 DESC;")
     group = cursor.fetchall()
     conn.commit()
     return group
@@ -62,6 +61,15 @@ def assigns_groups_to_students(Data, name_class, name_lv2, group_name, group):
     cursor = conn.cursor()
     cursor.execute("INSERT INTO Groups(CLASS, LV, GROUP_LV) VALUES(?,?,?);", (name_class, name_lv2, group_name))
     for student in group:
-        cursor.execute("UPDATE Student SET GROUP_LV2=? WHERE EMAIL=?;", (group_name, student))
-        conn.commit()  
-        conn.close()  
+        cursor.execute("UPDATE Student SET GROUP_LV2=? WHERE EMAIL=?;", (group_name, student[0]))
+    conn.commit()  
+    conn.close()  
+
+def get_students_count(Data, promo):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(*) FROM Student WHERE CLASS='" + promo + "';")
+    return cursor.fetchone()[0]
+
+
+    

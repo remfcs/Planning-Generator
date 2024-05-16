@@ -6,7 +6,6 @@ import sqlite3
 
 def file_data_Student(depot_info_folder): 
     for file in [f for f in os.listdir(depot_info_folder)]:
-        
         if os.path.splitext(os.path.basename(file))[0] == 'Info_student' :
             db_column_mapping = {
                 'Nom': 'NAME',
@@ -18,7 +17,7 @@ def file_data_Student(depot_info_folder):
             db_column_mapping = {
                 'Nom': 'NAME',
                 'Prénom': 'SURNAME',
-                'mail': 'EMAIL',
+                'Mail': 'EMAIL',
                 'Langues' : 'LV2'
             }
             
@@ -30,15 +29,12 @@ def file_data_Student(depot_info_folder):
         if 'Info_student' in file:
             if file.endswith('.csv'):
                 df = csv_into_dataframe(file_path, db_column_mapping)
-                #df.to_sql(desired_table_name, conn, if_exists='append', index=False)
 
             elif file.endswith('.json'):
                 df = json_into_dataframe(file_path, db_column_mapping)
-                #df.to_sql(desired_table_name, conn, if_exists='append', index=False)
 
             elif file.endswith('.xlsx'):
                 df = xlsx_into_dataframe(file_path, db_column_mapping)
-                #df.to_sql(desired_table_name, conn, if_exists='append', index=False)
 
             else:
                 print(f"Format de fichier non pris en charge: {file}")
@@ -151,8 +147,6 @@ def update_TT(grade_list, students_info):
 
     return students_info
 
-
-
     
 def find_format_to_update_students_info(file, depot_note_folder, students_info):
     file_path = os.path.join(depot_note_folder, file)
@@ -182,10 +176,13 @@ def find_format_to_update_students_info(file, depot_note_folder, students_info):
         else:
             print(f"Format de fichier non pris en charge: {file}")
 
+
 def add_student_grade(depot_note_folder, students_info):
     students_info['extra_time'] = False
     for file in [f for f in os.listdir(depot_note_folder)]:
         find_format_to_update_students_info(file, depot_note_folder, students_info)
+    #remplit la colonne statut (présent pour tout le monde) et la colonne LV1
+    students_info.insert(loc=5, column='STATUS', value='PRESENT')
+    students_info.insert(loc=7, column='LV1', value='ANGLAIS')
+    students_info['GRADE_LV2'].fillna(0, inplace=True)
     return students_info
-
-
