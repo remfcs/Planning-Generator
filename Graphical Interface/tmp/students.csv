@@ -1,0 +1,201 @@
+NAME,SURNAME,EMAIL,CLASS,LV1,GRADE_LV1,GROUP_LV1,LV2,GRADE_LV2,GROUP_LV2,EXTRA_TIME,STATUS
+MARTIN,Lucas,john.doe@example.com,1A,Anglais,9.85,G14,ESPAGNOL,4.35,G2,1,PRESENT
+BERNARD,Emma,emma.smith@example.com,1A,Anglais,8.73,G11,ESPAGNOL,8.93,G7,1,PRESENT
+DUBOIS,Gabriel,david.johnson@example.com,1A,Anglais,7.91,G10,ESPAGNOL,3.04,G1,1,PRESENT
+THOMAS,"Léa",sarah.williams@example.com,1A,Anglais,6.47,G5,ESPAGNOL,7.68,G5,1,PRESENT
+ROBERT,Louis,james.brown@example.com,1A,Anglais,8.56,G11,ESPAGNOL,2.47,G1,1,PRESENT
+RICHARD,"Chloé",emily.jones@example.com,1A,Anglais,3.72,G4,ESPAGNOL,9.39,G7,1,PRESENT
+PETIT,Adam,michael.davis@example.com,1A,Anglais,7.38,G9,ESPAGNOL,6.01,G4,1,PRESENT
+DURAND,Manon,olivia.miller@example.com,1A,Anglais,6.92,G7,ESPAGNOL,5.59,G3,1,PRESENT
+LEROY,Hugo,robert.wilson@example.com,1A,Anglais,8.25,G10,ESPAGNOL,4.18,G2,1,PRESENT
+MOREAU,Jade,sophia.moore@example.com,1A,Anglais,9.03,G12,ESPAGNOL,8.77,G6,1,PRESENT
+SIMON,Nathan,william.taylor@example.com,1A,Anglais,4.87,G4,ESPAGNOL,2.88,G1,1,PRESENT
+LAURENT,"Inès",isabella.anderson@example.com,1A,Anglais,6.81,G7,ESPAGNOL,7.23,G5,1,PRESENT
+LEFEBVRE,Ethan,benjamin.thomas@example.com,1A,Anglais,8.99,G12,ESPAGNOL,6.04,G4,1,PRESENT
+MICHEL,Camille,mia.jackson@example.com,1A,Anglais,9.57,G14,ESPAGNOL,5.62,G3,1,PRESENT
+GARCIA,"Léo",ethan.white@example.com,1A,Anglais,2.36,G3,ESPAGNOL,4.03,G2,1,PRESENT
+DAVID,Sarah,ava.harris@example.com,1A,Anglais,6.36,G5,ESPAGNOL,8.48,G6,1,PRESENT
+ROUX,"Théo",alexander.martin@example.com,1A,Anglais,8.87,G12,ESPAGNOL,3.67,G2,1,PRESENT
+VINCENT,"Zoé",madison.thompson@example.com,1A,Anglais,9.44,G13,ESPAGNOL,9.17,G7,1,PRESENT
+FOURNIER,"Raphaël",daniel.garcia@example.com,1A,Anglais,7.29,G8,ESPAGNOL,5.85,G4,1,PRESENT
+MOREL,Louise,chloe.martinez@example.com,1A,Anglais,6.58,G6,ALLEMAND,3.48,G1,1,PRESENT
+GIRARD,Arthur,matthew.robinson@example.com,1A,Anglais,3.14,G3,ESPAGNOL,4.97,G3,1,PRESENT
+"ANDRÉ",Emma,amelia.clark@example.com,1A,Anglais,9.68,G14,ESPAGNOL,8.63,G6,1,PRESENT
+LEFEVRE,Jules,joseph.rodriguez@example.com,1A,Anglais,4.55,G4,ESPAGNOL,3.19,G1,1,PRESENT
+MERCIER,Alice,harper.lewis@example.com,1A,Anglais,6.69,G6,ESPAGNOL,7.79,G6,1,PRESENT
+DUPONT,Tom,samuel.hall@example.com,1A,Anglais,8.47,G10,ESPAGNOL,2.55,G1,1,PRESENT
+LAMBERT,Eva,elizabeth.allen@example.com,1A,Anglais,2.27,G3,ESPAGNOL,9.07,G7,1,PRESENT
+BONNET,Noah,jacob.young@example.com,1A,Anglais,5.03,G4,ESPAGNOL,6.97,G5,1,PRESENT
+"FRANÇOIS",Lina,grace.phillips@example.com,1A,Anglais,6.77,G7,ESPAGNOL,5.23,G3,1,PRESENT
+MARTINEZ,Liam,michael.king@example.com,1A,Anglais,4.61,G4,ESPAGNOL,4.89,G3,1,PRESENT
+BRUN,Clara,lily.cook@example.com,1A,Anglais,9.36,G13,ESPAGNOL,8.26,G6,1,PRESENT
+ROUSSEAU,Mathis,logan.lopez@example.com,1A,Anglais,7.19,G8,ESPAGNOL,3.44,G2,1,PRESENT
+ROUSSEL,Rose,mia.hill@example.com,1A,Anglais,1.63,G2,ESPAGNOL,9.48,G7,1,PRESENT
+PIERRE,Nathan,lucas.scott@example.com,1A,Anglais,8.73,G11,ESPAGNOL,6.73,G5,1,PRESENT
+GUERIN,Anna,avery.green@example.com,1A,Anglais,9.84,G14,ESPAGNOL,5.07,G3,1,PRESENT
+MALLET,Enzo,jack.adams@example.com,1A,Anglais,7.91,G10,ESPAGNOL,4.59,G2,0,PRESENT
+DUMAS,"Léna",sophia.mitchell@example.com,1A,Anglais,0.72,G1,ESPAGNOL,8.84,G6,0,PRESENT
+LEMAIRE,Sacha,benjamin.carter@example.com,1A,Anglais,8.56,G11,ESPAGNOL,3.03,G1,0,PRESENT
+FAURE,Elsa,riley.perez@example.com,1A,Anglais,9.12,G13,ESPAGNOL,7.67,G5,0,PRESENT
+DESCHAMPS,Gabin,dylan.roberts@example.com,1A,Anglais,7.38,G9,ESPAGNOL,2.41,G1,0,PRESENT
+NOEL,Juliette,ella.turner@example.com,1A,Anglais,4.92,G4,ESPAGNOL,9.36,G7,0,PRESENT
+MENARD,"Timéo",noah.wright@example.com,1A,Anglais,8.25,G10,ESPAGNOL,6.22,G4,0,PRESENT
+MEUNIER,Manon,charlotte.garcia@example.com,1A,Anglais,9.03,G12,ESPAGNOL,5.69,G3,0,PRESENT
+MARCHAND,"Maël",liam.howard@example.com,1A,Anglais,3.64,G4,ESPAGNOL,4.31,G2,0,PRESENT
+NICOLAS,Emma,amelia.morris@example.com,1A,Anglais,6.81,G7,ESPAGNOL,8.96,G7,0,PRESENT
+HUBERT,Noah,jackson.baker@example.com,1A,Anglais,2.99,G3,ESPAGNOL,3.06,G1,0,PRESENT
+RENAULT,"Chloé",abigail.bailey@example.com,1A,Anglais,9.57,G14,ESPAGNOL,7.51,G5,0,PRESENT
+LEMOINE,Ethan,lucas.rivera@example.com,1A,Anglais,7.76,G10,ESPAGNOL,6.37,G4,0,PRESENT
+DUPUIS,"Inès",ella.cooper@example.com,1A,Anglais,6.36,G5,ESPAGNOL,5.93,G4,0,PRESENT
+CHEVALIER,Noah,oliver.wood@example.com,1A,Anglais,8.87,G12,ESPAGNOL,4.45,G2,0,PRESENT
+BOUCHARD,"Léa",emma.reed@example.com,1A,Anglais,9.44,G13,ESPAGNOL,8.82,G6,0,PRESENT
+MORIN,Liam,ethan.ross@example.com,1A,Anglais,2.29,G3,ESPAGNOL,3.29,G1,0,PRESENT
+LECLERC,"Zoé",isabella.ortiz@example.com,1A,Anglais,6.58,G6,ESPAGNOL,9.13,G7,0,PRESENT
+LACROIX,Arthur,aiden.gomez@example.com,1A,Anglais,3.14,G3,ESPAGNOL,6.83,G5,0,PRESENT
+POIRIER,Jade,mia.bell@example.com,1A,Anglais,9.68,G14,ESPAGNOL,5.28,G3,0,PRESENT
+GAUTHIER,Lucas,james.murray@example.com,1A,Anglais,7.55,G9,ESPAGNOL,4.78,G2,0,PRESENT
+ROUILLARD,Camille,sophia.collins@example.com,1A,Anglais,6.69,G6,ESPAGNOL,8.07,G6,0,PRESENT
+BOYER,Gabriel,logan.flores@example.com,1A,Anglais,8.47,G11,ESPAGNOL,4.35,G2,0,PRESENT
+BONNIN,Louise,olivia.washington@example.com,1A,Anglais,3.27,G4,ESPAGNOL,8.93,G7,0,PRESENT
+GARNIER,"Léo",michael.nguyen@example.com,1A,Anglais,5.65,G4,ESPAGNOL,3.04,G1,0,PRESENT
+RENARD,Sarah,emily.nelson@example.com,1A,Anglais,6.77,G7,ESPAGNOL,7.68,G5,0,PRESENT
+LOUIS,Louis,jacob.hughes@example.com,1A,Anglais,8.61,G11,ESPAGNOL,2.47,G1,0,PRESENT
+MASSON,Eva,amelia.murphy@example.com,1A,Anglais,2.36,G3,ESPAGNOL,9.39,G7,0,PRESENT
+BRUNET,"Théo",benjamin.sullivan@example.com,1A,Anglais,7.19,G8,ESPAGNOL,6.01,G4,0,PRESENT
+ADAM,Clara,mia.cooper@example.com,1A,Anglais,6.63,G6,ESPAGNOL,5.59,G3,0,PRESENT
+JOLY,Adam,william.henderson@example.com,1A,Anglais,8.73,G11,ESPAGNOL,4.18,G2,0,PRESENT
+PICARD,Juliette,madison.simmons@example.com,1A,Anglais,9.84,G14,ESPAGNOL,8.77,G6,0,PRESENT
+HUET,Tom,daniel.ross@example.com,1A,Anglais,1.91,G2,ESPAGNOL,2.88,G1,0,PRESENT
+"LE GALL",Rose,avery.russell@example.com,1A,Anglais,6.47,G5,ESPAGNOL,7.23,G5,0,PRESENT
+"LE ROUX",Jules,olivia.peterson@example.com,1A,Anglais,4.56,G4,ESPAGNOL,6.04,G4,0,PRESENT
+"LE GOFF",Lina,matthew.kelly@example.com,1A,Anglais,9.12,G13,ESPAGNOL,5.62,G3,0,PRESENT
+"GÉRARD","Maël",sophia.ward@example.com,1A,Anglais,7.38,G9,ESPAGNOL,4.03,G2,0,PRESENT
+MATHIEU,Anna,lucas.gonzalez@example.com,1A,Anglais,1.92,G3,ESPAGNOL,8.48,G6,0,PRESENT
+BERTRAND,Enzo,isabella.long@example.com,1A,Anglais,7.64,G10,ALLEMAND,8.62,G3,0,PRESENT
+BARREAU,Elsa,jacob.evans@example.com,1A,Anglais,9.03,G12,ESPAGNOL,9.17,G7,0,PRESENT
+PONS,"Raphaël",harper.perez@example.com,1A,Anglais,2.64,G3,ESPAGNOL,5.85,G4,0,PRESENT
+GUILLAUME,Manon,alexander.collins@example.com,1A,Anglais,6.81,G7,ESPAGNOL,6.52,G4,0,PRESENT
+CARON,Nathan,lily.richardson@example.com,1A,Anglais,8.99,G12,ESPAGNOL,4.97,G3,0,PRESENT
+MARCHAL,Emma,ethan.parker@example.com,1A,Anglais,9.57,G14,ESPAGNOL,8.63,G6,0,PRESENT
+"LEVÊQUE",Hugo,mia.wood@example.com,1A,Anglais,1.76,G2,ESPAGNOL,3.19,G1,0,PRESENT
+"RIVIÈRE","Inès",daniel.cooper@example.com,1A,Anglais,6.36,G5,ESPAGNOL,7.79,G6,0,PRESENT
+RENOU,Ethan,graces.brooks@example.com,1A,Anglais,0.87,G1,ESPAGNOL,2.55,G1,0,PRESENT
+MICHEL,"Chloé",logan.alexander@example.com,1A,Anglais,9.44,G13,ESPAGNOL,9.07,G7,0,PRESENT
+GUILLOT,Noah,ava.sanchez@example.com,1A,Anglais,7.29,G9,ESPAGNOL,6.97,G5,0,PRESENT
+"LE ROY","Léa",jack.wright@example.com,1A,Anglais,6.58,G6,ESPAGNOL,5.23,G3,0,PRESENT
+GILBERT,Liam,sophia.howard@example.com,1A,Anglais,3.14,G3,ESPAGNOL,4.89,G3,0,PRESENT
+JULIEN,"Zoé",noah.foster@example.com,1A,Anglais,9.68,G14,ESPAGNOL,8.26,G6,0,PRESENT
+VASSEUR,Arthur,emily.gonzalez@example.com,1A,Anglais,7.55,G9,ESPAGNOL,3.44,G2,0,PRESENT
+JOUBERT,Jade,benjamin.hill@example.com,1A,Anglais,0.69,G1,ESPAGNOL,9.48,G7,0,PRESENT
+PICHON,Lucas,emma.torres@example.com,1A,Anglais,8.47,G11,ESPAGNOL,6.73,G5,0,PRESENT
+DESCHAMPS,Camille,lucas.nguyen@example.com,1A,Anglais,9.27,G13,ESPAGNOL,5.07,G3,0,PRESENT
+LEJEUNE,Gabriel,ava.flores@example.com,1A,Anglais,7.03,G8,ESPAGNOL,4.59,G2,0,PRESENT
+RENAULT,Louise,michael.cook@example.com,1A,Anglais,6.77,G7,ESPAGNOL,8.84,G6,0,PRESENT
+LEJEUNE,"Léo",madison.murphy@example.com,1A,Anglais,1.61,G2,ESPAGNOL,4.01,G2,0,PRESENT
+MARIN,Sarah,william.lee@example.com,1A,Anglais,9.36,G13,ALLEMAND,7.83,G2,0,PRESENT
+LEFORT,Louis,mia.rivera@example.com,1A,Anglais,7.19,G8,ALLEMAND,4.26,G1,0,PRESENT
+ROUSSEAU,Eva,daniel.gonzalez@example.com,1A,Anglais,6.63,G6,ALLEMAND,8.97,G3,0,PRESENT
+DEBRAY,"Théo",olivia.waright@example.com,1A,Anglais,8.73,G11,ALLEMAND,2.51,G1,0,PRESENT
+HENIN,Clara,james.morgan@example.com,1A,Anglais,9.84,G14,ALLEMAND,9.74,G3,0,PRESENT
+"HERVÉ",Adam,lily.barnes@example.com,1A,Anglais,1.91,G2,ALLEMAND,5.62,G2,0,PRESENT
+GOSSELIN,Juliette,ethan.walker@example.com,1A,Anglais,6.47,G5,ALLEMAND,6.38,G2,0,PRESENT
+AUVRAY,Tom,sophia.morris@example.com,1A,Anglais,8.56,G11,ALLEMAND,3.91,G1,0,PRESENT
+PIERRE,Rose,alexander.hernandez@example.com,1A,Anglais,0.12,G1,ALLEMAND,8.15,G3,0,PRESENT
+MALLET,Jules,grace.rogers@example.com,1A,Anglais,7.38,G9,ALLEMAND,6.99,G2,0,PRESENT
+THIERRY,Lina,jacob.howard@example.com,1A,Anglais,6.92,G7,ALLEMAND,4.73,G1,0,PRESENT
+NAUDIN,"Maël",amelia.campbell@example.com,1A,Anglais,1.25,G2,ALLEMAND,7.41,G2,0,PRESENT
+BONNIN,Anna,benjamin.young@example.com,1A,Anglais,9.03,G12,ALLEMAND,5.09,G1,0,PRESENT
+BERTRAND,Enzo,mia.king@example.com,1A,Anglais,7.64,G10,ALLEMAND,8.62,G3,0,PRESENT
+GAUTHIER,Elsa,lucas.adams@example.com,1A,Anglais,6.81,G7,ALLEMAND,3.17,G1,0,PRESENT
+ROLLAND,"Raphaël",olivia.bell@example.com,1A,Anglais,8.99,G12,ALLEMAND,9.28,G3,0,PRESENT
+POIRIER,Manon,william.garcia@example.com,1A,Anglais,0.57,G1,ALLEMAND,7.06,G2,0,PRESENT
+RENAULT,Nathan,emma.hughes@example.com,1A,Anglais,7.76,G10,ALLEMAND,2.84,G1,0,PRESENT
+PROUST,Emma,daniel.russell@example.com,1A,Anglais,6.36,G5,ALLEMAND,6.76,G2,0,PRESENT
+BARBIER,Hugo,avery.carter@example.com,1A,Anglais,0.87,G1,ALLEMAND,8.49,G3,0,PRESENT
+TESSIER,"Inès",madison.bailey@example.com,1A,Anglais,9.44,G13,ALLEMAND,4.57,G1,0,PRESENT
+HEBERT,Ethan,ethan.hall@example.com,1A,Anglais,7.29,G9,ALLEMAND,9.09,G3,0,PRESENT
+RENARD,"Chloé",lily.ortiz@example.com,1A,Anglais,6.58,G6,ALLEMAND,3.62,G1,0,PRESENT
+DUPONT,Noah,jack.sullivan@example.com,1A,Anglais,3.14,G3,ALLEMAND,5.83,G2,0,PRESENT
+MATHIEU,"Léa",sophia.loopez@example.com,1A,Anglais,9.68,G14,ALLEMAND,7.19,G2,0,PRESENT
+CARPENTIER,Liam,noah.peterson@example.com,1A,Anglais,7.55,G9,ALLEMAND,4.93,G1,0,PRESENT
+LEGROS,"Zoé",emily.morgan@example.com,1A,Anglais,0.69,G1,ALLEMAND,8.38,G3,0,PRESENT
+NOEL,Arthur,logan.lee@example.com,1A,Anglais,8.47,G11,ALLEMAND,2.39,G1,0,PRESENT
+ROBIN,Jade,mia.ward@example.com,1A,Anglais,9.27,G13,ALLEMAND,6.14,G2,0,PRESENT
+GARNIER,Lucas,lucas.campbell@example.com,1A,Anglais,7.03,G8,ALLEMAND,9.52,G3,0,PRESENT
+MOREAU,Camille,isabella.foster@example.com,1A,Anglais,6.77,G7,ALLEMAND,5.47,G2,0,PRESENT
+MASSON,Gabriel,oliver.evans@example.com,1A,Anglais,1.61,G2,ALLEMAND,7.73,G2,0,PRESENT
+MOREL,Louise,ava.sullivan@example.com,1A,Anglais,6.58,G6,ALLEMAND,3.48,G1,1,PRESENT
+LEFEBVRE,"Léo",michael.butler@example.com,1A,Anglais,7.19,G8,ALLEMAND,8.86,G3,0,PRESENT
+LAURENT,Sarah,grace.thomas@example.com,1A,Anglais,6.63,G6,ALLEMAND,6.22,G2,0,PRESENT
+MOREL,Louis,jacob.nguyen@example.com,1A,Anglais,8.73,G12,ALLEMAND,4.05,G1,0,PRESENT
+PERRIN,Eva,emma.parker@example.com,1A,Anglais,6.47,G5,"CHINOIS -débutant (jamais étudié)",7.58,G1,0,PRESENT
+PERROT,"Théo",alexander.hall@example.com,1A,Anglais,1.91,G2,ALLEMAND,2.97,G1,0,PRESENT
+REMY,Clara,sophia.gray@example.com,1A,Anglais,6.47,G6,ALLEMAND,9.19,G3,0,PRESENT
+GUILLAUME,Adam,daniel.brooks@example.com,1A,Anglais,8.56,G11,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+DUPUIS,Juliette,lily.roberts@example.com,1A,Anglais,0.12,G1,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+ROUSSEAU,Tom,ethan.bell@example.com,1A,Anglais,7.38,G9,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+LEMAIRE,Rose,mia.collins@example.com,1A,Anglais,6.92,G8,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+LEROY,Jules,olivia.richardson@example.com,1A,Anglais,1.25,G2,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+BERNARD,Lina,james.mitchell@example.com,1A,Anglais,9.03,G12,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+NICOLAS,"Maël",amelia.bennett@example.com,1A,Anglais,7.64,G10,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+PHILIPPE,Anna,benjamin.james@example.com,1A,Anglais,6.81,G7,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+GIRARD,Enzo,oliver.young@example.com,1A,Anglais,8.99,G12,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+BESNARD,Elsa,william.murphy@example.com,1A,Anglais,0.57,G1,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+BESNARD,"Raphaël",emily.flores@example.com,1A,Anglais,7.76,G10,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+DUFOUR,Manon,jack.hill@example.com,1A,Anglais,6.36,G5,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+BOUVIER,Nathan,sophia.lopez@example.com,1A,Anglais,0.87,G1,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+GUYOT,Emma,noah.russell@example.com,1A,Anglais,9.44,G13,"CHINOIS -débutant (jamais étudié)",,G1,0,PRESENT
+HUET,Hugo,lily.diaz@example.com,1A,Anglais,7.29,G9,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+ROUX,"Inès",logan.myers@example.com,1A,Anglais,6.58,G6,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+PARIS,Ethan,mia.cole@example.com,1A,Anglais,3.14,G3,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+ANDRE,"Chloé",olivia.kelly@example.com,1A,Anglais,9.68,G14,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+DENIS,Noah,lucas.henderson@example.com,1A,Anglais,7.55,G9,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+ROGER,"Léa",amelia.perry@example.com,1A,Anglais,0.69,G1,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+OLIVIER,Liam,ethan.gomez@example.com,1A,Anglais,8.47,G11,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+THOMAS,"Zoé",sophia.mcdonald@example.com,1A,Anglais,9.27,G13,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+ROY,Arthur,daniel.holmes@example.com,1A,Anglais,7.03,G8,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+SCHMITT,Jade,emma.simpson@example.com,1A,Anglais,6.77,G7,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+LAURENT,Lucas,alexander.cook@example.com,1A,Anglais,1.61,G2,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+HENRY,Camille,grace.brooks@example.com,1A,Anglais,9.36,G13,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+"CLÉMENT",Gabriel,jacob.henry@example.com,1A,Anglais,7.19,G8,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+LUCAS,Louise,mia.davis@example.com,1A,Anglais,6.63,G6,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+PELLETIER,"Léo",olivia.wright@example.com,1A,Anglais,8.73,G12,"CHINOIS -débutant (jamais étudié)",,G2,0,PRESENT
+BOULANGER,Sarah,james.wood@example.com,1A,Anglais,9.84,G14,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+FERREIRA,Louis,lily.cruz@example.com,1A,Anglais,1.91,G3,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+PERRIN,Eva,oliver.foster@example.com,1A,Anglais,6.47,G6,"CHINOIS -débutant (jamais étudié)",7.58,G3,0,PRESENT
+GALLET,"Théo",emily.perez@example.com,1A,Anglais,8.56,G11,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+GUERIN,Clara,jack.bailey@example.com,1A,Anglais,0.12,G1,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+LUCAS,Adam,sophia.hernandez@example.com,1A,Anglais,7.38,G9,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+MAILLARD,Juliette,noah.dixon@example.com,1A,Anglais,6.92,G8,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+LEGER,Tom,lily.long@example.com,1A,Anglais,1.25,G2,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+AUBERT,Rose,logan.gordon@example.com,1A,Anglais,9.03,G12,"CHINOIS -débutant (jamais étudié)",,G3,0,PRESENT
+LENOIR,Jules,mia.fisher@example.com,1A,Anglais,7.64,G10,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+MULLER,Lina,olivia.murray@example.com,1A,Anglais,6.81,G7,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+LECLERCQ,"Maël",lucas.owens@example.com,1A,Anglais,8.99,G12,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+LECLERC,Anna,amelia.jordan@example.com,1A,Anglais,0.57,G1,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+MERCIER,Enzo,ethan.brooks@example.com,1A,Anglais,7.76,G10,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+BLAISE,Elsa,sophia.arnold@example.com,1A,Anglais,6.36,G5,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+GAUTHIER,"Raphaël",daniel.kim@example.com,1A,Anglais,0.87,G2,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+DELATTRE,Manon,emma.willis@example.com,1A,Anglais,9.44,G14,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+MARCHAND,Nathan,alexander.garcia@example.com,1A,Anglais,7.29,G9,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+LECLERC,Emma,grace.pierce@example.com,1A,Anglais,6.58,G6,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+BARREAU,Hugo,jacob.patterson@example.com,1A,Anglais,3.14,G3,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+COSTE,"Inès",mia.washington@example.com,1A,Anglais,9.68,G14,"ESPAGNOL -débutant (jamais étudié)",,G1,0,PRESENT
+NOEL,Ethan,olivia.richards@example.com,1A,Anglais,7.55,G9,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+OLIVIER,"Chloé",james.ramirez@example.com,1A,Anglais,0.69,G1,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+PETIT,Noah,lily.myers@example.com,1A,Anglais,8.47,G11,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+GALLOIS,"Léa",oliver.brown@example.com,1A,Anglais,9.27,G13,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+MARCHAL,Liam,emily.reyes@example.com,1A,Anglais,7.03,G8,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+PELTIER,"Zoé",jack.hall@example.com,1A,Anglais,6.77,G7,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+BARRE,Arthur,sophia.stewart@example.com,1A,Anglais,1.61,G2,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+HENRY,Jade,noah.wells@example.com,1A,Anglais,9.36,G13,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+CARLIER,Lucas,lily.hudson@example.com,1A,Anglais,7.19,G8,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+GAUTIER,Camille,logan.burns@example.com,1A,Anglais,6.63,G6,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+"PRÉVOST",Gabriel,mia.bryant@example.com,1A,Anglais,8.73,G12,"ESPAGNOL -débutant (jamais étudié)",,G2,0,PRESENT
+MICHEL,Louise,olivia.russell@example.com,1A,Anglais,9.84,G14,"ESPAGNOL -débutant (jamais étudié)",,G3,0,PRESENT
+MASSON,"Léo",lucas.welch@example.com,1A,Anglais,1.91,G3,"ESPAGNOL -débutant (jamais étudié)",,G3,0,PRESENT
+PETIT,Sarah,amelia.warren@example.com,1A,Anglais,6.47,G6,"ESPAGNOL -débutant (jamais étudié)",,G3,0,PRESENT
+BOURGEOIS,Louis,ethan.fowler@example.com,1A,Anglais,8.56,G11,"ESPAGNOL -débutant (jamais étudié)",,G3,0,PRESENT
+MOREAU,Eva,sophia.knight@example.com,1A,Anglais,0.12,G1,"ESPAGNOL -débutant (jamais étudié)",,G3,0,PRESENT
+BESNARD,"Théo",daniel.hayes@example.com,1A,Anglais,7.38,G9,"ESPAGNOL -débutant (jamais étudié)",,G3,0,PRESENT
+MICHE,Clara,emma.hanson@example.com,1A,Anglais,6.92,G8,"ESPAGNOL -débutant (jamais étudié)",,G3,0,PRESENT

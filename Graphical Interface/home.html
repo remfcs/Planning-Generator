@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Taylor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Students list</h1>
+        <form id="studentForm" class="form-inline">
+            <label for="studentName" class="sr-only">Nom de l'élève :</label>
+            <input type="text" id="studentName" name="studentName" class="form-control mb-2 mr-sm-2">
+            <button type="submit" class="btn btn-primary mb-2">Rechercher</button>
+        </form>
+        <div id="studentDetails">
+            <!-- Les détails des élèves seront affichés ici -->
+        </div>
+        <div id="studentList" class="table-responsive"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

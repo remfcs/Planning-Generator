@@ -1,0 +1,13 @@
+ID_teacher,NAME,SURNAME,EMAIL,SUBJECT
+MAR_ANG,MARTIN,Lucas,john.doe@example.com,ANGLAIS
+BER_ANG,BERNARD,Emma,emma.smith@example.com,ANGLAIS
+DUB_ANG,DUBOIS,Gabriel,david.johnson@example.com,ANGLAIS
+THO_ANG,THOMAS,"Léa",sarah.williams@example.com,ANGLAIS
+ROB_ANG,ROBERT,Louis,james.brown@example.com,ANGLAIS
+RIC_ESP,RICHARD,"Chloé",emily.jones@example.com,ESPAGNOL
+PET_ESP,PETIT,Adam,michael.davis@example.com,ESPAGNOL
+DUR_ESP,DURAND,Manon,olivia.miller@example.com,ESPAGNOL
+LER_ESP,LEROY,Hugo,robert.wilson@example.com,ESPAGNOL
+MOR_ALL,MOREAU,Jade,sophia.moore@example.com,ALLEMAND
+SIM_ALL,SIMON,Nathan,william.taylor@example.com,ALLEMAND
+LAU_CHI,LAURENT,"Inés",isabella.anderson@example.com,CHINOIS

@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 8px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#studentDetails {
+    margin-top: 20px;
+}
+
+/* style.css */
+.table-responsive {
+    max-height: 500px;
+    /* Adjust as needed */
+    overflow: hidden;
+    position: relative;
+}
+
+.table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+    white-space: nowrap;
+    position: relative;
+}
