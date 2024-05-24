@@ -24,13 +24,10 @@ def find_list_SCHOOL_YEAR(Data):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
     cursor.execute("SELECT DISTINCT(SCHOOL_YEAR) FROM Student;")
-<<<<<<< HEAD
     list_SCHOOL_YEAR = cursor.fetchall()
     list_SCHOOL_YEAR = [row[0] for row in list_SCHOOL_YEAR]
-=======
     list_Class = cursor.fetchall()
     list_Class = [row[0] for row in list_Class]
->>>>>>> 026ef72a99a284da828e78b2736e06ba5852602a
     conn.close()
     return list_SCHOOL_YEAR
 
