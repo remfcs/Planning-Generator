@@ -20,14 +20,19 @@ def insert_df_into_db(conn, students_info, table):
     conn.close()
     
     
-def find_list_CLASS(Data):
+def find_list_SCHOOL_YEAR(Data):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
     cursor.execute("SELECT DISTINCT(SCHOOL_YEAR) FROM Student;")
+<<<<<<< HEAD
+    list_SCHOOL_YEAR = cursor.fetchall()
+    list_SCHOOL_YEAR = [row[0] for row in list_SCHOOL_YEAR]
+=======
     list_Class = cursor.fetchall()
     list_Class = [row[0] for row in list_Class]
+>>>>>>> 026ef72a99a284da828e78b2736e06ba5852602a
     conn.close()
-    return list_Class
+    return list_SCHOOL_YEAR
 
 def find_list_LV2(Data, promo_pair):
     conn = sqlite3.connect(Data)
@@ -93,7 +98,7 @@ def get_lv_slot_count(Data, promo_pair):
     cursor = conn.cursor()
     slot_list = []
     for promo in promo_pair:
-        cursor.execute("SELECT ID_Availability FROM Availability_Class WHERE ID_Class='" + promo + "';")
+        cursor.execute("SELECT ID_Availability FROM Availability_Class WHERE ID_CLASS='" + promo + "';")
         slot_list.extend(cursor.fetchall())
         print(slot_list)
     return list(set(slot_list))
