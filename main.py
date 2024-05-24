@@ -51,5 +51,5 @@ function_database.insert_df_into_db(conn, students_info, "Student")
 #function_database.delete_table_data(Data, "Groups")
 
 #AAAA FINIRRRR
-function_create_groups.make_groups_lv(Data, promo_pair)
+#function_create_groups.make_groups_lv(Data, promo_pair)
 
