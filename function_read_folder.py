@@ -11,7 +11,8 @@ def file_data_Student(depot_info_folder):
                 'Nom': 'NAME',
                 'Prénom': 'SURNAME',
                 'mail': 'EMAIL',
-                'Class': 'CLASS'}
+                'Class': 'SCHOOL_YEAR'}
+                #'Class': 'CLASS'}
         elif os.path.splitext(os.path.basename(file))[0] == 'Sondage_LV2' :
             file_path = os.path.join(depot_info_folder, file)
             db_column_mapping = {
@@ -137,10 +138,11 @@ def update_TT(grade_list, students_info):
     students_info['key'] = students_info['NAME'] + '_' + students_info['SURNAME']
     grade_list['key'] = grade_list['Nom'] + '_' + grade_list['Prénom']
 
-    existing_true_indices = students_info.loc[students_info['extra_time'], 'key'].index
-    students_info['extra_time'] = students_info['key'].isin(grade_list['key']) | students_info['extra_time']
+    existing_true_indices = students_info.loc[students_info['REDUCED_EXAM'], 'key'].index
+    students_info['REDUCED_EXAM'] = students_info['key'].isin(grade_list['key']) | students_info['REDUCED_EXAM']
 
-    students_info.loc[existing_true_indices, 'extra_time'] = True
+    #students_info.loc[existing_true_indices, 'extra_time'] = True
+    students_info.loc[existing_true_indices, 'REDUCED_EXAM'] = True
 
     students_info.drop(['key'], axis=1, inplace=True)
     grade_list.drop(['key'], axis=1, inplace=True)
@@ -178,11 +180,11 @@ def find_format_to_update_students_info(file, depot_note_folder, students_info):
 
 
 def add_student_grade(depot_note_folder, students_info):
-    students_info['extra_time'] = False
+    students_info['REDUCED_EXAM'] = False
     for file in [f for f in os.listdir(depot_note_folder)]:
         find_format_to_update_students_info(file, depot_note_folder, students_info)
     #remplit la colonne statut (présent pour tout le monde) et la colonne LV1
     students_info.insert(loc=5, column='STATUS', value='PRESENT')
     students_info.insert(loc=7, column='LV1', value='ANGLAIS')
-    students_info['GRADE_LV2'].fillna(0, inplace=True)
+    students_info['GRADE_LV2'] = students_info['GRADE_LV2'].fillna(0)
     return students_info

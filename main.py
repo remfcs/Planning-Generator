@@ -9,9 +9,9 @@ import function_database
 import random
 import back_up
 
-Data = 'data/data.sqlite3'
+Data = 'data/test.sqlite3'
 depot_info_folder = './data/input_info'
-db_path = './data/data.sqlite3' 
+db_path = './data/test.sqlite3' 
 depot_note_folder ='./data/input_notes'
 max_by_class = 16
 nb_forecast_by_class = {
@@ -46,7 +46,7 @@ conn = sqlite3.connect(db_path)
 function_database.insert_df_into_db(conn, students_info, "Student")
 
 #supprime les données de la table groupe
-function_database.delete_table_data(Data, "Groups")
+#function_database.delete_table_data(Data, "Groups")
 
 #AAAA FINIRRRR
 #function_create_groups.made_LV2_groupe(Data,nb_forecast_by_class, max_by_class)
