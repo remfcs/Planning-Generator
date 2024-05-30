@@ -95,9 +95,9 @@ def get_all_students_from_a_pair_studying_this_lv(Data, promo_pair, language):
 
 def assigns_groups_to_students(Data, lv, id_course, group, teacher, slot):
     conn = sqlite3.connect(Data)
-    promo = "1a"
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILIBITY) VALUES(?,?,?,?);", (lv, id_course, teacher, slot))
+    #print(lv, id_course, group, teacher, slot)
+    cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY) VALUES(?,?,?,?);", (lv, id_course, teacher, slot))
     for student in group:
         cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?,?);", (id_course, student[0]))
     conn.commit()
