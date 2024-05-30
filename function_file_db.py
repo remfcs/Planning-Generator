@@ -42,6 +42,20 @@ def Set_teachers(Data, list_teacher):
     conn.close()
     return 
 
+def Set_table_de_jointure(Data, table, list_availibity_rooms):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM '" + table + "';")
+    for i in list_availibity_rooms :
+        cursor.execute("INSERT INTO '" + table + "' VALUES (?,?);",(i[0],i[1]))
+    conn.commit() 
+    conn.close()
+
+
+
+###############################################################################################
+#   Fonctions de simulation des associations disponibilités & teachers/rooms/school_year      #
+###############################################################################################
 
 def get_list(Data):
     conn = sqlite3.connect(Data)
@@ -70,11 +84,3 @@ def create_random_pairs(list1, list2, num_pairs):
     return pairs
 
 
-def Set_table_de_jointure(Data, table, list_availibity_rooms):
-    conn = sqlite3.connect(Data)
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM '" + table + "';")
-    for i in list_availibity_rooms :
-        cursor.execute("INSERT INTO '" + table + "' VALUES (?,?);",(i[0],i[1]))
-    conn.commit() 
-    conn.close()
