@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify, send_from_directory
 import sqlite3
 import os
+import webbrowser
+import threading
+import time
 
 app = Flask(__name__)
 
@@ -14,6 +17,11 @@ def query_db(query, args=(), one=False):
     rv = cur.fetchall()
     conn.close()
     return (rv[0] if rv else None) if one else rv
+
+def open_browser():
+    time.sleep(1)  # Attendre une seconde pour s'assurer que le serveur a démarré
+    webbrowser.open('http://127.0.0.1:5000/')
+
 
 @app.route('/')
 def index():
@@ -83,4 +91,5 @@ def get_languages():
     return jsonify([lang[0] for lang in languages])
 
 if __name__ == '__main__':
+    threading.Thread(target=open_browser).start()
     app.run(debug=True)
