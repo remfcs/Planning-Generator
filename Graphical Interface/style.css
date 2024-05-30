@@ -24,8 +24,9 @@ label {
     font-weight: bold;
 }
 
-input[type="text"] {
-    width: 100%;
+input[type="text"],
+select {
+    width: auto;
     padding: 8px;
     margin-top: 5px;
     margin-bottom: 10px;
@@ -48,20 +49,27 @@ button:hover {
     margin-top: 20px;
 }
 
-/* style.css */
 .table-responsive {
     max-height: 500px;
-    /* Adjust as needed */
-    overflow: hidden;
+    overflow: auto;
     position: relative;
 }
 
 .table {
-    display: block;
     width: 100%;
     max-width: 100%;
     overflow-y: auto;
     overflow-x: auto;
     white-space: nowrap;
     position: relative;
+}
+
+.table th,
+.table td {
+    text-align: center;
+}
+
+.table td:nth-child(6) {
+    font-weight: bold;
+    background-color: #f8f9fa;
 }

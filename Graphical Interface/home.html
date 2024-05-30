@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planning Taylor</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
@@ -13,9 +13,28 @@
 <body>
     <div class="container">
         <h1>Students list</h1>
-        <form id="studentForm" class="form-inline">
+        <form id="filterForm" class="form-inline">
             <label for="studentName" class="sr-only">Nom de l'élève :</label>
             <input type="text" id="studentName" name="studentName" class="form-control mb-2 mr-sm-2">
+
+            <label for="niveau" class="sr-only">Niveau :</label>
+            <select id="niveau" name="niveau" class="form-control mb-2 mr-sm-2">
+                <option value="">Sélectionner Niveau</option>
+                <option value="1A">1A</option>
+                <option value="2A">2A</option>
+                <option value="3A">3A</option>
+            </select>
+
+            <label for="professeur" class="sr-only">Professeur :</label>
+            <select id="professeur" name="professeur" class="form-control mb-2 mr-sm-2">
+                <!-- Options seront ajoutées dynamiquement depuis la base de données -->
+            </select>
+
+            <label for="langue" class="sr-only">Langue :</label>
+            <select id="langue" name="langue" class="form-control mb-2 mr-sm-2">
+                <!-- Options seront ajoutées dynamiquement depuis la base de données -->
+            </select>
+
             <button type="submit" class="btn btn-primary mb-2">Rechercher</button>
         </form>
         <div id="studentDetails">
