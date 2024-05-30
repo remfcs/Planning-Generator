@@ -24,7 +24,7 @@ def restor_backup(Data):
         # Construction du nom de fichier de la sauvegarde en ajoutant un préfixe "backup_" au nom du fichier de base de données
         name = "backup_" + os.path.splitext(os.path.basename(Data))[0]
         rename_data = os.path.join(os.path.dirname(Data), name) + ".sqlite3"
-        print(rename_data)
+        #print(rename_data)
         # Vérification de l'existence de la sauvegarde
         if os.path.exists(rename_data):
             # Suppression du fichier de base de données actuel

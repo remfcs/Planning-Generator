@@ -58,7 +58,7 @@ def get_all_students_from_a_pair_and_lv(Data, promo_pair, lv):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
     group = []
-    print(promo_pair)
+    #print(promo_pair)
     grade = "GRADE_LV2"
     second_language = "2"
     if lv == "ANGLAIS":
@@ -82,8 +82,7 @@ def get_all_students_from_a_pair_studying_this_lv(Data, promo_pair, language):
         second_language = "LV1"
     
     for promo in promo_pair:
-        print(promo)
-        print(promo)
+        #print(promo)
         cursor.execute(f"""
             SELECT COUNT(*)
             FROM Student
@@ -98,7 +97,7 @@ def assigns_groups_to_students(Data, lv, id_course, group, teacher, slot):
     conn = sqlite3.connect(Data)
     promo = "1a"
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO Courses(ID_COURSE, ID_GROUP, ID_TEACHER, ID_AVAILIBITY) VALUES(?,?,?,?);", (id_course, lv, teacher, slot))
+    cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILIBITY) VALUES(?,?,?,?);", (lv, id_course, teacher, slot))
     for student in group:
         cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?,?);", (id_course, student[0]))
     conn.commit()
@@ -124,7 +123,7 @@ def get_lv_slot_count(Data, promo_pair):
     for promo in promo_pair:
         cursor.execute("SELECT ID_Availability FROM Availability_Class WHERE ID_CLASS='" + promo + "';")
         slot_list.extend(cursor.fetchall())
-        print(slot_list)
+        #print(slot_list)
     return list(set(slot_list))
 
 
@@ -143,7 +142,7 @@ def get_available_teacher(Data, slot, lv):
     cursor = conn.cursor()
     teacher_availabilities = []
     slot_nbr_for_lv = 0
-    print(lv)
+    #print(lv)
     if ' -débutant' in lv:
         lv = lv.split(' -débutant')[0]
     for slo in slot:
@@ -157,5 +156,5 @@ def get_available_teacher(Data, slot, lv):
             (slo[0], lv)
         )
         teacher_availabilities.extend(cursor.fetchall())
-        print(teacher_availabilities)
+        #print(teacher_availabilities)
     return teacher_availabilities

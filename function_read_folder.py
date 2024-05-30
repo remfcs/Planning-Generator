@@ -152,7 +152,7 @@ def update_TT(grade_list, students_info):
     
 def find_format_to_update_students_info(file, depot_note_folder, students_info):
     file_path = os.path.join(depot_note_folder, file)
-    print(file)
+    #print(file)
     if 'Anglais' not in file:
         if file.endswith('.csv'):
             students_info = update_students_info_csv(file_path, students_info, 'GRADE_LV2')

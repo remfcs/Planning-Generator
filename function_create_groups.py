@@ -40,7 +40,7 @@ def make_groups_lv(Data, promo_pair):
             total_student_studying_this_lv =  function_database.get_all_students_from_a_pair_studying_this_lv(Data, promo_list, lv)
             if "-débutant (jamais étudié)" in lv :
                 name = "_D"
-            nbr_slot = get_number_of_slot(total_student_studying_this_lv, len(teacher_availabilities), len(group))
+            #nbr_slot = get_number_of_slot(total_student_studying_this_lv, len(teacher_availabilities), len(group))
             students_distribution = get_students_per_SCHOOL_YEAR(len(group), len(teacher_availabilities))
             
             groups = make_groups(group, students_distribution)

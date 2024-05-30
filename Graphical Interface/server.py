@@ -19,7 +19,7 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 def open_browser():
-    time.sleep(1)  # Attendre une seconde pour s'assurer que le serveur a démarré
+    time.sleep(1)  
     webbrowser.open('http://127.0.0.1:5000/')
 
 
