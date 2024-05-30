@@ -17,7 +17,7 @@ max_by_class = 16
 #DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') 
 DAYS = ('Wednesday', 'Thursday') 
 nb_slot = 6
-promo_pair = [['1A','2A'],['3A']]
+promo_pair = [['1A','2A']]
 Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104') 
 list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
 
@@ -47,8 +47,9 @@ conn = sqlite3.connect(db_path)
 function_database.insert_df_into_db(conn, students_info, "Student")
 
 #supprime les données de la table groupe
+function_database.delete_table_data(Data, "Courses")
 function_database.delete_table_data(Data, "List_Groups_Students")
 
 #AAAA FINIRRRR
-#function_create_groups.make_groups_lv(Data, promo_pair)
+function_create_groups.make_groups_lv(Data, promo_pair)
 

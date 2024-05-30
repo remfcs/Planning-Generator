@@ -54,28 +54,55 @@ def find_list_LV1(Data):
     return list_lv1
 
 
-def get_all_students_from_a_pair_and_lv2(Data, promo_pair, lv2):
+def get_all_students_from_a_pair_and_lv(Data, promo_pair, lv):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
     group = []
     print(promo_pair)
-    print(lv2)
+    grade = "GRADE_LV2"
+    second_language = "2"
+    if lv == "ANGLAIS":
+        grade = "GRADE_LV1"
+        second_language = "1"
     for promo in promo_pair:
-        cursor.execute("SELECT EMAIL, GRADE_LV2, SCHOOL_YEAR FROM Student WHERE SCHOOL_YEAR='" + promo + "'AND LV2='" + lv2 + "' ORDER BY GRADE_LV2 DESC;")
+        cursor.execute("SELECT EMAIL," + grade + ", SCHOOL_YEAR FROM Student WHERE SCHOOL_YEAR='" + promo + "'AND LV" + second_language + "='" + lv + "' ORDER BY GRADE_LV2 DESC;")
         group.extend(cursor.fetchall())
     group.sort(key=lambda x: x[1], reverse=True)    
     conn.close()
     return group
 
-def assigns_groups_to_students(Data, name_lv2, group_name, group):
+def get_all_students_from_a_pair_studying_this_lv(Data, promo_pair, language):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    if " " in language:
+        language = language.split(' -')[0]  # Simplifie la langue en enlevant tout après ' -'
+    total_count = 0
+    second_language = "LV2"
+    if language.upper() == "ANGLAIS":
+        second_language = "LV1"
+    
+    for promo in promo_pair:
+        print(promo)
+        print(promo)
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM Student
+            WHERE SCHOOL_YEAR = ? AND {second_language} LIKE ?
+            """, (promo, f"{language}%")) 
+        total_count += cursor.fetchone()[0]
+    
+    conn.close()
+    return total_count
+
+def assigns_groups_to_students(Data, lv, id_course, group, teacher, slot):
     conn = sqlite3.connect(Data)
     promo = "1a"
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO Groups(SCHOOL_YEAR, LV, GROUP_LV) VALUES(?,?,?);", (promo, name_lv2, group_name))
+    cursor.execute("INSERT INTO Courses(ID_COURSE, ID_GROUP, ID_TEACHER, ID_AVAILIBITY) VALUES(?,?,?,?);", (id_course, lv, teacher, slot))
     for student in group:
-        cursor.execute("UPDATE Student SET GROUP_LV2=? WHERE EMAIL=?;", (group_name, student[0]))
-    conn.commit()  
-    conn.close()  
+        cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?,?);", (id_course, student[0]))
+    conn.commit()
+    conn.close()
 
 def get_students_count(Data, promo):
     conn = sqlite3.connect(Data)
@@ -114,7 +141,7 @@ def get_available_teacher(Data, slot, lv):
     """    
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
-    available_teacher = []
+    teacher_availabilities = []
     slot_nbr_for_lv = 0
     print(lv)
     if ' -débutant' in lv:
@@ -122,13 +149,13 @@ def get_available_teacher(Data, slot, lv):
     for slo in slot:
         cursor.execute(
             """
-            SELECT Availability_Teachers.ID_Teacher
+            SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
             FROM Availability_Teachers
             JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
             WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?;
             """,
             (slo[0], lv)
         )
-        slot_nbr_for_lv += len(cursor.fetchall())
-        available_teacher.extend(cursor.fetchall())
-    return slot_nbr_for_lv, available_teacher
+        teacher_availabilities.extend(cursor.fetchall())
+        print(teacher_availabilities)
+    return teacher_availabilities
