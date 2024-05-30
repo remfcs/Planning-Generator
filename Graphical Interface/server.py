@@ -1,112 +1,86 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import socketserver
+from flask import Flask, request, jsonify, send_from_directory
 import sqlite3
-import json
 import os
-from urllib.parse import urlparse, parse_qs
 
-PORT = 8000
+app = Flask(__name__)
 
-class MyHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        base_path = os.path.dirname(__file__)
-        parsed_path = urlparse(self.path)
-        path = parsed_path.path
-        query = parse_qs(parsed_path.query)
+# Define the path to the SQLite database file
+DATABASE = os.path.join(os.path.dirname(__file__), 'test.sqlite3')
 
-        if path == '/':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
+def query_db(query, args=(), one=False):
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute(query, args)
+    rv = cur.fetchall()
+    conn.close()
+    return (rv[0] if rv else None) if one else rv
 
-            home_path = os.path.join(base_path, 'home.html')
-            with open(home_path, 'r', encoding='utf-8') as file:
-                self.wfile.write(file.read().encode())
+@app.route('/')
+def index():
+    return send_from_directory('.', 'home.html')
 
-        elif path == '/students':
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
+@app.route('/style.css')
+def style():
+    return send_from_directory('.', 'style.css')
 
-            conn = sqlite3.connect(os.path.join(base_path, 'data_copy.sqlite3'))
-            c = conn.cursor()
+@app.route('/script.js')
+def script():
+    return send_from_directory('.', 'script.js')
 
-            query_str = 'SELECT Student.Name, Student.Surname, Student.Email, Student.Class, Student.LV1, Student.GROUP_LV1, Teachers.name as Teachers FROM Student JOIN groups ON Student.group_id = groups.id JOIN Teachers ON groups.teacher_id = teacher.id WHERE 1=1'
-            params = []
+@app.route('/students', methods=['GET'])
+def get_students():
+    name = request.args.get('name', '').lower()
+    niveau = request.args.get('niveau', '')
+    professeur = request.args.get('professeur', '')
+    langue = request.args.get('langue', '')
 
-            if 'name' in query:
-                name = query['name'][0]
-                query_str += " AND (Student.Name LIKE ? OR Student.Surname LIKE ?)"
-                params.extend([f"%{name}%", f"%{name}%"])
-            if 'niveau' in query:
-                niveau = query['niveau'][0]
-                query_str += " AND Student.Class = ?"
-                params.append(niveau)
-            if 'professeur' in query:
-                professeur = query['professeur'][0]
-                query_str += " AND Teachers.name = ?"
-                params.append(professeur)
-            if 'langue' in query:
-                langue = query['langue'][0]
-                query_str += " AND Student.LV1 = ?"
-                params.append(langue)
+    query = """
+        SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, s.LV1, s.GROUP_LV1, t.NAME AS TEACHER_NAME, t.SURNAME AS TEACHER_SURNAME
+        FROM Student s
+        LEFT JOIN Teachers t ON s.EMAIL = t.MAIL
+        WHERE 1=1
+    """
+    filters = []
+    
+    if name:
+        query += " AND LOWER(s.NAME) LIKE ?"
+        filters.append(f"%{name}%")
+    if niveau:
+        query += " AND s.SCHOOL_YEAR = ?"
+        filters.append(niveau)
+    if professeur:
+        query += " AND (t.NAME || ' ' || t.SURNAME) = ?"
+        filters.append(professeur)
+    if langue:
+        query += " AND s.LV1 = ?"
+        filters.append(langue)
+    
+    students = query_db(query, filters)
+    
+    student_list = []
+    for student in students:
+        student_list.append({
+            "Name": student[0],
+            "Surname": student[1],
+            "Email": student[2],
+            "Class": student[3],
+            "LV1": student[4],
+            "GROUP_LV1": student[5],
+            "TeacherName": student[6],
+            "TeacherSurname": student[7]
+        })
+    
+    return jsonify(student_list)
 
-            c.execute(query_str, params)
-            students = c.fetchall()
-            conn.close()
+@app.route('/professors', methods=['GET'])
+def get_professors():
+    professors = query_db("SELECT DISTINCT NAME || ' ' || SURNAME AS FULL_NAME FROM Teachers")
+    return jsonify([prof[0] for prof in professors])
 
-            self.wfile.write(json.dumps([dict(zip([column[0] for column in c.description], row)) for row in students]).encode())
+@app.route('/languages', methods=['GET'])
+def get_languages():
+    languages = query_db("SELECT DISTINCT LV1 FROM Student")
+    return jsonify([lang[0] for lang in languages])
 
-        elif path == '/teachers':
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-
-            conn = sqlite3.connect(os.path.join(base_path, 'data_copy.sqlite3'))
-            c = conn.cursor()
-            c.execute("SELECT DISTINCT name FROM Teachers")
-            teachers = c.fetchall()
-            conn.close()
-
-            self.wfile.write(json.dumps([row[0] for row in teachers]).encode())
-
-        elif path == '/languages':
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-
-            conn = sqlite3.connect(os.path.join(base_path, 'data_copy.sqlite3'))
-            c = conn.cursor()
-            c.execute("SELECT DISTINCT LV1 FROM Student")
-            languages = c.fetchall()
-            conn.close()
-
-            self.wfile.write(json.dumps([row[0] for row in languages]).encode())
-
-        elif path.endswith('.js'):
-            self.send_response(200)
-            self.send_header('Content-type', 'application/javascript')
-            self.end_headers()
-
-            file_path = os.path.join(base_path, self.path.lstrip('/'))
-            with open(file_path, 'r', encoding='utf-8') as file:
-                self.wfile.write(file.read().encode())
-
-        elif path.endswith('.css'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/css')
-            self.end_headers()
-
-            file_path = os.path.join(base_path, self.path.lstrip('/'))
-            with open(file_path, 'r', encoding='utf-8') as file:
-                self.wfile.write(file.read().encode())
-
-        else:
-            self.send_response(404)
-            self.end_headers()
-
-Handler = MyHandler
-
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"Serving at port {PORT}")
-    httpd.serve_forever()
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             const professorSelect = document.getElementById('professeur');
+            professorSelect.innerHTML = '<option value="">Sélectionner Professeur</option>'; // Add default option
             data.forEach(prof => {
                 const option = document.createElement('option');
                 option.value = prof;
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             const languageSelect = document.getElementById('langue');
+            languageSelect.innerHTML = '<option value="">Sélectionner Langue</option>'; // Add default option
             data.forEach(lang => {
                 const option = document.createElement('option');
                 option.value = lang;
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Create table header
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        const headers = ['Prénom', 'Nom', 'Email', 'Classe', 'LV1', 'Groupe LV1'];
+        const headers = ['NOM', 'Prénom', 'Email', 'Classe', 'LV1', 'Groupe LV1', 'Professeur'];
 
         headers.forEach(headerText => {
             const header = document.createElement('th');
@@ -87,6 +89,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const groupLv1Cell = document.createElement('td');
             groupLv1Cell.textContent = student.GROUP_LV1; // Groupe LV1
             row.appendChild(groupLv1Cell);
+
+            const teacherCell = document.createElement('td');
+            teacherCell.textContent = student.TeacherName + ' ' + student.TeacherSurname; // Professeur
+            row.appendChild(teacherCell);
 
             tbody.appendChild(row);
         });

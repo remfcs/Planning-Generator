@@ -27,18 +27,20 @@
 
             <label for="professeur" class="sr-only">Professeur :</label>
             <select id="professeur" name="professeur" class="form-control mb-2 mr-sm-2">
-                <!-- Options seront ajoutées dynamiquement depuis la base de données -->
+                <option value="">Sélectionner Professeur</option>
+                <!-- Options will be added dynamically from the database -->
             </select>
 
             <label for="langue" class="sr-only">Langue :</label>
             <select id="langue" name="langue" class="form-control mb-2 mr-sm-2">
-                <!-- Options seront ajoutées dynamiquement depuis la base de données -->
+                <option value="">Sélectionner Langue</option>
+                <!-- Options will be added dynamically from the database -->
             </select>
 
             <button type="submit" class="btn btn-primary mb-2">Rechercher</button>
         </form>
         <div id="studentDetails">
-            <!-- Les détails des élèves seront affichés ici -->
+            <!-- Student details will be displayed here -->
         </div>
         <div id="studentList" class="table-responsive"></div>
     </div>
