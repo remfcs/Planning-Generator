@@ -1,0 +1,23 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Script</title>
+</head>
+<body>
+    <h1>Cliquer pour exécuter le script</h1>
+    <button onclick="runScript()">Lancer le script</button>
+    <div id="output"></div>
+    <script>
+        function runScript() {
+            fetch('/run-script')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('output').innerHTML = data;
+                });
+        }
+    </script>
+</body>
+</html>

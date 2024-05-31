@@ -1,6 +1,5 @@
 import function_database
 import sqlite3
-import numpy as np
 
 def get_students_per_SCHOOL_YEAR(number_student, slot_nbr_for_lv):
     base_students_per_promo = number_student // slot_nbr_for_lv
