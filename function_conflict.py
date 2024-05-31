@@ -102,9 +102,9 @@ def get_list_stutents_from_group(Data, id_group):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
     query = """
-        SELECT ID_STUDENT FROM List_Groups_Students WHERE ID_COURSE LIKE ?;
+        SELECT ID_STUDENT FROM List_Groups_Students WHERE ID_COURSE LIKE ? ORDER BY RANDOM();
     """
-    cursor.execute(query, (id_group,)) # Added comma to create a tuple with a single element
+    cursor.execute(query, (id_group,)) 
     result = cursor.fetchall()
     conn.close()    
     return result
@@ -134,7 +134,7 @@ def balance_groups(Data, max_by_class):
         if group[1] > max_by_class :
             n = group[1]  - max_by_class
             list_students = get_list_stutents_from_group(Data, group[0])
-            students = list_students[:n//2]
+            students = list_students[:n//2]                                    ## Play with this
             new_group = get_new_group(Data, group[0])
             conn = sqlite3.connect(Data)
             for student in students:
