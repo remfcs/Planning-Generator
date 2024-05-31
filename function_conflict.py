@@ -7,27 +7,23 @@ def get_students_with_schedule_conflicts(data_path):
 
     # Get students and their courses along with the course availability
     query = """
-    SELECT s.EMAIL, c1.ID_AVAILIBITY AS AVAILABILITY_ENGLISH, c2.ID_AVAILIBITY AS AVAILABILITY_LV2
-    FROM Student s
-    JOIN List_Groups_Students lgs1 ON s.EMAIL = lgs1.ID_STUDENT
-    JOIN Courses c1 ON lgs1.ID_COURSE = c1.ID_COURSE
-    JOIN List_Groups_Students lgs2 ON s.EMAIL = lgs2.ID_STUDENT
-    JOIN Courses c2 ON lgs2.ID_COURSE = c2.ID_COURSE
-    WHERE c1.ID_AVAILIBITY = c2.ID_AVAILIBITY
-    AND c1.ID_GROUP = 'ANGLAIS'
-    AND c2.ID_GROUP != 'ANGLAIS';
+    SELECT ID_STUDENT, c1.ID_GROUP, c2.ID_GROUP, c1.ID_AVAILABILITY, c2.ID_AVAILABILITY
+    FROM List_Groups_Students as l
+    JOIN Courses as c1 ON c1.ID_GROUP = l.ID_COURSE
+    JOIN Courses as c2 ON c2.ID_GROUP = l.ID_COURSE
+    WHERE c1.ID_AVAILABILITY = c2.ID_AVAILABILITY AND c1.ID_GROUP != c2.ID_GROUP;
     """
-
     cursor.execute(query)
     conflicts = cursor.fetchall()
     conn.close()
 
     return conflicts
+
 data_path = 'data/test.sqlite3'
-# conflicts = get_students_with_schedule_conflicts(data_path)
-# print("Étudiants avec des conflits d'horaires :")
-# for conflict in conflicts:
-#     print(conflict)
+conflicts = get_students_with_schedule_conflicts(data_path)
+print("Étudiants avec des conflits d'horaires :")
+for conflict in conflicts:
+    print(conflict)
     
     
 
@@ -50,16 +46,16 @@ def get_course_details_with_conflicts(data_path):
              FROM List_Groups_Students lgs3
              WHERE lgs3.ID_COURSE = c.ID_COURSE
          )
-         AND c2.ID_AVAILIBITY = c.ID_AVAILIBITY
+         AND c2.ID_AVAILABILITY = c.ID_AVAILABILITY
          AND c2.ID_COURSE != c.ID_COURSE
         ) AS CONFLICT_COUNT,
         c.ID_TEACHER,
-        c.ID_AVAILIBITY AS TIME_SLOT
+        c.ID_AVAILABILITY AS TIME_SLOT
     FROM
         Courses c
     JOIN List_Groups_Students lgs ON c.ID_COURSE = lgs.ID_COURSE
     GROUP BY
-        c.ID_TEACHER, c.ID_GROUP, c.ID_COURSE, c.ID_AVAILIBITY
+        c.ID_TEACHER, c.ID_GROUP, c.ID_COURSE, c.ID_AVAILABILITY
     """
 
     # Execute the query and fetch results
@@ -74,5 +70,9 @@ def get_course_details_with_conflicts(data_path):
 
     return course_details_df
 
-course_details_df = get_course_details_with_conflicts(data_path)
-print(course_details_df)
+#course_details_df = get_course_details_with_conflicts(data_path)
+#print(course_details_df)
+
+
+
+
