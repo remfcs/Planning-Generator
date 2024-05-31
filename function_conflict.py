@@ -6,12 +6,26 @@ def get_students_with_schedule_conflicts(data_path):
     cursor = conn.cursor()
     # Get students and their courses along with the course availability
     query = """
-    SELECT ID_STUDENT, c1.ID_GROUP, c2.ID_GROUP, c1.ID_AVAILABILITY, c2.ID_AVAILABILITY
-    FROM List_Groups_Students as l
-    JOIN Courses as c1 ON c1.ID_GROUP = l.ID_COURSE
-    JOIN Courses as c2 ON c2.ID_GROUP = l.ID_COURSE
-    WHERE c1.ID_AVAILABILITY = c2.ID_AVAILABILITY AND c1.ID_GROUP != c2.ID_GROUP;
-    """
+        SELECT 
+            lgs1.ID_STUDENT,
+            c1.ID_AVAILABILITY,
+            c1.ID_GROUP AS COURSE_1,
+            c2.ID_GROUP AS COURSE_2
+        FROM 
+            List_Groups_Students lgs1
+        JOIN 
+            Courses c1 ON lgs1.ID_COURSE = c1.ID_GROUP
+        JOIN 
+            List_Groups_Students lgs2 ON lgs1.ID_STUDENT = lgs2.ID_STUDENT
+        JOIN 
+            Courses c2 ON lgs2.ID_COURSE = c2.ID_GROUP
+        WHERE 
+            c1.ID_AVAILABILITY = c2.ID_AVAILABILITY
+            AND c1.ID_GROUP != c2.ID_GROUP
+            AND c1.ID_GROUP < c2.ID_GROUP
+        ORDER BY 
+            lgs1.ID_STUDENT, c1.ID_AVAILABILITY;
+            """
     cursor.execute(query)
     conflicts = cursor.fetchall()
     conn.close()
@@ -70,7 +84,7 @@ def get_course_details_with_conflicts(data_path):
     return course_details_df
 
 course_details_df = get_course_details_with_conflicts(data_path)
-print(course_details_df)
+#print(course_details_df)
 
 
 
