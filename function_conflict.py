@@ -134,7 +134,7 @@ def balance_groups(Data, max_by_class):
         if group[1] > max_by_class :
             n = group[1]  - max_by_class
             list_students = get_list_stutents_from_group(Data, group[0])
-            students = list_students[:n]
+            students = list_students[:n//2]
             new_group = get_new_group(Data, group[0])
             conn = sqlite3.connect(Data)
             for student in students:

@@ -87,19 +87,19 @@ function_create_groups.make_groups2(Data, promo_pair, max_by_class)
 function_create_groups.make_association(Data, promo_pair)
 
 n=0
-while n !=5:
-    for i in range (0,3):
+while n !=2:
+    for i in range (0,15):
         function_conflict.resolution_conflict(Data)
-        print(function_conflict.get_nb_student_by_group(Data))
+        #print(function_conflict.get_nb_student_by_group(Data))
         function_conflict.balance_groups(Data, max_by_class)
-        print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
-        print(function_conflict.get_students_with_schedule_conflicts(Data))
+        #print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
+        #print(function_conflict.get_students_with_schedule_conflicts(Data))
 
     function_conflict.resolution_conflict_inverse(Data)
-    print(function_conflict.get_nb_student_by_group(Data))
+    #print(function_conflict.get_nb_student_by_group(Data))
     function_conflict.balance_groups(Data, max_by_class)
-    print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
-    print(function_conflict.get_students_with_schedule_conflicts(Data))
+    #print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
+    #print(function_conflict.get_students_with_schedule_conflicts(Data))
 
     n +=1
 
