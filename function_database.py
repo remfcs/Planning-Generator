@@ -44,12 +44,16 @@ def find_list_LV2(Data, promo_pair):
     conn.close()
     return list_lv2
 
-def find_list_LV1(Data):
+def find_list_LV1(Data, promo_pair):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT(LV1) FROM Student;")
-    list_lv1 = cursor.fetchall()
-    list_lv1 = [row[0] for row in list_lv1]
+    list_lv1 = []
+    for promo in promo_pair:
+        cursor.execute("SELECT DISTINCT(LV1) FROM Student WHERE SCHOOL_YEAR = '" + promo + "';")
+        lv1_results = cursor.fetchall()
+        for lv1_row in lv1_results:
+            if lv1_row[0] is not None:  # Vérifier si l'élément est non nul
+                list_lv1.append(lv1_row[0])
     conn.close()
     return list_lv1
 
@@ -122,7 +126,10 @@ def get_lv_slot_count(Data, promo_pair):
     slot_list = []
     for promo in promo_pair:
         cursor.execute("SELECT ID_Availability FROM Availability_Class WHERE ID_CLASS='" + promo + "';")
-        slot_list.extend(cursor.fetchall())
+        slots = cursor.fetchall()
+        for slot in slots:
+            if slot not in slot_list:
+                slot_list.append(slot)
         #print(slot_list)
     return list(set(slot_list))
 

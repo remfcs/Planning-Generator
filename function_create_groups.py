@@ -28,7 +28,8 @@ def make_groups_lv(Data, promo_pair):
         # slot_count correspond a tous les slots de cours disponible pour les langues (condition: meme slot dispo pour les 2 promos)
         list_lv = function_database.find_list_LV2(Data, promo_list)
         # list_lv2: liste de toutes les lv2 de la promo_list 
-        list_lv.append("ANGLAIS")
+        list_lv1 = function_database.find_list_LV1(Data, promo_list)
+        list_lv.append(list_lv1)
         for lv in list_lv:
             teacher_availabilities = function_database.get_available_teacher(Data, slot_count, lv)    
             #slot_nbr_for_lv: nbr de slot dispo pour une langue vivante
@@ -52,3 +53,88 @@ def make_groups_lv(Data, promo_pair):
                 i+=1
         conn.close()
     return 
+
+
+
+def nomber_class(nomber_student, nomber_by_class):
+    nomber_class = 0
+    # à expliquer 
+    if (nomber_student % nomber_by_class) > ((nomber_student //nomber_by_class)*(2/3)) :
+        nomber_class = nomber_student//nomber_by_class + 1
+    else :
+        nomber_class = nomber_student//nomber_by_class
+    
+    if  nomber_class == 0:
+        nomber_class = 1
+    return nomber_class
+
+
+def make_group(list_student, number_class):
+    total_students = len(list_student)
+    if total_students !=0:
+        students_per_group = total_students // number_class
+        extra_students = total_students % number_class
+        # Nombre d'étudiants supplémentaires par groupe
+        extra_per_group = [1 if i < extra_students else 0 for i in range(number_class)]
+        groups = []
+        start_idx = 0
+        for i in range(number_class):
+            # Nombre d'étudiants dans ce groupe
+            group_size = students_per_group + extra_per_group[i]
+            end_idx = start_idx + group_size
+            groups.append(list_student[start_idx:end_idx])
+            start_idx = end_idx
+        return groups
+
+
+def make_groups2(Data,promo_pair, nb_by_class):
+    conn = sqlite3.connect(Data)
+    for promo_list in promo_pair:
+        list_lv2 = function_database.find_list_LV2(Data, promo_list)
+        list_lv1 = function_database.find_list_LV1(Data, promo_list)
+        list_lv = list_lv1 + list_lv2
+        for lv in list_lv:
+            #print(lv)
+            students = []
+            for promo in promo_list:
+                if "-débutant (jamais étudié)" in lv :
+                    cursor = conn.cursor()
+                    cursor.execute("SELECT EMAIL FROM Student WHERE  (LV1 = '" + lv + "' OR LV2 = '" + lv + "') AND  SCHOOL_YEAR='" + promo + "';")
+                    student = cursor.fetchall()
+                    student = [pos[0] for pos in student]
+                    #print(lv, promo, "deb", len(student))
+                else :
+                    cursor = conn.cursor()
+                    query = """
+                    SELECT EMAIL, 
+                        CASE 
+                            WHEN LV1 = ? THEN GRADE_LV1 
+                            WHEN LV2 = ? THEN GRADE_LV2 
+                        END AS GRADE 
+                    FROM Student 
+                    WHERE (LV1 = ? OR LV2 = ?) AND SCHOOL_YEAR = ?
+                    ORDER BY GRADE DESC;
+                    """
+                    cursor.execute(query, (lv, lv, lv, lv, promo))
+                    student = cursor.fetchall()
+                    student = [pos[0] for pos in student]
+                    #print(lv, promo, "non deb", len(student))
+                students = students + student
+            #print(len(students))
+            nb_class = nomber_class(len(students),nb_by_class)
+            groups = make_group(students, nb_class)
+            language = "_"+lv[:3]
+            name = ""
+            if "-débutant (jamais étudié)" in lv :
+                name = "_D" 
+            i = 1
+            for group in groups:
+                group_name = 'G' + str(i) + language + name       #ESP D si débutant et promo
+                for student in group:
+                    cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?,?);", (group_name, student))
+                    conn.commit()
+                i+=1
+    conn.close()
+    return
+
+
