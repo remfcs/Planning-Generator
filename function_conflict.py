@@ -71,22 +71,7 @@ def get_promo_list(Data, id_availability, id_group):
 def resolution_conflict(Data):
     conflicts = get_students_with_schedule_conflicts(Data)
     for conflict in conflicts:
-        match = re.search(r'G(\d+)_', conflict[2])
-        after_underscore = conflict[2][conflict[2].index('_'):]
-        promo_list = conflict[2].split('_')[1]
-        language =  conflict[2].split('_')[2]
-        if match:
-            value_between_G_and_underscore = match.group(1)
-        if int(value_between_G_and_underscore) % 2 == 0:
-            if int(value_between_G_and_underscore)==get_list_group(Data, language, promo_list):
-                new_group = "G" + str(int(value_between_G_and_underscore) + 1) + after_underscore
-            else :
-                new_group = "G" + str(int(value_between_G_and_underscore) - 1) + after_underscore
-        elif int(value_between_G_and_underscore) % 2 == 1:
-            if int(value_between_G_and_underscore)==get_list_group(Data, language, promo_list):
-                new_group = "G" + str(int(value_between_G_and_underscore) - 1) + after_underscore
-            else:
-                new_group = "G" + str(int(value_between_G_and_underscore) + 1) + after_underscore
+        new_group = get_new_group(Data, conflict[2])
         conn = sqlite3.connect(Data)
         cursor = conn.cursor()
         #print(new_group, conflict[0], conflict[2])
@@ -146,8 +131,8 @@ def get_new_group(Data, id_group):
 def balance_groups(Data, max_by_class):
     list_groups = get_nb_student_by_group(Data)
     for group in list_groups:
-        if group[1] > max_by_class + 1:
-            n = group[1]  - max_by_class - 1
+        if group[1] > max_by_class :
+            n = group[1]  - max_by_class
             list_students = get_list_stutents_from_group(Data, group[0])
             students = list_students[:n]
             new_group = get_new_group(Data, group[0])
@@ -159,3 +144,35 @@ def balance_groups(Data, max_by_class):
                 conn.commit()
             conn.close()
     return
+
+
+def resolution_conflict_inverse(Data):
+    conflicts = get_students_with_schedule_conflicts(Data)
+    for conflict in conflicts:
+        new_group = get_new_group_inverse(Data, conflict[2])
+        conn = sqlite3.connect(Data)
+        cursor = conn.cursor()
+        #print(new_group, conflict[0], conflict[2])
+        cursor.execute("UPDATE List_Groups_Students SET ID_COURSE = ? WHERE ID_STUDENT LIKE ? AND ID_COURSE LIKE ?;", ( new_group, conflict[0], conflict[2]))
+        conn.commit()
+        conn.close()
+    return
+
+def get_new_group_inverse(Data, id_group):
+    match = re.search(r'G(\d+)_', id_group)
+    after_underscore = id_group[id_group.index('_'):]
+    promo_list = id_group.split('_')[1]
+    language =  id_group.split('_')[2]
+    if match:
+        value_between_G_and_underscore = match.group(1)
+    if int(value_between_G_and_underscore) % 2 == 0:
+        if int(value_between_G_and_underscore)==get_list_group(Data, language, promo_list):
+            new_group = "G" + str(int(value_between_G_and_underscore) + 1) + after_underscore
+        else :
+            new_group = "G" + str(int(value_between_G_and_underscore) + 1) + after_underscore
+    elif int(value_between_G_and_underscore) % 2 == 1:
+        if int(value_between_G_and_underscore)==get_list_group(Data, language, promo_list):
+            new_group = "G" + str(int(value_between_G_and_underscore) - 1) + after_underscore
+        else:
+            new_group = "G" + str(int(value_between_G_and_underscore) - 1) + after_underscore
+    return new_group

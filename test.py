@@ -7,8 +7,6 @@ import function_conflict
 
 
 Data = 'data/test.sqlite3'
-max_by_class = 16
-
 
 
 

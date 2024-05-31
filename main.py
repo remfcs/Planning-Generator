@@ -86,15 +86,23 @@ function_database.delete_table_data(Data, "List_Groups_Students")
 function_create_groups.make_groups2(Data, promo_pair, max_by_class)
 function_create_groups.make_association(Data, promo_pair)
 
-#print("avant :\n",function_conflict.get_students_with_schedule_conflicts(Data))
-function_conflict.resolution_conflict(Data)
-#print("après :\n",function_conflict.get_students_with_schedule_conflicts(Data))
+n=0
+while n !=5:
+    for i in range (0,3):
+        function_conflict.resolution_conflict(Data)
+        print(function_conflict.get_nb_student_by_group(Data))
+        function_conflict.balance_groups(Data, max_by_class)
+        print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
+        print(function_conflict.get_students_with_schedule_conflicts(Data))
 
+    function_conflict.resolution_conflict_inverse(Data)
+    print(function_conflict.get_nb_student_by_group(Data))
+    function_conflict.balance_groups(Data, max_by_class)
+    print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
+    print(function_conflict.get_students_with_schedule_conflicts(Data))
+
+    n +=1
 
 print(function_conflict.get_nb_student_by_group(Data))
-
-for i in range(0,20):
-    print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
-    print(function_conflict.get_nb_student_by_group(Data))
-    function_conflict.resolution_conflict(Data)
-    #function_conflict.balance_groups(Data, max_by_class)
+print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
+print(function_conflict.get_students_with_schedule_conflicts(Data))
