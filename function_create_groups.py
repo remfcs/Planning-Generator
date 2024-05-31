@@ -128,8 +128,9 @@ def make_groups2(Data,promo_pair, nb_by_class):
             if "-débutant (jamais étudié)" in lv :
                 name = "_D" 
             i = 1
+            result_str = ', '.join(promo_list)
             for group in groups:
-                group_name = 'G' + str(i) + language + name       #ESP D si débutant et promo
+                group_name = 'G' + str(i) +"_{"+ result_str +"}"+ language + name       #ESP D si débutant et promo
                 for student in group:
                     cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?,?);", (group_name, student))
                     conn.commit()
@@ -183,6 +184,7 @@ def make_association(Data, promo_pair):
         #print(len(final_insertions))
         for value in final_insertions:
             result_str = ', '.join(promo_list)
-            cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY, ID_ROOM, PROMO) VALUES(?,?,?,?,?,?);", (value[3], value[1], value[0], value[2], value[4], result_str))
+            #cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY, ID_ROOM, PROMO) VALUES(?,?,?,?,?,?);", (value[3], value[1], value[0], value[2], value[4], result_str))
+            cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY, ID_ROOM) VALUES(?,?,?,?,?);", (value[3], value[1], value[0], value[2], value[4]))
             conn.commit()
     conn.close()

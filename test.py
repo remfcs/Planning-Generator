@@ -7,21 +7,9 @@ import function_conflict
 
 
 Data = 'data/test.sqlite3'
-
-def get_nb_student_by_group(Data):
-    conn = sqlite3.connect(Data)
-    cursor = conn.cursor()
-    query = """
-        SELECT lst.ID_COURSE, COUNT(lst.ID_STUDENT)
-        FROM List_Groups_Students AS lst
-        WHERE lst.ID_COURSE LIKE '%ANG'
-        GROUP BY lst.ID_COURSE
-        ORDER BY LENGTH(lst.ID_COURSE), lst.ID_COURSE;
-    """
-    cursor.execute(query) # Added comma to create a tuple with a single element
-    result = cursor.fetchall()
-    conn.close()
-    return result
+max_by_class = 16
 
 
-print(get_nb_student_by_group(Data))
+
+
+

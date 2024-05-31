@@ -92,3 +92,9 @@ function_conflict.resolution_conflict(Data)
 
 
 print(function_conflict.get_nb_student_by_group(Data))
+
+for i in range(0,20):
+    print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
+    print(function_conflict.get_nb_student_by_group(Data))
+    function_conflict.resolution_conflict(Data)
+    #function_conflict.balance_groups(Data, max_by_class)
