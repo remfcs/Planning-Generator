@@ -165,12 +165,14 @@ def get_available_teacher2(Data, slots, lv):
             SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
             FROM Availability_Teachers
             JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
-            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?;
+            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?
+            ORDER BY Availability_Teachers.ID_Teacher AND Availability_Teachers.ID_Availability DESC;
             """,
             (slot[0], lv)
         )
         teacher_availabilities.extend(cursor.fetchall())
-        #print(teacher_availabilities)
+    teacher_availabilities.sort(key=lambda x: (x[0], x[1]))
+    print(teacher_availabilities)
     return teacher_availabilities
 
 def get_available_room(Data, slots):

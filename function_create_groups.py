@@ -157,9 +157,10 @@ def make_association(Data, promo_pair):
                 list_lv_check.append(lv_bis)
                 cursor = conn.cursor()
                 pattern = '%' + lv_bis[:3] + '%'
-                cursor.execute( "SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students WHERE ID_COURSE LIKE ? ;", (pattern,))
+                cursor.execute( "SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students WHERE ID_COURSE LIKE ? ORDER BY LENGTH(ID_COURSE), ID_COURSE;", (pattern,))
                 list_groups = cursor.fetchall()
                 list_groups = [pos[0] for pos in list_groups]
+                #print(list_groups)
                 if len(teacher_availabilities) > len(list_groups):
                     print("teacher_availabilities > list_groups")
                 elif len(teacher_availabilities) < len(list_groups):
