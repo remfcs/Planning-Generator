@@ -16,7 +16,7 @@ max_by_class = 16
 DAYS = ('Thursday',) 
 nb_slot = 6
 promo_pair = [['1A','2A']]
-Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104') 
+Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104', 'M01', 'M02') 
 list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
 
 #charge une df avec les infos des étudiants depuis le fichier info_student
@@ -60,9 +60,9 @@ list_ID_Teacher, list_ID_room, list_ID_Availability, list_ID_Class = function_fi
 
 #list_availibity_teachers = function_file_db.create_random_pairs(list_ID_Teacher, list_ID_Availability,3)
 #list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'), ('DUR_ESP', 'Thu_slot3'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'),  ('LER_ESP', 'Thu_slot1'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'),  ('PET_ESP', 'Thu_slot2'), ('PET_ESP', 'Thu_slot1'), ('PET_ESP', 'Thu_slot3'),  ('RIC_ESP', 'Thu_slot1'), ('RIC_ESP', 'Thu_slot2'), ('RIC_ESP', 'Thu_slot3'),  ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'),  ('SIM_ALL', 'Thu_slot3'), ('SIM_ALL', 'Thu_slot2'), ('SIM_ALL', 'Thu_slot1'),  ('THO_ANG', 'Thu_slot3'), ('THO_ANG', 'Thu_slot1'), ('THO_ANG', 'Thu_slot2')]
-list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'), ('DUR_ESP', 'Thu_slot3'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'),  ('LER_ESP', 'Thu_slot1'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'), ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'), ('PET_ESP','Thu_slot1'), ('PET_ESP','Thu_slot2'),('RIC_ESP','Thu_slot3'), ('RIC_ESP','Thu_slot2')]
+list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'), ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'), ('PET_ESP','Thu_slot1'), ('PET_ESP','Thu_slot2'),('RIC_ESP','Thu_slot3'), ('RIC_ESP','Thu_slot2')]
 #list_availibity_rooms = function_file_db.create_random_pairs(list_ID_room, list_ID_Availability,6)
-list_availibity_rooms = [('K03', 'Thu_slot1'), ('K03', 'Thu_slot2'), ('K03', 'Thu_slot3'), ('K04', 'Thu_slot1'), ('K04', 'Thu_slot3'), ('K04', 'Thu_slot2'), ('K05', 'Thu_slot3'), ('K05', 'Thu_slot2'), ('K05', 'Thu_slot1'), ('M101', 'Thu_slot1'), ('M101', 'Thu_slot2'), ('M101', 'Thu_slot3'), ('M102', 'Thu_slot3'), ('M102', 'Thu_slot2'), ('M102', 'Thu_slot1'), ('M103', 'Thu_slot1'), ('M103', 'Thu_slot2'), ('M103', 'Thu_slot3'), ('M104', 'Thu_slot1'), ('M104', 'Thu_slot2'), ('M104', 'Thu_slot3')]
+list_availibity_rooms = [('K03', 'Thu_slot1'), ('K03', 'Thu_slot2'), ('K03', 'Thu_slot3'), ('K04', 'Thu_slot1'), ('K04', 'Thu_slot3'), ('K04', 'Thu_slot2'), ('K05', 'Thu_slot3'), ('K05', 'Thu_slot2'), ('K05', 'Thu_slot1'), ('M101', 'Thu_slot1'), ('M101', 'Thu_slot2'), ('M101', 'Thu_slot3'), ('M102', 'Thu_slot3'), ('M102', 'Thu_slot2'), ('M102', 'Thu_slot1'), ('M103', 'Thu_slot1'), ('M103', 'Thu_slot2'), ('M103', 'Thu_slot3'), ('M104', 'Thu_slot1'), ('M104', 'Thu_slot2'), ('M104', 'Thu_slot3'), ('M01', 'Thu_slot1'), ('M01', 'Thu_slot2'), ('M01', 'Thu_slot3'), ('M02', 'Thu_slot3'), ('M02', 'Thu_slot2'), ('M02', 'Thu_slot1')]
 #list_availibity_class = function_file_db.create_random_pairs(list_ID_Class,list_ID_Availability, 3)
 list_availibity_class = [('1A', 'Thu_slot1'), ('1A', 'Thu_slot2'), ('1A', 'Thu_slot3')]
 
@@ -78,5 +78,5 @@ function_database.delete_table_data(Data, "List_Groups_Students")
 #AAAA FINIRRRR
 #function_create_groups.make_groups_lv(Data, promo_pair)
 function_create_groups.make_groups2(Data, promo_pair, max_by_class)
-
+function_create_groups.make_association(Data, promo_pair)
 

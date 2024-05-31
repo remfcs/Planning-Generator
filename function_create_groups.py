@@ -138,3 +138,49 @@ def make_groups2(Data,promo_pair, nb_by_class):
     return
 
 
+def make_association(Data, promo_pair):
+    conn = sqlite3.connect(Data)
+    for promo_list in promo_pair:
+        list_slots= function_database.get_lv_slot_count(Data, promo_list)
+        list_lv2 = function_database.find_list_LV2(Data, promo_list)
+        list_lv1 = function_database.find_list_LV1(Data, promo_list)
+        list_lv = list_lv1 + list_lv2
+        list_lv_check = []
+        insertions=[]
+        final_insertions=[]
+        for lv in list_lv:
+            lv_bis = lv
+            if '-débutant' in lv_bis:
+                lv_bis = lv_bis.split(' -débutant')[0]
+            if lv_bis not in list_lv_check:
+                teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv_bis)
+                list_lv_check.append(lv_bis)
+                cursor = conn.cursor()
+                pattern = '%' + lv_bis[:3] + '%'
+                cursor.execute( "SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students WHERE ID_COURSE LIKE ? ;", (pattern,))
+                list_groups = cursor.fetchall()
+                list_groups = [pos[0] for pos in list_groups]
+                if len(teacher_availabilities) > len(list_groups):
+                    print("teacher_availabilities > list_groups")
+                elif len(teacher_availabilities) < len(list_groups):
+                    print("teacher_availabilities < list_groups")
+                else:   
+                    for i in range(len(teacher_availabilities)):
+                        insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
+                        insertions.append(insertion)
+        print(len(insertions))
+        for slot in list_slots:
+            rooms_available = function_database.get_available_room(Data, slot)
+            for i in range(len(insertions)):
+                if insertions[i][2] == slot[0]:
+                    if rooms_available:
+                        room = rooms_available.pop(0)  # Get the first available room and remove it from the list
+                    else:
+                        room = ('No more available',)
+                    final_insertion = insertions[i] + room
+                    final_insertions.append(final_insertion) 
+        print(len(final_insertions))
+        for value in final_insertions:
+            cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY, ID_ROOM) VALUES(?,?,?,?,?);", (value[3], value[1], value[0], value[2], value[4]))
+            conn.commit()
+    conn.close()

@@ -135,22 +135,10 @@ def get_lv_slot_count(Data, promo_pair):
 
 
 def get_available_teacher(Data, slot, lv):
-    """
-    this function return all the teacher available for the slot in entry.
-
-    Args:
-        Data (_type_): _description_
-        slot (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """    
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
     teacher_availabilities = []
-    slot_nbr_for_lv = 0
-    #print(lv)
-    if ' -débutant' in lv:
+    if '-débutant' in lv:
         lv = lv.split(' -débutant')[0]
     for slo in slot:
         cursor.execute(
@@ -165,3 +153,31 @@ def get_available_teacher(Data, slot, lv):
         teacher_availabilities.extend(cursor.fetchall())
         #print(teacher_availabilities)
     return teacher_availabilities
+
+
+def get_available_teacher2(Data, slots, lv):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    teacher_availabilities = []
+    for slot in slots:
+        cursor.execute(
+            """
+            SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
+            FROM Availability_Teachers
+            JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
+            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?;
+            """,
+            (slot[0], lv)
+        )
+        teacher_availabilities.extend(cursor.fetchall())
+        #print(teacher_availabilities)
+    return teacher_availabilities
+
+def get_available_room(Data, slots):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    rooms_available =[]
+    cursor.execute("SELECT ID_room FROM Availability_Rooms WHERE ID_Availability like ?;", (slots))
+    rooms_available.extend(cursor.fetchall())
+    return rooms_available
+
