@@ -89,3 +89,6 @@ function_create_groups.make_association(Data, promo_pair)
 #print("avant :\n",function_conflict.get_students_with_schedule_conflicts(Data))
 function_conflict.resolution_conflict(Data)
 #print("après :\n",function_conflict.get_students_with_schedule_conflicts(Data))
+
+
+print(function_conflict.get_nb_student_by_group(Data))
