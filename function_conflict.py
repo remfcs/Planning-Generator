@@ -70,8 +70,8 @@ def get_course_details_with_conflicts(data_path):
 
     return course_details_df
 
-#course_details_df = get_course_details_with_conflicts(data_path)
-#print(course_details_df)
+course_details_df = get_course_details_with_conflicts(data_path)
+print(course_details_df)
 
 
 
