@@ -182,6 +182,7 @@ def make_association(Data, promo_pair):
                     final_insertions.append(final_insertion) 
         #print(len(final_insertions))
         for value in final_insertions:
-            cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY, ID_ROOM) VALUES(?,?,?,?,?);", (value[3], value[1], value[0], value[2], value[4]))
+            result_str = ', '.join(promo_list)
+            cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY, ID_ROOM, PROMO) VALUES(?,?,?,?,?,?);", (value[3], value[1], value[0], value[2], value[4], result_str))
             conn.commit()
     conn.close()

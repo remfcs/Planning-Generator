@@ -49,7 +49,7 @@ def Create_tables(filename):
 # create table 'Rooms'
     cursor.execute("CREATE TABLE IF NOT EXISTS Rooms(ID_ROOM Varchar (50),NAME Varchar (50),CONSTRAINT Rooms_PK PRIMARY KEY (ID_ROOM));")
 # create table 'Courses'
-    cursor.execute("CREATE TABLE IF NOT EXISTS Courses(ID_COURSE Varchar (50),ID_GROUP Varchar (50) ,ID_TEACHER Varchar (50) ,LANGUAGE VARCHAR (50) ,ID_ROOM Varchar (50) ,ID_AVAILABILITY Varchar (50) ,CONSTRAINT Courses_PK PRIMARY KEY (ID_COURSE));")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Courses(ID_COURSE Varchar (50),ID_GROUP Varchar (50) ,ID_TEACHER Varchar (50) ,LANGUAGE VARCHAR (50) ,ID_ROOM Varchar (50) ,ID_AVAILABILITY Varchar (50), PROMO VARCHAR(50) ,CONSTRAINT Courses_PK PRIMARY KEY (ID_COURSE));")
 
 ## table de jointures
 

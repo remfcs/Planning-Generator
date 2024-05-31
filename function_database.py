@@ -172,7 +172,7 @@ def get_available_teacher2(Data, slots, lv):
         )
         teacher_availabilities.extend(cursor.fetchall())
     teacher_availabilities.sort(key=lambda x: (x[0], x[1]))
-    print(teacher_availabilities)
+    #print(teacher_availabilities)
     return teacher_availabilities
 
 def get_available_room(Data, slots):

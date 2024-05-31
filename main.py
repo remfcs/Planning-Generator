@@ -5,6 +5,7 @@ import function_create_groups
 import function_read_folder 
 import function_database
 import function_file_db
+import function_conflict
 import back_up
 
 Data = 'data/test.sqlite3'
@@ -85,3 +86,6 @@ function_database.delete_table_data(Data, "List_Groups_Students")
 function_create_groups.make_groups2(Data, promo_pair, max_by_class)
 function_create_groups.make_association(Data, promo_pair)
 
+#print("avant :\n",function_conflict.get_students_with_schedule_conflicts(Data))
+function_conflict.resolution_conflict(Data)
+#print("après :\n",function_conflict.get_students_with_schedule_conflicts(Data))
