@@ -4,7 +4,6 @@ import pandas as pd
 def get_students_with_schedule_conflicts(data_path):
     conn = sqlite3.connect(data_path)
     cursor = conn.cursor()
-
     # Get students and their courses along with the course availability
     query = """
     SELECT ID_STUDENT, c1.ID_GROUP, c2.ID_GROUP, c1.ID_AVAILABILITY, c2.ID_AVAILABILITY

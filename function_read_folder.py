@@ -12,7 +12,6 @@ def file_data_Student(depot_info_folder):
                 'Prénom': 'SURNAME',
                 'mail': 'EMAIL',
                 'Class': 'SCHOOL_YEAR'}
-                #'Class': 'CLASS'}
         elif os.path.splitext(os.path.basename(file))[0] == 'Sondage_LV2' :
             file_path = os.path.join(depot_info_folder, file)
             db_column_mapping = {
