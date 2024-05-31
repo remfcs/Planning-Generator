@@ -168,7 +168,7 @@ def make_association(Data, promo_pair):
                     for i in range(len(teacher_availabilities)):
                         insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
                         insertions.append(insertion)
-        print(len(insertions))
+        #print(len(insertions))
         for slot in list_slots:
             rooms_available = function_database.get_available_room(Data, slot)
             for i in range(len(insertions)):
@@ -179,7 +179,7 @@ def make_association(Data, promo_pair):
                         room = ('No more available',)
                     final_insertion = insertions[i] + room
                     final_insertions.append(final_insertion) 
-        print(len(final_insertions))
+        #print(len(final_insertions))
         for value in final_insertions:
             cursor.execute("INSERT INTO Courses(LANGUAGE, ID_GROUP, ID_TEACHER, ID_AVAILABILITY, ID_ROOM) VALUES(?,?,?,?,?);", (value[3], value[1], value[0], value[2], value[4]))
             conn.commit()

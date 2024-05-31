@@ -1,0 +1,26 @@
+ENTRÉE POUR MARY
+
+- Fichiers avec les infos
+
+- Fichiers avec les notes
+
+- Nombre d’élève par classe (de base 16)
+
+- Nombre de créneau par jours 
+
+- Salles disponible
+
+- Liste enseignant avec nom, prénom, email, langue
+
+
+
+Peut-être amménager les étapes en dessous avec les données remplie au dessus
+
+
+- Répartition des promo sur les cours de langues (1A et 2A ensembles, 3A tous seul ….)
+
+- Liaison enseignants/disponibilités
+
+- Liaison salles/disponibilités
+
+- Liaison Promos/disponibilités
