@@ -3,20 +3,22 @@ Windows
 Créer le script:
 Assurez-vous que vous avez le script start_app.py et que votre fichier batch start_app.bat est créé comme mentionné précédemment :
 
+````
 @echo off
 python start_app.py
 pause
-
+```
 
 Créer un raccourci avec un logo:
+- Cliquez avec le bouton droit sur le bureau, allez sur Nouveau > Raccourci.
+- Dans l'emplacement de l'élément, entrez le chemin complet du fichier batch, par exemple : C:\chemin\vers\start_app.bat.
+- Cliquez sur Suivant, puis donnez un nom à votre raccourci, par exemple "Lancer l'application".
+- Cliquez sur Terminer.
 
-Cliquez avec le bouton droit sur le bureau, allez sur Nouveau > Raccourci.
-Dans l'emplacement de l'élément, entrez le chemin complet du fichier batch, par exemple : C:\chemin\vers\start_app.bat.
-Cliquez sur Suivant, puis donnez un nom à votre raccourci, par exemple "Lancer l'application".
-Cliquez sur Terminer.
 Changer l'icône du raccourci:
+- Faites un clic droit sur le raccourci créé, puis allez sur Propriétés.
+- Cliquez sur le bouton Changer d'icône....
+- Parcourez et sélectionnez l'icône de votre choix (cela peut être un fichier .ico que vous avez sur votre ordinateur).
+- Cliquez sur OK et puis sur Appliquer.
 
-Faites un clic droit sur le raccourci créé, puis allez sur Propriétés.
-Cliquez sur le bouton Changer d'icône....
-Parcourez et sélectionnez l'icône de votre choix (cela peut être un fichier .ico que vous avez sur votre ordinateur).
-Cliquez sur OK et puis sur Appliquer.
+
