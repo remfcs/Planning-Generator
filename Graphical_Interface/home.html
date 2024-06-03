@@ -7,6 +7,8 @@
     <title>Planning Taylor</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include jQuery before Bootstrap's JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
@@ -28,19 +30,16 @@
             <label for="professeur" class="sr-only">Professeur :</label>
             <select id="professeur" name="professeur" class="form-control mb-2 mr-sm-2">
                 <option value="">Sélectionner Professeur</option>
-                <!-- Options will be added dynamically from the database -->
             </select>
 
             <label for="langue" class="sr-only">Langue :</label>
             <select id="langue" name="langue" class="form-control mb-2 mr-sm-2">
                 <option value="">Sélectionner Langue</option>
-                <!-- Options will be added dynamically from the database -->
             </select>
 
             <button type="submit" class="btn btn-primary mb-2">Rechercher</button>
         </form>
         <div id="studentDetails">
-            <!-- Student details will be displayed here -->
         </div>
         <div id="studentList" class="table-responsive"></div>
     </div>

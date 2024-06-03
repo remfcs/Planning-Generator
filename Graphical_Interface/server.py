@@ -1,95 +1,99 @@
-from flask import Flask, request, jsonify, send_from_directory
 import sqlite3
-import os
-import webbrowser
+from flask import Flask, jsonify, request, send_from_directory
 import threading
-import time
+import webbrowser
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='.')
 
-# Define the path to the SQLite database file
-DATABASE = os.path.join(os.path.dirname(__file__), 'test.sqlite3')
+DATABASE_PATH = os.path.join(os.path.dirname(__file__), 'test.sqlite3')
 
-def query_db(query, args=(), one=False):
-    conn = sqlite3.connect(DATABASE)
-    cur = conn.cursor()
-    cur.execute(query, args)
-    rv = cur.fetchall()
+def get_student_details(name=None, niveau=None, professeur=None, langue=None):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    query = """
+    SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, s.LV1, lg.ID_COURSE, t.NAME AS TeacherName, t.SURNAME AS TeacherSurname
+    FROM Student s
+    LEFT JOIN List_Groups_Students lg ON s.EMAIL = lg.ID_STUDENT
+    LEFT JOIN Teachers t ON lg.ID_COURSE = t.ID_TEACHER
+    WHERE 1=1
+    """
+    params = []
+
+    if name:
+        query += " AND LOWER(s.NAME) LIKE ?"
+        params.append(f"%{name}%")
+    if niveau:
+        query += " AND s.SCHOOL_YEAR = ?"
+        params.append(niveau)
+    if professeur:
+        query += " AND (t.NAME || ' ' || t.SURNAME) = ?"
+        params.append(professeur)
+    if langue:
+        query += " AND s.LV1 = ?"
+        params.append(langue)
+
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+
+    students = []
+    for row in rows:
+        student = {
+            "Name": row[0],
+            "Surname": row[1],
+            "Email": row[2],
+            "Class": row[3],
+            "LV1": row[4],
+            "GROUP_LV1": row[5],
+            "TeacherName": row[6],
+            "TeacherSurname": row[7]
+        }
+        students.append(student)
+
     conn.close()
-    return (rv[0] if rv else None) if one else rv
-
-def open_browser():
-    time.sleep(1)  
-    webbrowser.open('http://127.0.0.1:5000/')
-
+    return students
 
 @app.route('/')
 def index():
     return send_from_directory('.', 'home.html')
 
-@app.route('/style.css')
-def style():
-    return send_from_directory('.', 'style.css')
-
-@app.route('/script.js')
-def script():
-    return send_from_directory('.', 'script.js')
-
-@app.route('/students', methods=['GET'])
+@app.route('/students')
 def get_students():
-    name = request.args.get('name', '').lower()
-    niveau = request.args.get('niveau', '')
-    professeur = request.args.get('professeur', '')
-    langue = request.args.get('langue', '')
+    name = request.args.get('name')
+    niveau = request.args.get('niveau')
+    professeur = request.args.get('professeur')
+    langue = request.args.get('langue')
+    students = get_student_details(name, niveau, professeur, langue)
+    return jsonify(students)
 
-    query = """
-        SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, s.LV1, s.GROUP_LV1, t.NAME AS TEACHER_NAME, t.SURNAME AS TEACHER_SURNAME
-        FROM Student s
-        LEFT JOIN Teachers t ON s.EMAIL = t.MAIL
-        WHERE 1=1
-    """
-    filters = []
-    
-    if name:
-        query += " AND LOWER(s.NAME) LIKE ?"
-        filters.append(f"%{name}%")
-    if niveau:
-        query += " AND s.SCHOOL_YEAR = ?"
-        filters.append(niveau)
-    if professeur:
-        query += " AND (t.NAME || ' ' || t.SURNAME) = ?"
-        filters.append(professeur)
-    if langue:
-        query += " AND s.LV1 = ?"
-        filters.append(langue)
-    
-    students = query_db(query, filters)
-    
-    student_list = []
-    for student in students:
-        student_list.append({
-            "Name": student[0],
-            "Surname": student[1],
-            "Email": student[2],
-            "Class": student[3],
-            "LV1": student[4],
-            "GROUP_LV1": student[5],
-            "TeacherName": student[6],
-            "TeacherSurname": student[7]
-        })
-    
-    return jsonify(student_list)
-
-@app.route('/professors', methods=['GET'])
+@app.route('/professors')
 def get_professors():
-    professors = query_db("SELECT DISTINCT NAME || ' ' || SURNAME AS FULL_NAME FROM Teachers")
-    return jsonify([prof[0] for prof in professors])
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    
+    query = "SELECT NAME || ' ' || SURNAME AS Professor FROM Teachers"
+    cursor.execute(query)
+    professors = [row[0] for row in cursor.fetchall()]
+    
+    conn.close()
+    return jsonify(professors)
 
-@app.route('/languages', methods=['GET'])
+@app.route('/languages')
 def get_languages():
-    languages = query_db("SELECT DISTINCT LV1 FROM Student")
-    return jsonify([lang[0] for lang in languages])
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    
+    query = "SELECT DISTINCT LV1 FROM Student"
+    cursor.execute(query)
+    languages = [row[0] for row in cursor.fetchall()]
+    
+    conn.close()
+    return jsonify(languages)
 
 if __name__ == '__main__':
-    threading.Thread(target=open_browser).start()
+    def open_browser():
+        webbrowser.open_new('http://127.0.0.1:5000')
+
+    threading.Timer(1, open_browser).start()
     app.run(debug=True)
