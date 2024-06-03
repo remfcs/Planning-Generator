@@ -69,7 +69,7 @@ button:hover {
     text-align: center;
 }
 
-.table td:nth-child(6) {
+.table td:nth-child(5) {
     font-weight: bold;
     background-color: #f8f9fa;
 }

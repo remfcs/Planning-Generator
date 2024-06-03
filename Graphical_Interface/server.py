@@ -8,15 +8,16 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 
 DATABASE_PATH = os.path.join(os.path.dirname(__file__), 'test.sqlite3')
 
-def get_student_details(name=None, niveau=None, professeur=None, langue=None):
+def get_student_details(name=None, niveau=None, professeur=None, langue=None, group_lv1=None):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
 
     query = """
-    SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, s.LV1, lg.ID_COURSE, t.NAME AS TeacherName, t.SURNAME AS TeacherSurname
+    SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, lg.ID_COURSE, c.Language, t.NAME AS TeacherName, t.SURNAME AS TeacherSurname
     FROM Student s
     LEFT JOIN List_Groups_Students lg ON s.EMAIL = lg.ID_STUDENT
-    LEFT JOIN Teachers t ON lg.ID_COURSE = t.ID_TEACHER
+    LEFT JOIN Courses c ON lg.ID_COURSE = c.ID_GROUP
+    LEFT JOIN Teachers t ON c.ID_Teacher = t.ID_Teacher
     WHERE 1=1
     """
     params = []
@@ -31,8 +32,11 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None):
         query += " AND (t.NAME || ' ' || t.SURNAME) = ?"
         params.append(professeur)
     if langue:
-        query += " AND s.LV1 = ?"
+        query += " AND c.Language = ?"
         params.append(langue)
+    if group_lv1:
+        query += " AND lg.ID_COURSE = ?"
+        params.append(group_lv1)
 
     cursor.execute(query, params)
     rows = cursor.fetchall()
@@ -40,12 +44,12 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None):
     students = []
     for row in rows:
         student = {
-            "Name": row[0],
-            "Surname": row[1],
+            "Surname": row[0],
+            "Name": row[1],
             "Email": row[2],
             "Class": row[3],
-            "LV1": row[4],
-            "GROUP_LV1": row[5],
+            "GROUP_LV1": row[4],
+            "Language": row[5],
             "TeacherName": row[6],
             "TeacherSurname": row[7]
         }
@@ -64,7 +68,8 @@ def get_students():
     niveau = request.args.get('niveau')
     professeur = request.args.get('professeur')
     langue = request.args.get('langue')
-    students = get_student_details(name, niveau, professeur, langue)
+    group_lv1 = request.args.get('group_lv1')
+    students = get_student_details(name, niveau, professeur, langue, group_lv1)
     return jsonify(students)
 
 @app.route('/professors')
@@ -72,7 +77,7 @@ def get_professors():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     
-    query = "SELECT NAME || ' ' || SURNAME AS Professor FROM Teachers"
+    query = "SELECT DISTINCT NAME || ' ' || SURNAME AS Professor FROM Teachers"
     cursor.execute(query)
     professors = [row[0] for row in cursor.fetchall()]
     
@@ -84,12 +89,24 @@ def get_languages():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     
-    query = "SELECT DISTINCT LV1 FROM Student"
+    query = "SELECT DISTINCT Language FROM Courses"
     cursor.execute(query)
     languages = [row[0] for row in cursor.fetchall()]
     
     conn.close()
     return jsonify(languages)
+
+@app.route('/groups')
+def get_groups():
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    
+    query = "SELECT DISTINCT ID_COURSE FROM List_Groups_Students"
+    cursor.execute(query)
+    groups = [row[0] for row in cursor.fetchall()]
+    
+    conn.close()
+    return jsonify(groups)
 
 if __name__ == '__main__':
     def open_browser():

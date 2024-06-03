@@ -1,20 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
     const filterForm = document.getElementById('filterForm');
 
+    // Function to fetch data
+    function fetchData(url) {
+        return fetch(url)
+            .then(response => response.json())
+            .catch(error => {
+                console.error(`Error fetching data from ${url}:`, error);
+                return [];
+            });
+    }
+
     // Fetch initial student data
-    fetch('/students')
-        .then(response => response.json())
+    fetchData('/students')
         .then(data => {
-            console.log('Initial student data:', data); // Add this line for debugging
+            console.log('Initial student data:', data);
             populateStudentTable(data);
-        })
-        .catch(error => console.error('Error fetching student data:', error));
+        });
 
     // Fetch professors
-    fetch('/professors')
-        .then(response => response.json())
+    fetchData('/professors')
         .then(data => {
-            console.log('Professors data:', data); // Add this line for debugging
+            console.log('Professors data:', data);
             const professorSelect = document.getElementById('professeur');
             professorSelect.innerHTML = '<option value="">Sélectionner Professeur</option>';
             data.forEach(prof => {
@@ -23,14 +30,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 option.textContent = prof;
                 professorSelect.appendChild(option);
             });
-        })
-        .catch(error => console.error('Error fetching professors data:', error));
+        });
 
     // Fetch languages
-    fetch('/languages')
-        .then(response => response.json())
+    fetchData('/languages')
         .then(data => {
-            console.log('Languages data:', data); // Add this line for debugging
+            console.log('Languages data:', data);
             const languageSelect = document.getElementById('langue');
             languageSelect.innerHTML = '<option value="">Sélectionner Langue</option>';
             data.forEach(lang => {
@@ -39,24 +44,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 option.textContent = lang;
                 languageSelect.appendChild(option);
             });
-        })
-        .catch(error => console.error('Error fetching languages data:', error));
+        });
 
-    // Handle form submission
-    filterForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        applyFilters();
-    });
+    // Fetch groups
+    fetchData('/groups')
+        .then(data => {
+            console.log('Groups data:', data);
+            const groupSelect = document.getElementById('group_lv1');
+            groupSelect.innerHTML = '<option value="">Sélectionner Groupe LV1</option>';
+            data.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group;
+                option.textContent = group;
+                groupSelect.appendChild(option);
+            });
+        });
 
+    // Add event listeners to filter elements
+    document.getElementById('studentName').addEventListener('input', applyFilters);
+    document.getElementById('niveau').addEventListener('change', applyFilters);
+    document.getElementById('professeur').addEventListener('change', applyFilters);
+    document.getElementById('langue').addEventListener('change', applyFilters);
+    document.getElementById('group_lv1').addEventListener('change', applyFilters);
+
+    // Function to populate the student table
     function populateStudentTable(data) {
         const studentList = document.getElementById('studentList');
-        studentList.innerHTML = '';
+        studentList.innerHTML = ''; // Clear previous data
         const table = document.createElement('table');
         table.className = 'table table-striped';
 
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        const headers = ['NOM', 'Prénom', 'Email', 'Classe', 'LV1', 'Groupe LV1', 'Professeur'];
+        const headers = ['NOM', 'Prénom', 'Email', 'Classe', 'Groupe LV1', 'Langue', 'Professeur'];
 
         headers.forEach(headerText => {
             const header = document.createElement('th');
@@ -87,16 +107,16 @@ document.addEventListener('DOMContentLoaded', function () {
             classCell.textContent = student.Class;
             row.appendChild(classCell);
 
-            const lv1Cell = document.createElement('td');
-            lv1Cell.textContent = student.LV1;
-            row.appendChild(lv1Cell);
-
             const groupLv1Cell = document.createElement('td');
             groupLv1Cell.textContent = student.GROUP_LV1;
             row.appendChild(groupLv1Cell);
 
+            const languageCell = document.createElement('td');
+            languageCell.textContent = student.Language;
+            row.appendChild(languageCell);
+
             const teacherCell = document.createElement('td');
-            teacherCell.textContent = student.TeacherName + ' ' + student.TeacherSurname;
+            teacherCell.textContent = `${student.TeacherName} ${student.TeacherSurname}`;
             row.appendChild(teacherCell);
 
             tbody.appendChild(row);
@@ -106,24 +126,25 @@ document.addEventListener('DOMContentLoaded', function () {
         studentList.appendChild(table);
     }
 
+    // Function to apply filters
     function applyFilters() {
         const studentName = document.getElementById('studentName').value.toLowerCase();
         const niveau = document.getElementById('niveau').value;
         const professeur = document.getElementById('professeur').value;
         const langue = document.getElementById('langue').value;
+        const groupLv1 = document.getElementById('group_lv1').value;
 
         let query = '/students?';
         if (studentName) query += `name=${studentName}&`;
         if (niveau) query += `niveau=${niveau}&`;
         if (professeur) query += `professeur=${professeur}&`;
         if (langue) query += `langue=${langue}&`;
+        if (groupLv1) query += `group_lv1=${groupLv1}&`;
 
-        fetch(query.slice(0, -1))
-            .then(response => response.json())
+        fetchData(query.slice(0, -1))
             .then(data => {
-                console.log('Filtered student data:', data); // Add this line for debugging
+                console.log('Filtered student data:', data);
                 populateStudentTable(data);
-            })
-            .catch(error => console.error('Error fetching student data:', error));
+            });
     }
 });
