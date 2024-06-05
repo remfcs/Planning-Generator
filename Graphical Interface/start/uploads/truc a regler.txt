@@ -1,0 +1,343 @@
+
+- Salles disponible
+
+- Liste enseignant avec nom, prénom, email, langue
+-liste des enseignants tout court en fait
+
+
+
+quand on clique sur n'importe quel bouton on a acces a la reponse de l'api donc pb gros pb
+type='button' rajouter ca a chaque bouton pour que ca marche
+
+autre pb maintenat si je veux deux fichiers uploadé dans la meme case ca marche pas
+
+js: 
+// script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupUploadArea('students-upload-area', 'students-file', 'students-uploaded-files');
+    setupUploadArea('level-upload-area', 'level-file', 'level-uploaded-files');
+});
+
+function setupUploadArea(uploadAreaId, fileInputId, uploadedFilesId) {
+    const uploadArea = document.getElementById(uploadAreaId);
+    const fileInput = document.getElementById(fileInputId);
+    const uploadedFiles = document.getElementById(uploadedFilesId);
+
+    uploadArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (event) => {
+        event.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = event.dataTransfer.files;
+        handleFiles(files, uploadedFiles);
+    });
+
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', () => {
+        const files = fileInput.files;
+        handleFiles(files, uploadedFiles);
+    });
+}
+
+function triggerFileInput(fileInputId) {
+    const fileInput = document.getElementById(fileInputId);
+    fileInput.click();
+}
+
+function handleFiles(files, uploadedFiles) {
+    Array.from(files).forEach(file => {
+        const fileElement = document.createElement('div');
+        fileElement.classList.add('uploaded-file');
+        fileElement.textContent = file.name;
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('btn', 'cancel-btn');
+        deleteButton.addEventListener('click', () => {
+            fileElement.remove();
+        });
+
+        fileElement.appendChild(deleteButton);
+        uploadedFiles.appendChild(fileElement);
+    });
+}
+
+function showInfo(event) {
+    const info = event.target.getAttribute('data-info');
+    document.getElementById('popup-text').textContent = info;
+    document.getElementById('info-popup').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('info-popup').style.display = 'none';
+}
+
+function addTeacher() {
+    // Implémentez ici la logique d'ajout d'enseignant
+}
+
+function modifyTeacher() {
+    // Implémentez ici la logique de modification de l'enseignant
+}
+
+function submitEstimate() {
+    // Implémentez ici la soumission de l'estimation
+}
+
+function createPlanning() {
+    // Implémentez ici la création du planning
+}
+
+function cancelPlanning() {
+    // Implémentez ici l'annulation de la création du planning
+}
+
+
+html : 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student and Teacher Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='start.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Student and Teacher Management</h1>
+        
+        <form action="/submit" method="POST" enctype="multipart/form-data">
+        <div class="section">
+            <div class="upload-header">
+                <h2>
+                    Upload .csv file with the students and their promotion
+                    <button type='button' class="info-btn" data-info="Upload a CSV file with the students and their promotion information. The file should contain columns for student names and their respective promotions." onclick="showInfo(event)">i</button>
+                </h2>
+            </div>
+            <div class="upload-area" id="students-upload-area">
+                <input type="file" id="students-file" name="students_files" accept=".csv" multiple>
+                <div class="uploaded-files" id="students-uploaded-files"></div>
+                <button type='button' class="upload-btn" onclick="triggerFileInput('students-file')">Upload Files</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="upload-header">
+                <h2>
+                    Upload .csv file for the level
+                    <button type='button' class="info-btn" data-info="Upload a CSV file with the level information. The file should contain columns for the level details." onclick="showInfo(event)">i</button>
+                </h2>
+            </div>
+            <div class="upload-area" id="level-upload-area">
+                <input type="file" id="level-file" name="level_files" accept=".csv" multiple>
+                <div class="uploaded-files" id="level-uploaded-files"></div>
+                <button type='button' class="upload-btn" onclick="triggerFileInput('level-file')">Upload Files</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Estimate New Students Next Year</h2>
+            <div class="form-group">
+                <label for="estimate-number">Number:</label>
+                <input type="number" id="estimate-number" name="estimate_number_student" placeholder="Number"  value="16" min=1>
+                <button type='button' class="btn" onclick="submitEstimate()">Submit</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Half-day slots</h2>
+            <div class="form-group">
+                <label for="estimate-number">Number:</label>
+                <input type="number" id="estimate-number" name="halfday_slot" placeholder="Number" value="3" min=1>
+                <button type='button' class="btn" onclick="submitEstimate()">Submit</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Manage Teachers</h2>
+            <div class="form-group">
+                <label >Add a new teacher:</label>
+                <button type='button' class="btn" onclick="addTeacher()">Add Teacher</button>
+            </div>
+            <div class="teacher-list-section">
+                <h3>Teacher List</h3>
+                <ul id="teacher-list">
+                    <!-- Liste des professeurs sera générée ici -->
+                    <li>
+                        Professeur 1
+                        <button class="btn" onclick="modifyTeacher()">Modify</button>
+                        <button class="btn cancel-btn" onclick="deleteTeacher()">Delete</button>
+                    </li>
+                    <li>
+                        Professeur 2
+                        <button type='button' class="btn" onclick="modifyTeacher()">Modify</button>
+                        <button type='button' class="btn cancel-btn" onclick="deleteTeacher()">Delete</button>
+                    </li>
+                    <!-- Fin de la liste des professeurs -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <button class="btn" type="submit">Create the Planning</button>
+            <button type='button' class="btn cancel-btn" onclick="cancelPlanning()">Cancel</button>
+        </div>
+        </form> 
+    </div>
+
+    <div id="info-popup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <p id="popup-text"></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='start.js') }}"></script>
+</body>
+</html>
+
+
+
+
+js2:
+
+// Création d'un objet FormData global uniquement utilisé lors de la soumission
+let formData = new FormData();
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupUploadAreas();
+    document.getElementById('create-planning-btn').addEventListener('click', uploadAllFiles);
+});
+
+function setupUploadAreas() {
+    const areas = ['students-upload-area', 'level-upload-area'];
+    areas.forEach(areaId => {
+        const uploadArea = document.getElementById(areaId);
+        const fileInput = document.getElementById(uploadArea.dataset.input);
+
+        uploadArea.addEventListener('dragover', event => {
+            event.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', event => {
+            event.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = event.dataTransfer.files;
+            showFilesInList(files, uploadArea.dataset.list);
+        });
+
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            showFilesInToStore(fileInput.files, uploadArea.dataset.list);
+        });
+    });
+}
+
+function showFilesInToStore(files, listId) {
+    const list = document.getElementById(listId);
+    Array.from(files).forEach(file => {
+        const fileElement = document.createElement('div');
+        fileElement.textContent = file.name;
+        list.appendChild(fileElement);
+        
+        // Stocker les fichiers dans formData pour l'envoi
+        formData.append('files', file); // Assurez-vous que votre serveur Flask attend 'files' comme clé
+    });
+}
+
+function uploadAllFiles() {
+    fetch('/submit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        formData = new FormData(); // Réinitialiser formData après l'envoi
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+
+
+
+
+api:
+
+import os
+from flask import Flask, request, render_template, redirect, url_for
+
+app = Flask(__name__)
+
+# Définir le dossier de téléchargement
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Créer le dossier de téléchargement s'il n'existe pas
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+@app.route('/')
+def index():
+    return render_template('start.html')
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    # Récupérer les valeurs des champs de formulaire
+    estimate_number_student = request.form.get('estimate_number_student')
+    halfday_slot = request.form.get('halfday_slot')
+
+    # Récupérer les fichiers uploadés
+    students_files = request.files.getlist('students_files')
+    level_files = request.files.getlist('level_files')
+
+    # Enregistrer les fichiers uploadés
+    saved_files = {'students_files': [], 'level_files': []}
+
+    for file in students_files:
+        if file.filename:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(file_path)
+            saved_files['students_files'].append(file.filename)
+
+    for file in level_files:
+        if file.filename:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(file_path)
+            saved_files['level_files'].append(file.filename)
+
+    # Afficher les données pour vérification (peut être remplacé par une autre logique)
+    return f"""
+    Estimation du nombre de nouveaux étudiants: {estimate_number_student} <br>
+    Nombre de demi-journées: {halfday_slot} <br>
+    Fichiers étudiants téléchargés: {", ".join(saved_files['students_files'])} <br>
+    Fichiers de niveau téléchargés: {", ".join(saved_files['level_files'])}
+    """
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
