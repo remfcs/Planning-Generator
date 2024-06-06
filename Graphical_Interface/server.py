@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
-DATABASE_PATH = os.path.join(os.path.dirname(__file__), 'test.sqlite3')
+DATABASE_PATH = os.path.join(os.path.dirname(__file__), 'database.sqlite3')
 
 def get_student_details(name=None, niveau=None, professeur=None, langue=None, group_lv1=None):
     conn = sqlite3.connect(DATABASE_PATH)
@@ -16,7 +16,7 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
     SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, lg.ID_COURSE, c.Language, t.NAME AS TeacherName, t.SURNAME AS TeacherSurname
     FROM Student s
     LEFT JOIN List_Groups_Students lg ON s.EMAIL = lg.ID_STUDENT
-    LEFT JOIN Courses c ON lg.ID_COURSE = c.ID_GROUP
+    LEFT JOIN Courses c ON lg.ID_COURSE = c.ID_COURSE
     LEFT JOIN Teachers t ON c.ID_Teacher = t.ID_Teacher
     WHERE 1=1
     """
@@ -176,10 +176,6 @@ def serve_professors_html():
 @app.route('/script.js')
 def serve_script_js():
     return send_from_directory('.', 'script.js')
-
-@app.route('/professors.js')
-def serve_professors_js():
-    return send_from_directory('.', 'professors.js')
 
 @app.route('/style.css')
 def serve_style_css():

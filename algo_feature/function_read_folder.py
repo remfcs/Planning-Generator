@@ -51,8 +51,19 @@ def file_data_Student(depot_info_folder):
                 
     return df
 
+def clean_text(text):
+    replacements = {
+        '�': 'é',  # Remplacer le caractère bizarre par 'é'
+        # Ajoutez d'autres remplacements si nécessaire
+    }
+    if isinstance(text, str):
+        for bad_char, good_char in replacements.items():
+            text = text.replace(bad_char, good_char)
+    return text
+
 def csv_into_dataframe(file_path, db_column_mapping):
-    df = pd.read_csv(file_path, encoding='utf-8-sig')                
+    df = pd.read_csv(file_path, encoding='utf-8-sig')
+    df = df.applymap(clean_text)   
     df.rename(columns=db_column_mapping, inplace=True)
     df = df[list(db_column_mapping.values())]
     return df
@@ -75,11 +86,11 @@ def xlsx_into_dataframe(file_path, db_column_mapping):
 
 
 def update_lv2_from_csv(df, file_path):
-    with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
-        csv_reader = pd.read_csv(file_path, encoding='utf-8-sig')
-        for student in csv_reader:
-            if student['mail'] in df['EMAIL'].values:
-                df.loc[df['EMAIL'] == student['mail'], 'LV2'] = student['Langues']
+    csv_reader = pd.read_csv(file_path, encoding='utf-8-sig')
+    df = df.applymap(clean_text)
+    for index, student in csv_reader.iterrows():
+        if student['mail'] in df['EMAIL'].values:
+            df.loc[df['EMAIL'] == student['mail'], 'LV2'] = student['Langues']
 
 def update_lv2_from_json(df, file_path):
     with open(file_path, 'r', encoding='utf-8-sig') as json_file:
@@ -106,10 +117,13 @@ def update_student_grade(grade_list, students_info, LV):
 def update_students_info_csv(file_path, students_info, LV):
     with open(file_path, 'r', encoding='utf-8-sig'):
         csv_reader = pd.read_csv(file_path, encoding='utf-8-sig')
+        csv_reader.columns = [clean_text(col) for col in csv_reader.columns]
+        csv_reader = csv_reader.applymap(clean_text)
         csv_reader['Note/10'] = csv_reader['Note/10'].replace('', np.nan)
+        csv_reader['Note/10'] = csv_reader['Note/10'].replace(';', '.')
         csv_reader['Note/10'] = csv_reader['Note/10'].astype(float)
     students_info = update_student_grade(csv_reader, students_info, LV)
-    students_info = is_file_TT(file_path, students_info, students_info)
+    students_info = is_file_TT(file_path, students_info, csv_reader)
     return students_info
 
 def update_students_info_json(file_path, students_info, LV):
@@ -161,6 +175,7 @@ def find_format_to_update_students_info(file, depot_note_folder, students_info):
             
         elif file.endswith('.xlsx'):
             students_info = update_students_info_xlsx(file_path, students_info, 'GRADE_LV2')
+            
         else:
             print(f"Format de fichier non pris en charge: {file}")
            

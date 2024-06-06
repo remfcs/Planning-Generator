@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        const headers = ['Nom', 'Prénom', 'Email', 'Matière', 'Disponibilités'];
+        const headers = ['NAME', 'Firstname', 'Email', 'Subject', 'Availabilities'];
 
         headers.forEach(headerText => {
             const header = document.createElement('th');

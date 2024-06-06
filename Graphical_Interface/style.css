@@ -1,7 +1,9 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
 }
 
 .container {
@@ -9,11 +11,15 @@ body {
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
+    color: #333;
+    margin-bottom: 20px;
 }
 
 form {
@@ -22,27 +28,50 @@ form {
 
 label {
     font-weight: bold;
+    display: block;
+    margin-top: 10px;
 }
 
 input[type="text"],
+input[type="email"],
 select {
-    width: auto;
-    padding: 8px;
+    width: 100%;
+    padding: 10px;
     margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
 }
 
 button {
-    padding: 8px 20px;
+    padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+button[type="reset"] {
+    background-color: #6c757d;
+}
+
+button[type="reset"]:hover {
+    background-color: #5a6268;
 }
 
 #studentDetails {
@@ -62,11 +91,20 @@ button:hover {
     overflow-x: auto;
     white-space: nowrap;
     position: relative;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .table th,
 .table td {
     text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
 }
 
 .table td:nth-child(5) {
