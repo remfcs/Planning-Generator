@@ -1,9 +1,9 @@
 import sqlite3
-import function_create_groups
-import function_read_folder 
-import function_database
-import function_file_db
-import function_conflict
+import algo_feature.function_create_groups as function_create_groups
+import algo_feature.function_read_folder as function_read_folder 
+import algo_feature.function_database as function_database
+import algo_feature.function_file_db as function_file_db
+import algo_feature.function_conflict
 
 
 Data = 'data/test.sqlite3'
