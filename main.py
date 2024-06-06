@@ -17,8 +17,8 @@ from back_up import back_up
 Data = 'data/database.sqlite3'
 
 
-depot_info_folder = './data/input_info'
-depot_note_folder ='./data/input_notes'
+depot_info_folder = './data/uploads/input_info'
+depot_note_folder ='./data/uploads/input_level'
 max_by_class = 16
 
 DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') 
@@ -45,6 +45,9 @@ df = function_read_folder.file_data_Student(depot_info_folder)
 
 #Récupère les notes dans étudiants pour les mettre dans la df et sortir une df 'students_info' avec toutes les infos des étudiants
 students_info = function_read_folder.add_student_grade(depot_note_folder, df)
+
+for index, row in students_info.iterrows():
+    print(row)
 
 #crée le backup
 back_up.backup(Data)

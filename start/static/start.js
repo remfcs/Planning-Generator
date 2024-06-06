@@ -82,6 +82,7 @@ function uploadAllFiles(event) {
     const halfdaySlot = document.getElementById('halfday_slot').value;
     formData.append('estimate_number_student', estimateNumberStudent);
     formData.append('halfday_slot', halfdaySlot);
+    formData.append('teachers', JSON.stringify(teachers)); 
 
     console.log('FormData avant l\'envoi:');
     formData.forEach((value, key) => {
@@ -112,8 +113,77 @@ function closePopup() {
     document.getElementById('info-popup').style.display = 'none';
 }
 
+
+
+
+
+let teachers = [];
+
+
 function addTeacher() {
-    // Implémentez ici la logique d'ajout d'enseignant
+    event.preventDefault(); // Prevent form submission
+
+    const name = document.getElementById('name').value.trim();
+    const surname = document.getElementById('surname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value;
+
+    const checkboxes = document.querySelectorAll('#teacherForm .day-time:checked');
+    const availabilities = Array.from(checkboxes).map(cb => cb.value);
+
+    if (!name || !surname || !email) {
+        alert('All fields must be filled out.');
+        return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    const teacherData = {
+        id: Date.now(),  // Unique ID for each teacher for tracking/modifications
+        name,
+        surname,
+        email,
+        subject,
+        availabilities
+    };
+
+    teachers.push(teacherData);  // Add to the local array
+
+    // Update UI
+    const li = document.createElement('li');
+    li.setAttribute('id', `teacher-${teacherData.id}`);
+    li.textContent = `${name} ${surname} (${email}, ${subject}) `;
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.classList.add('btn', 'cancel-btn');
+    deleteBtn.onclick = () => removeTeacher(teacherData.id);
+    li.appendChild(deleteBtn);
+    document.getElementById('teacher-list').appendChild(li);
+
+    resetTeacherForm();  // Reset form fields
+}
+
+function removeTeacher(id) {
+    teachers = teachers.filter(teacher => teacher.id !== id);
+    document.getElementById(`teacher-${id}`).remove();
+}
+
+function resetTeacherForm() {
+    // Reset all text inputs
+    document.getElementById('name').value = '';
+    document.getElementById('surname').value = '';
+    document.getElementById('email').value = '';
+
+    // Reset the select dropdown to its first option
+    document.getElementById('subject').selectedIndex = 0;
+
+    // Reset all checkboxes within the form
+    const checkboxes = document.querySelectorAll('#teacherForm input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
 }
 
 function modifyTeacher() {
