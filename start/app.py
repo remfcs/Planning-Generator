@@ -1,5 +1,7 @@
 import os
 from flask import Flask, request, render_template, jsonify
+import os
+import json 
 
 app = Flask(__name__)
 
@@ -39,13 +41,17 @@ def submit():
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
             file.save(file_path)
             saved_files['level_files'].append(file.filename)
+            
+    teachers_json = request.form.get('teachers', '[]')  # Default to an empty list as JSON
+    teachers = json.loads(teachers_json)  # Decode the JSON string
 
 # Afficher les données pour vérification (peut être remplacé par une autre logique)
     response_data = {
     "estimation": f"Estimation du nombre de nouveaux étudiants: {estimate_number_student}",
     "halfday_slots": f"Nombre de demi-journées: {halfday_slot}",
     "students_files": ", ".join(saved_files['students_files']),
-    "level_files": ", ".join(saved_files['level_files'])
+    "level_files": ", ".join(saved_files['level_files']),
+    "teacher:": teachers
     }
 
     return jsonify(response_data)
