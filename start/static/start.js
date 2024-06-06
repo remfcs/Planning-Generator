@@ -82,7 +82,7 @@ function uploadAllFiles(event) {
     const halfdaySlot = document.getElementById('halfday_slot').value;
     formData.append('estimate_number_student', estimateNumberStudent);
     formData.append('halfday_slot', halfdaySlot);
-    formData.append('teachers', JSON.stringify(teachers)); 
+    formData.append('teachers', JSON.stringify(teachers));
 
     console.log('FormData avant l\'envoi:');
     formData.forEach((value, key) => {
@@ -93,14 +93,14 @@ function uploadAllFiles(event) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        formData = new FormData(); // Réinitialiser formData après l'envoi
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            formData = new FormData(); // Réinitialiser formData après l'envoi
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function showInfo(event) {
@@ -128,7 +128,7 @@ function addTeacher() {
     const email = document.getElementById('email').value.trim();
     const subject = document.getElementById('subject').value;
 
-    const checkboxes = document.querySelectorAll('#teacherForm .day-time:checked');
+    const checkboxes = document.querySelectorAll('#availability-section .day-time:checked');
     const availabilities = Array.from(checkboxes).map(cb => cb.value);
 
     if (!name || !surname || !email) {
@@ -140,6 +140,8 @@ function addTeacher() {
         return;
     }
 
+    console.log(availabilities)
+
     const teacherData = {
         id: Date.now(),  // Unique ID for each teacher for tracking/modifications
         name,
@@ -149,12 +151,14 @@ function addTeacher() {
         availabilities
     };
 
+    console.log(teacherData)
+
     teachers.push(teacherData);  // Add to the local array
 
     // Update UI
     const li = document.createElement('li');
     li.setAttribute('id', `teacher-${teacherData.id}`);
-    li.textContent = `${name} ${surname} (${email}, ${subject}) `;
+    li.textContent = `${name} ${surname} (${email}, ${subject}, availabilities: ${availabilities}) `;
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('btn', 'cancel-btn');
@@ -188,10 +192,6 @@ function resetTeacherForm() {
 
 function modifyTeacher() {
     // Implémentez ici la logique de modification de l'enseignant
-}
-
-function submitEstimate() {
-    // Implémentez ici la soumission de l'estimation
 }
 
 function createPlanning() {
