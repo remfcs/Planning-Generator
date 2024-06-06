@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from algo_feature import function_conflict, function_file_db, function_database, function_read_folder, function_create_groups
 from back_up import back_up
+import json
+
 '''
     reste a faire :
     -refaire numberclass
@@ -26,28 +28,86 @@ DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')
 nb_slot = 6
 promo_pair = [['1A','2A']]
 Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104', 'M01', 'M02') 
-list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
+#list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
 
 #simuler les tables de jointure de disponibilité
 list_ID_Teacher, list_ID_room, list_ID_Availability, list_ID_Class = function_file_db.get_list(Data)
 #list_availibity_teachers = function_file_db.create_random_pairs(list_ID_Teacher, list_ID_Availability,3)
 #list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'), ('DUR_ESP', 'Thu_slot3'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'),  ('LER_ESP', 'Thu_slot1'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'),  ('PET_ESP', 'Thu_slot2'), ('PET_ESP', 'Thu_slot1'), ('PET_ESP', 'Thu_slot3'),  ('RIC_ESP', 'Thu_slot1'), ('RIC_ESP', 'Thu_slot2'), ('RIC_ESP', 'Thu_slot3'),  ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'),  ('SIM_ALL', 'Thu_slot3'), ('SIM_ALL', 'Thu_slot2'), ('SIM_ALL', 'Thu_slot1'),  ('THO_ANG', 'Thu_slot3'), ('THO_ANG', 'Thu_slot1'), ('THO_ANG', 'Thu_slot2')]
-list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'), ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'), ('PET_ESP','Thu_slot1'), ('PET_ESP','Thu_slot2'),('RIC_ESP','Thu_slot3'), ('RIC_ESP','Thu_slot2')]
+#list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'), ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'), ('PET_ESP','Thu_slot1'), ('PET_ESP','Thu_slot2'),('RIC_ESP','Thu_slot3'), ('RIC_ESP','Thu_slot2')]
 #list_availibity_rooms = function_file_db.create_random_pairs(list_ID_room, list_ID_Availability,6)
 list_availibity_rooms = [('K03', 'Thu_slot2'), ('K03', 'Thu_slot1'), ('K03', 'Thu_slot3'), ('K04', 'Thu_slot1'), ('K04', 'Thu_slot3'), ('K04', 'Thu_slot2'), ('K05', 'Thu_slot3'), ('K05', 'Thu_slot2'), ('K05', 'Thu_slot1'), ('M101', 'Thu_slot3'), ('M101', 'Thu_slot2'), ('M101', 'Thu_slot1'), ('M102', 'Thu_slot3'), ('M102', 'Thu_slot2'), ('M102', 'Thu_slot1'), ('M103', 'Thu_slot1'), ('M103', 'Thu_slot2'), ('M103', 'Thu_slot3'), ('M104', 'Thu_slot1'), ('M104', 'Thu_slot2'), ('M104', 'Thu_slot3'), ('M01', 'Thu_slot1'), ('M01', 'Thu_slot2'), ('M01', 'Thu_slot3'), ('M02', 'Thu_slot3'), ('M02', 'Thu_slot2'), ('M02', 'Thu_slot1')]
 #list_availibity_class = function_file_db.create_random_pairs(list_ID_Class,list_ID_Availability, 3)
 list_availibity_class = [('1A', 'Thu_slot1'), ('1A', 'Thu_slot2'), ('1A', 'Thu_slot3')]
 
 
+import json
+
+def load_teachers(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    list_teacher = []
+    list_availability_teachers = []
+
+    # Mapping for subject names and abbreviations for availability codes
+    subject_mapping = {
+        'English': 'ANGLAIS',
+        'Spanish': 'ESPAGNOL',
+        'German': 'ALLEMAND',
+        'Chinese': 'CHINOIS'
+    }
+
+    day_slot_mapping = {
+        'Monday Morning': 'Mon_slot1',
+        'Monday Afternoon': 'Mon_slot2',
+        'Monday Evening': 'Mon_slot3',
+        'Tuesday Morning': 'Tue_slot1',
+        'Tuesday Afternoon': 'Tue_slot2',
+        'Tuesday Evening': 'Tue_slot3',
+        'Wednesday Morning': 'Wed_slot1',
+        'Wednesday Afternoon': 'Wed_slot2',
+        'Wednesday Evening': 'Wed_slot3',
+        'Thursday Morning': 'Thu_slot1',
+        'Thursday Afternoon': 'Thu_slot2',
+        'Thursday Evening': 'Thu_slot3',
+        'Friday Morning': 'Fri_slot1',
+        'Friday Afternoon': 'Fri_slot2',
+        'Friday Evening': 'Fri_slot3'
+    }
+
+    for teacher in data:
+        name_parts = teacher['name'].upper().split()
+        surname_parts = teacher['surname'].upper().split()
+        email = teacher['email']
+        subject = subject_mapping.get(teacher['subject'], teacher['subject'])
+
+        teacher_tuple = (name_parts[0], surname_parts[0], email, subject)
+        list_teacher.append(teacher_tuple)
+
+        # Generate the teacher's availability code
+        teacher_code = f"{surname_parts[0][:3]}_{subject[:3].upper()}"
+
+        for availability in teacher['availabilities']:
+            availability_code = day_slot_mapping.get(availability, availability)
+            list_availability_teachers.append((teacher_code, availability_code))
+
+    return list_teacher, list_availability_teachers
+
+# Example usage
+json_path = 'data/uploads/teachers.json'
+list_teacher, list_availability_teachers = load_teachers(json_path)
+
+print("List of Teachers:")
+print(list_teacher)
+print("\nList of Teachers' Availabilities:")
+print(list_availability_teachers)
 
 #charge une df avec les infos des étudiants depuis le fichier info_student
 df = function_read_folder.file_data_Student(depot_info_folder)
 
 #Récupère les notes dans étudiants pour les mettre dans la df et sortir une df 'students_info' avec toutes les infos des étudiants
 students_info = function_read_folder.add_student_grade(depot_note_folder, df)
-
-for index, row in students_info.iterrows():
-    print(row)
 
 #crée le backup
 back_up.backup(Data)
@@ -74,7 +134,7 @@ function_file_db.Set_teachers(Data, list_teacher)
 
 #Remplir les tables de jointure 
 function_file_db.Set_table_de_jointure(Data, 'Availability_Rooms' ,list_availibity_rooms)
-function_file_db.Set_table_de_jointure(Data, 'Availability_Teachers' ,list_availibity_teachers)
+function_file_db.Set_table_de_jointure(Data, 'Availability_Teachers' ,list_availability_teachers)
 function_file_db.Set_table_de_jointure(Data, 'Availability_Class', list_availibity_class)
 
 #supprime les données de la table groupe
