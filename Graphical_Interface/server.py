@@ -27,7 +27,7 @@ if not os.path.exists(UPLOAD_FOLDER_INFO):
     os.makedirs(UPLOAD_FOLDER_INFO)
 
 @app.route('/start')
-def index():
+def start():
     return send_from_directory('.', 'start/start.html')
 
 @app.route('/start/submit', methods=['POST'])
@@ -83,7 +83,7 @@ def create_planning_route():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
 
-DATABASE_PATH = os.path.join(os.path.dirname(__file__), 'database.sqlite3')
+DATABASE_PATH = './data/database.sqlite3'
 
 def get_student_details(name=None, niveau=None, professeur=None, langue=None, group_lv1=None):
     conn = sqlite3.connect(DATABASE_PATH)

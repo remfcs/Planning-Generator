@@ -18,9 +18,11 @@ import os
 ''' 
 Data = 'data/database.sqlite3'
 
+#depot_info_folder = './data/uploads/input_info'
+#depot_note_folder ='./data/uploads/input_level'
 
-depot_info_folder = './data/uploads/input_info'
-depot_note_folder ='./data/uploads/input_level'
+depot_info_folder = './data/input_info'
+depot_note_folder ='./data/input_notes'
 max_by_class = 16
 
 DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') 
@@ -28,13 +30,11 @@ DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')
 nb_slot = 6
 promo_pair = [['1A','2A']]
 Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104', 'M01', 'M02') 
-#list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
+list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
 
 #simuler les tables de jointure de disponibilité
 list_ID_Teacher, list_ID_room, list_ID_Availability, list_ID_Class = function_file_db.get_list(Data)
-#list_availibity_teachers = function_file_db.create_random_pairs(list_ID_Teacher, list_ID_Availability,3)
-#list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'), ('DUR_ESP', 'Thu_slot3'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'),  ('LER_ESP', 'Thu_slot1'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'),  ('PET_ESP', 'Thu_slot2'), ('PET_ESP', 'Thu_slot1'), ('PET_ESP', 'Thu_slot3'),  ('RIC_ESP', 'Thu_slot1'), ('RIC_ESP', 'Thu_slot2'), ('RIC_ESP', 'Thu_slot3'),  ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'),  ('SIM_ALL', 'Thu_slot3'), ('SIM_ALL', 'Thu_slot2'), ('SIM_ALL', 'Thu_slot1'),  ('THO_ANG', 'Thu_slot3'), ('THO_ANG', 'Thu_slot1'), ('THO_ANG', 'Thu_slot2')]
-#list_availibity_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'), ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'), ('PET_ESP','Thu_slot1'), ('PET_ESP','Thu_slot2'),('RIC_ESP','Thu_slot3'), ('RIC_ESP','Thu_slot2')]
+list_availability_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'), ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'), ('PET_ESP','Thu_slot1'), ('PET_ESP','Thu_slot2'),('RIC_ESP','Thu_slot3'), ('RIC_ESP','Thu_slot2')]
 #list_availibity_rooms = function_file_db.create_random_pairs(list_ID_room, list_ID_Availability,6)
 list_availibity_rooms = [('K03', 'Thu_slot2'), ('K03', 'Thu_slot1'), ('K03', 'Thu_slot3'), ('K04', 'Thu_slot1'), ('K04', 'Thu_slot3'), ('K04', 'Thu_slot2'), ('K05', 'Thu_slot3'), ('K05', 'Thu_slot2'), ('K05', 'Thu_slot1'), ('M101', 'Thu_slot3'), ('M101', 'Thu_slot2'), ('M101', 'Thu_slot1'), ('M102', 'Thu_slot3'), ('M102', 'Thu_slot2'), ('M102', 'Thu_slot1'), ('M103', 'Thu_slot1'), ('M103', 'Thu_slot2'), ('M103', 'Thu_slot3'), ('M104', 'Thu_slot1'), ('M104', 'Thu_slot2'), ('M104', 'Thu_slot3'), ('M01', 'Thu_slot1'), ('M01', 'Thu_slot2'), ('M01', 'Thu_slot3'), ('M02', 'Thu_slot3'), ('M02', 'Thu_slot2'), ('M02', 'Thu_slot1')]
 #list_availibity_class = function_file_db.create_random_pairs(list_ID_Class,list_ID_Availability, 3)
@@ -95,13 +95,8 @@ def load_teachers(file_path):
     return list_teacher, list_availability_teachers
 
 # Example usage
-json_path = 'data/uploads/teachers.json'
-list_teacher, list_availability_teachers = load_teachers(json_path)
-
-print("List of Teachers:")
-print(list_teacher)
-print("\nList of Teachers' Availabilities:")
-print(list_availability_teachers)
+#json_path = 'data/uploads/teachers.json'
+#list_teacher, list_availability_teachers = load_teachers(json_path)
 
 #charge une df avec les infos des étudiants depuis le fichier info_student
 df = function_read_folder.file_data_Student(depot_info_folder)
