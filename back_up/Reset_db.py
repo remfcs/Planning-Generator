@@ -29,7 +29,7 @@ def Delete_all_tables(Data):
     return 
 
 
-#Delete_all_tables(Data)
+Delete_all_tables(Data)
 
 
 def Create_tables(filename):
