@@ -82,7 +82,7 @@ function uploadAllFiles(event) {
     const halfdaySlot = document.getElementById('halfday_slot').value;
     formData.append('estimate_number_student', estimateNumberStudent);
     formData.append('halfday_slot', halfdaySlot);
-    formData.append('teachers', JSON.stringify(teachers)); 
+    formData.append('teachers', JSON.stringify(teachers));
 
     console.log('FormData avant l\'envoi:');
     formData.forEach((value, key) => {
@@ -93,14 +93,14 @@ function uploadAllFiles(event) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        formData = new FormData(); // Réinitialiser formData après l'envoi
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            formData = new FormData(); // Réinitialiser formData après l'envoi
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function showInfo(event) {
@@ -192,10 +192,6 @@ function resetTeacherForm() {
 
 function modifyTeacher() {
     // Implémentez ici la logique de modification de l'enseignant
-}
-
-function submitEstimate() {
-    // Implémentez ici la soumission de l'estimation
 }
 
 function createPlanning() {
