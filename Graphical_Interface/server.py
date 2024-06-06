@@ -60,7 +60,7 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'home.html')
+    return send_from_directory('.', 'Home Page/home.html')
 
 @app.route('/students')
 def get_students():
@@ -72,17 +72,35 @@ def get_students():
     students = get_student_details(name, niveau, professeur, langue, group_lv1)
     return jsonify(students)
 
-@app.route('/professors')
 def get_professors():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    
-    query = "SELECT DISTINCT NAME || ' ' || SURNAME AS Professor FROM Teachers"
-    cursor.execute(query)
-    professors = [row[0] for row in cursor.fetchall()]
-    
+    # Récupérer les informations des professeurs avec la disponibilité combinée
+    cursor.execute("""
+        SELECT T.name, T.surname, T.mail, T.Subject, 
+               GROUP_CONCAT(A.Day || ' ' || A.Hour) as availabilities
+        FROM Teachers T
+        LEFT JOIN Availability_Teachers AT ON T.ID_Teacher = AT.ID_Teacher
+        LEFT JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
+        GROUP BY T.name, T.surname, T.mail, T.Subject
+    """)
+    professors = cursor.fetchall()
     conn.close()
-    return jsonify(professors)
+    return professors
+
+@app.route('/api/professors', methods=['GET'])
+def api_professors():
+    professors = get_professors()
+    professor_list = []
+    for professor in professors:
+        professor_list.append({
+            "name": professor[0],
+            "surname": professor[1],
+            "email": professor[2],
+            "subject": professor[3],
+            "availability": professor[4]
+        })
+    return jsonify(professor_list)
 
 @app.route('/languages')
 def get_languages():
@@ -108,5 +126,31 @@ def get_groups():
     conn.close()
     return jsonify(groups)
 
+# Route pour servir le fichier HTML des professeurs
+@app.route('/professors')
+def serve_professors_html():
+    return send_from_directory('.', 'professors.html')
+
+# Routes pour servir les fichiers statiques
+@app.route('/script.js')
+def serve_script_js():
+    return send_from_directory('.', 'script.js')
+
+@app.route('/professors.js')
+def serve_professors_js():
+    return send_from_directory('.', 'professors.js')
+
+@app.route('/style.css')
+def serve_style_css():
+    return send_from_directory('.', 'style.css')
+
+@app.route('/home.html')
+def serve_home_html():
+    return send_from_directory('.', 'home.html')
+
 if __name__ == '__main__':
+    def open_browser():
+        webbrowser.open_new('http://127.0.0.1:5000')
+
+    threading.Timer(1, open_browser).start()
     app.run(debug=True)
