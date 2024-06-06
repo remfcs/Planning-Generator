@@ -3,7 +3,17 @@ import pandas as pd
 import numpy as np
 from algo_feature import function_conflict, function_file_db, function_database, function_read_folder, function_create_groups
 from back_up import back_up
-
+'''
+    reste a faire :
+    -refaire numberclass
+    -phoenix
+    -Documenter toutes les fonctions
+    -faire le doc de la maintenance        
+    -rajouter les 3A ft
+    -1A, 2A et 3A peuvent avoir cours en même temps de Allemand et Chinois !
+    -améliorer la balance des conflits
+''' 
+    
 Data = 'data/database.sqlite3'
 
 
