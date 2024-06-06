@@ -1,15 +1,21 @@
 
 - Salles disponible
 
-- Liste enseignant avec nom, prénom, email, langue
+- Liste enseignant avec nom, prénom, email, langue et dispos
 -liste des enseignants tout court en fait
 
+-relier api au code main B
+-refaire les repos comme il faut A
+-relier les differentes pages html entre elles A
+- faire un css cohérent A
+-faire la page export as pdf en reliant main et une api qui devra etre créée C
+- page de théo doit etre okay
 
 
 quand on clique sur n'importe quel bouton on a acces a la reponse de l'api donc pb gros pb
 type='button' rajouter ca a chaque bouton pour que ca marche
 
-autre pb maintenat si je veux deux fichiers uploadé dans la meme case ca marche pas
+
 
 js: 
 // script.js
