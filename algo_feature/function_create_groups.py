@@ -56,6 +56,8 @@ def make_groups_lv(Data, promo_pair):
 
 
 
+# à refaire en calculant le nb de prof dispo afin
+
 def nomber_class(nomber_student, nomber_by_class):
     nomber_class = 0
     # à expliquer 

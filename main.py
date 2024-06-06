@@ -70,7 +70,7 @@ function_database.delete_table_data(Data, "List_Groups_Students")
 
 #AAAA FINIRRRR
 #function_create_groups.make_groups_lv(Data, promo_pair)
-function_create_groups.make_groups2(Data, promo_pair, max_by_class)
+function_create_groups.make_groups2(Data, promo_pair, max_by_class) # ! à revoir 
 function_create_groups.make_association(Data, promo_pair)
 
 def boucle(m,l):
