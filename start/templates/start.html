@@ -61,23 +61,67 @@
             <h2>Manage Teachers</h2>
             <div class="form-group">
                 <label >Add a new teacher:</label>
-                <button type='button' class="btn" onclick="addTeacher()">Add Teacher</button>
+                <form id="teacherForm">
+                    <input type="text" id="name" placeholder="Name"><br>
+                    <input type="text" id="surname" placeholder="Surname"><br>
+                    <input type="text" id="email" placeholder="Email"><br>
+                    <select id="subject">
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="German">German</option>
+                        <option value="Chinese">Chinese</option>
+                    </select><br>
+                    
+                    <h4>Availabilities</h4>
+                    <div id="availability-section" class="availability-section">
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Monday Morning"> Monday Morning</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Monday Afternoon"> Monday Afternoon</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Tuesday Morning"> Tuesday Morning</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Tuesday Afternoon"> Tuesday Afternoon</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Wednesday Morning"> Wednesday Morning</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Wednesday Afternoon"> Wednesday Afternoon</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Thursday Morning"> Thursday Morning</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Thursday Afternoon"> Thursday Afternoon</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Friday Morning"> Friday Morning</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Friday Afternoon"> Friday Afternoon</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Saturday Afternoon"> Saturday Afternoon</label>
+                        </div>
+                        <div class="availability-slot">
+                            <label><input type="checkbox" class="day-time" value="Saturday Afternoon"> Saturday Afternoon</label>
+                        </div>
+                    </div>
+                    <button type='button' class="btn" onclick="addTeacher()">Add Teacher</button>
+                </form>
+                
             </div>
             <div class="teacher-list-section">
-                <h3>Teacher List</h3>
+                <h3>Teachers List</h3>
                 <ul id="teacher-list">
                     <!-- Liste des professeurs sera générée ici -->
-                    <li>
-                        Professeur 1
-                        <button class="btn" onclick="modifyTeacher()">Modify</button>
-                        <button class="btn cancel-btn" onclick="deleteTeacher()">Delete</button>
-                    </li>
-                    <li>
-                        Professeur 2
-                        <button type='button' class="btn" onclick="modifyTeacher()">Modify</button>
-                        <button type='button' class="btn cancel-btn" onclick="deleteTeacher()">Delete</button>
-                    </li>
-                    <!-- Fin de la liste des professeurs -->
+                    <ul id="teacher-list">
+                        <!-- Liste des professeurs sera générée ici -->
+                    </ul>
                 </ul>
             </div>
         </div>
