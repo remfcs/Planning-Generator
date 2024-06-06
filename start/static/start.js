@@ -128,7 +128,7 @@ function addTeacher() {
     const email = document.getElementById('email').value.trim();
     const subject = document.getElementById('subject').value;
 
-    const checkboxes = document.querySelectorAll('#teacherForm .day-time:checked');
+    const checkboxes = document.querySelectorAll('#availability-section .day-time:checked');
     const availabilities = Array.from(checkboxes).map(cb => cb.value);
 
     if (!name || !surname || !email) {
@@ -140,6 +140,8 @@ function addTeacher() {
         return;
     }
 
+    console.log(availabilities)
+
     const teacherData = {
         id: Date.now(),  // Unique ID for each teacher for tracking/modifications
         name,
@@ -149,12 +151,14 @@ function addTeacher() {
         availabilities
     };
 
+    console.log(teacherData)
+
     teachers.push(teacherData);  // Add to the local array
 
     // Update UI
     const li = document.createElement('li');
     li.setAttribute('id', `teacher-${teacherData.id}`);
-    li.textContent = `${name} ${surname} (${email}, ${subject}) `;
+    li.textContent = `${name} ${surname} (${email}, ${subject}, availabilities: ${availabilities}) `;
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('btn', 'cancel-btn');
