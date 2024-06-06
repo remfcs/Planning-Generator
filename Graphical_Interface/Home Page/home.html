@@ -14,12 +14,17 @@
 
 <body>
     <div class="container">
-        <!-- Ajouter le lien vers la page des professeurs -->
-        <div class="text-right" style="position: relative;">
-            <a href="/professors" class="btn btn-primary">Teachers List</a>
+        <div class="d-flex justify-content-between mt-4">
+            <!-- Ajouter le lien vers la page des professeurs -->
+            <div class="text-left">
+                <a href="/professors" class="btn btn-primary">Teachers List</a>
+            </div>
+            <div class="text-right">
+                <a href="/modifications" class="btn btn-secondary">Modifications</a>
+            </div>
         </div>
-        <div class="d-flex justify-content-between align-items-baseline mt-4">
-            <h1 class="text-center w-100 mb-0">Students list</h1>
+        <div class="text-center mt-4">
+            <h1>Students List</h1>
         </div>
         <form id="filterForm" class="form-inline">
             <label for="studentName" class="sr-only">Student name :</label>

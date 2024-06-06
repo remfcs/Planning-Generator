@@ -1,35 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modification des Étudiants</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            padding: 15px;
-        }
-        .content {
-            margin-top: 20px;
-        }
-        .content form {
-            display: flex;
-            flex-direction: column;
-        }
-        .content form input, .content form select, .content form button {
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Student Modifications</title>
 </head>
+
 <body>
+    <div class="text-left" style="position: relative; margin: 50px;">
+        <a href="/" class="btn btn-danger">Back</a>
+    </div>
     <div class="container">
-        <h1>What do you want to modify?</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>What do you want to modify?</h1>
+        </div>
         <div class="content">
             <label>
                 <input type="radio" name="action" value="add-student" checked> Add a new student
@@ -44,47 +31,47 @@
                 <input type="radio" name="action" value="change-teacher-timeslot"> Change a teacher of time slot
             </label>
         </div>
-        
+
         <!-- Add Student Form -->
         <div class="content" id="add-student-form" style="display:block;">
             <h2>Add a new student</h2>
             <form id="add-student-form-inner">
-                <input type="text" id="student-name" placeholder="Name" required>
-                <input type="text" id="student-firstname" placeholder="First name" required>
-                <select id="student-promo" required>
+                <input type="text" id="student-name" class="form-control" placeholder="Name" required>
+                <input type="text" id="student-firstname" class="form-control" placeholder="First name" required>
+                <select id="student-promo" class="form-control" required>
                     <option value="">Promo</option>
                     <option value="1A">1A</option>
                     <option value="2A">2A</option>
                     <option value="3A">3A</option>
                 </select>
-                <input type="email" id="student-email" placeholder="Email" required>
-                <select id="english-course" required>
+                <input type="email" id="student-email" class="form-control" placeholder="Email" required>
+                <select id="english-course" class="form-control" required>
                     <option value="">Select English Course</option>
                 </select>
-                <select id="student-lv2" required>
+                <select id="student-lv2" class="form-control" required>
                     <option value="">Select LV2</option>
                     <option value="Spanish">Spanish</option>
                     <option value="German">German</option>
                     <option value="Chinese">Chinese</option>
                 </select>
-                <select id="lv2-course" required>
+                <select id="lv2-course" class="form-control" required>
                     <option value="">Select LV2 Course</option>
                 </select>
                 <label>
                     <input type="checkbox" id="student-reduced-exam"> Reduced exam
                 </label>
-                <button type="submit">Add a new student</button>
-                <button type="reset">Reset</button>
+                <button type="submit" class="btn btn-primary">Add a new student</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
             </form>
         </div>
-        
+
         <!-- Delete Student Form -->
         <div class="content" id="delete-student-form" style="display:none;">
             <h2>Delete a student</h2>
             <form id="delete-student-form-inner">
-                <input type="text" id="delete-student-name" placeholder="Name" required>
-                <button type="submit">Delete student</button>
-                <button type="reset">Reset</button>
+                <input type="text" id="delete-student-name" class="form-control" placeholder="Name" required>
+                <button type="submit" class="btn btn-primary">Delete student</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
             </form>
         </div>
 
@@ -92,15 +79,15 @@
         <div class="content" id="change-student-class-form" style="display:none;">
             <h2>Change a student of class</h2>
             <form id="change-student-class-form-inner">
-                <input type="text" id="change-student-name" placeholder="Name" required>
-                <select id="current-class" required>
+                <input type="text" id="change-student-name" class="form-control" placeholder="Name" required>
+                <select id="current-class" class="form-control" required>
                     <option value="">Current Class</option>
                 </select>
-                <select id="new-class" required>
+                <select id="new-class" class="form-control" required>
                     <option value="">New Class</option>
                 </select>
-                <button type="submit">Change class</button>
-                <button type="reset">Reset</button>
+                <button type="submit" class="btn btn-primary">Change class</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
             </form>
         </div>
 
@@ -108,18 +95,19 @@
         <div class="content" id="change-teacher-timeslot-form" style="display:none;">
             <h2>Change a teacher of time slot</h2>
             <form id="change-teacher-timeslot-form-inner">
-                <input type="text" id="change-teacher-name" placeholder="Teacher Name" required>
-                <select id="current-slot" required>
+                <input type="text" id="change-teacher-name" class="form-control" placeholder="Teacher Name" required>
+                <select id="current-slot" class="form-control" required>
                     <option value="">Current Slot</option>
                 </select>
-                <select id="new-slot" required>
+                <select id="new-slot" class="form-control" required>
                     <option value="">New Slot</option>
                 </select>
-                <button type="submit">Change time slot</button>
-                <button type="reset">Reset</button>
+                <button type="submit" class="btn btn-primary">Change time slot</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
             </form>
         </div>
     </div>
     <script src="/Modify student/modify-student.js"></script>
 </body>
+
 </html>

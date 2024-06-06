@@ -19,15 +19,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     // Fetch professors
-    fetchData('/professors')
+    fetchData('/api/professors')
         .then(data => {
             console.log('Professors data:', data);
             const professorSelect = document.getElementById('professeur');
             professorSelect.innerHTML = '<option value="">Select a Teacher</option>';
             data.forEach(prof => {
                 const option = document.createElement('option');
-                option.value = prof;
-                option.textContent = prof;
+                option.value = prof.email; // Use email as a unique value
+                option.textContent = `${prof.name} ${prof.surname}`; // Display full name
                 professorSelect.appendChild(option);
             });
         });
