@@ -1,4 +1,5 @@
 import sqlite3
+
 # Fonction pour supprimer toutes les données d'une table donnée
 def delete_table_data(filename, table):
     # Connexion à la base de données

@@ -6,12 +6,21 @@ import json
 app = Flask(__name__)
 
 # Définir le dossier de téléchargement
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = '././data/uploads'
+UPLOAD_FOLDER_LEVEL = '././data/uploads/input_level'
+UPLOAD_FOLDER_INFO = '././data/uploads/input_info'
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER_INFO'] = UPLOAD_FOLDER_INFO
+app.config['UPLOAD_FOLDER_LEVEL'] = UPLOAD_FOLDER_LEVEL
 
 # Créer le dossier de téléchargement s'il n'existe pas
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+if not os.path.exists(UPLOAD_FOLDER_LEVEL):
+    os.makedirs(UPLOAD_FOLDER_LEVEL)
+if not os.path.exists(UPLOAD_FOLDER_INFO):
+    os.makedirs(UPLOAD_FOLDER_INFO)
 
 @app.route('/')
 def index():
@@ -32,13 +41,13 @@ def submit():
 
     for file in students_files:
         if file.filename:
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER_INFO'], file.filename)
             file.save(file_path)
             saved_files['students_files'].append(file.filename)
 
     for file in level_files:
         if file.filename:
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER_LEVEL'], file.filename)
             file.save(file_path)
             saved_files['level_files'].append(file.filename)
             
