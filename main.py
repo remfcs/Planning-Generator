@@ -1,12 +1,8 @@
 import sqlite3
 import pandas as pd
 import numpy as np
-import function_create_groups
-import function_read_folder 
-import function_database
-import function_file_db
-import function_conflict
-import back_up
+from algo_feature import function_conflict, function_file_db, function_database, function_read_folder, function_create_groups
+from back_up import back_up
 
 Data = 'data/test.sqlite3'
 
