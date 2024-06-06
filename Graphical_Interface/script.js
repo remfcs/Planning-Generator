@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log('Professors data:', data);
             const professorSelect = document.getElementById('professeur');
-            professorSelect.innerHTML = '<option value="">Sélectionner Professeur</option>';
+            professorSelect.innerHTML = '<option value="">Select a Teacher</option>';
             data.forEach(prof => {
                 const option = document.createElement('option');
                 option.value = prof;
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log('Languages data:', data);
             const languageSelect = document.getElementById('langue');
-            languageSelect.innerHTML = '<option value="">Sélectionner Langue</option>';
+            languageSelect.innerHTML = '<option value="">Select a language</option>';
             data.forEach(lang => {
                 const option = document.createElement('option');
                 option.value = lang;
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log('Groups data:', data);
             const groupSelect = document.getElementById('group_lv1');
-            groupSelect.innerHTML = '<option value="">Sélectionner Groupe LV1</option>';
+            groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
             data.forEach(group => {
                 const option = document.createElement('option');
                 option.value = group;
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        const headers = ['NOM', 'Prénom', 'Email', 'Classe', 'Groupe LV1', 'Langue', 'Professeur'];
+        const headers = ['NAME', 'Firstname', 'Email', 'Class Level', 'LV1 Group', 'Language', 'Teacher'];
 
         headers.forEach(headerText => {
             const header = document.createElement('th');

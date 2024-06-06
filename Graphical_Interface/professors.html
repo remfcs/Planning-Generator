@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Professeurs</title>
+    <title>Teachers List</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Include jQuery before Bootstrap's JavaScript -->
@@ -14,7 +14,11 @@
 
 <body>
     <div class="container">
-        <h1>Liste des Professeurs</h1>
+        <!-- Ajouter le lien vers la page des professeurs -->
+        <div class="text-right" style="position: relative;">
+            <a href="/" class="btn btn-primary">Student List</a>
+        </div>
+        <h1>Teachers List</h1>
         <div id="professorList" class="table-responsive"></div>
     </div>
     <script src="professors.js"></script>

@@ -14,41 +14,43 @@
 
 <body>
     <div class="container">
-        <h1>Students list</h1>
+        <!-- Ajouter le lien vers la page des professeurs -->
+        <div class="text-right" style="position: relative;">
+            <a href="/professors" class="btn btn-primary">Teachers List</a>
+        </div>
+        <div class="d-flex justify-content-between align-items-baseline mt-4">
+            <h1 class="text-center w-100 mb-0">Students list</h1>
+        </div>
         <form id="filterForm" class="form-inline">
-            <label for="studentName" class="sr-only">Nom de l'élève :</label>
+            <label for="studentName" class="sr-only">Student name :</label>
             <input type="text" id="studentName" name="studentName" class="form-control mb-2 mr-sm-2">
 
-            <label for="niveau" class="sr-only">Niveau :</label>
+            <label for="niveau" class="sr-only">Class Level :</label>
             <select id="niveau" name="niveau" class="form-control mb-2 mr-sm-2">
-                <option value="">Sélectionner Niveau</option>
+                <option value="">Select a class level</option>
                 <option value="1A">1A</option>
                 <option value="2A">2A</option>
                 <option value="3A">3A</option>
             </select>
 
-            <label for="professeur" class="sr-only">Professeur :</label>
+            <label for="professeur" class="sr-only">Teachers :</label>
             <select id="professeur" name="professeur" class="form-control mb-2 mr-sm-2">
-                <option value="">Sélectionner Professeur</option>
+                <option value="">Select a Teacher</option>
             </select>
 
-            <label for="langue" class="sr-only">Langue :</label>
+            <label for="langue" class="sr-only">Language :</label>
             <select id="langue" name="langue" class="form-control mb-2 mr-sm-2">
-                <option value="">Sélectionner Langue</option>
+                <option value="">Select a Language</option>
             </select>
 
-            <label for="group_lv1" class="sr-only">Groupe LV1 :</label>
+            <label for="group_lv1" class="sr-only">LV1 Group :</label>
             <select id="group_lv1" name="group_lv1" class="form-control mb-2 mr-sm-2">
-                <option value="">Sélectionner Groupe LV1</option>
+                <option value="">Select an LV1 Group</option>
             </select>
         </form>
         <div id="studentDetails"></div>
         <div id="studentList" class="table-responsive"></div>
 
-        <!-- Ajouter le lien vers la page des professeurs -->
-        <div class="text-center mt-4">
-            <a href="/professors" class="btn btn-primary">Voir la liste des professeurs</a>
-        </div>
     </div>
     <script src="script.js"></script>
 </body>
