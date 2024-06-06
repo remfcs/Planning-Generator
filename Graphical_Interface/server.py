@@ -126,6 +126,47 @@ def get_groups():
     conn.close()
     return jsonify(groups)
 
+@app.route('/groups/<promo>/<language>')
+def get_courses_by_promo(promo, language):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    query = "SELECT DISTINCT ID_COURSE FROM List_Groups_Students WHERE ID_COURSE LIKE ?"
+    cursor.execute(query, ('%_' + language,))
+    courses = cursor.fetchall()
+    filtered_courses = []
+    for course in courses:
+        course_id = course[0]
+        # Extract the part inside the braces {}
+        start = course_id.find('{') + 1
+        end = course_id.find('}')
+        if start > 0 and end > start:
+            promos = course_id[start:end].split(', ')
+            if promo in promos:
+                filtered_courses.append(course_id)
+    conn.close()
+    return jsonify(filtered_courses)
+
+@app.route('/add', methods=['POST'])
+def add_student():
+    data = request.get_json()
+    new_student = (
+        data['email'],
+        data['name'],
+        data['surname'],
+        data['school_year'],
+        data['lv1'],
+        data['lv2'],
+        1 if data['reducedExam'] else 0
+    )
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, new_student)
+    conn.commit()
+    conn.close()
+
 # Route pour servir le fichier HTML des professeurs
 @app.route('/professors')
 def serve_professors_html():
@@ -147,6 +188,10 @@ def serve_style_css():
 @app.route('/home.html')
 def serve_home_html():
     return send_from_directory('.', 'home.html')
+
+@app.route('/modifications')
+def modifications():
+    return send_from_directory('.', 'Modify student/add-student.html')
 
 if __name__ == '__main__':
     def open_browser():

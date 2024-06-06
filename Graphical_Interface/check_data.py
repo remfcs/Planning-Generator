@@ -1,10 +1,10 @@
 import sqlite3
 
 def verify_columns():
-    conn = sqlite3.connect('test.sqlite3')
+    conn = sqlite3.connect('database.sqlite3')
     cursor = conn.cursor()
     
-    tables = ['Student', 'Teachers', 'List_Groups_Students']
+    tables = ['Courses', 'Student']
 
     for table in tables:
         cursor.execute(f"PRAGMA table_info({table})")

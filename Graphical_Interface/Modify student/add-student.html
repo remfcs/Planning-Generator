@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modification des Étudiants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 15px;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .content form input, .content form select, .content form button {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>What do you want to modify?</h1>
+        <div class="content">
+            <label>
+                <input type="radio" name="action" value="add-student" checked> Add a new student
+            </label>
+            <label>
+                <input type="radio" name="action" value="delete-student"> Delete a student
+            </label>
+            <label>
+                <input type="radio" name="action" value="change-student-class"> Change a student of class
+            </label>
+            <label>
+                <input type="radio" name="action" value="change-teacher-timeslot"> Change a teacher of time slot
+            </label>
+        </div>
+        
+        <!-- Add Student Form -->
+        <div class="content" id="add-student-form" style="display:block;">
+            <h2>Add a new student</h2>
+            <form id="add-student-form-inner">
+                <input type="text" id="student-name" placeholder="Name" required>
+                <input type="text" id="student-firstname" placeholder="First name" required>
+                <select id="student-promo" required>
+                    <option value="">Promo</option>
+                    <option value="1A">1A</option>
+                    <option value="2A">2A</option>
+                    <option value="3A">3A</option>
+                </select>
+                <input type="email" id="student-email" placeholder="Email" required>
+                <select id="english-course" required>
+                    <option value="">Select English Course</option>
+                </select>
+                <select id="student-lv2" required>
+                    <option value="">Select LV2</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="German">German</option>
+                    <option value="Chinese">Chinese</option>
+                </select>
+                <select id="lv2-course" required>
+                    <option value="">Select LV2 Course</option>
+                </select>
+                <label>
+                    <input type="checkbox" id="student-reduced-exam"> Reduced exam
+                </label>
+                <button type="submit">Add a new student</button>
+                <button type="reset">Reset</button>
+            </form>
+        </div>
+        
+        <!-- Delete Student Form -->
+        <div class="content" id="delete-student-form" style="display:none;">
+            <h2>Delete a student</h2>
+            <form id="delete-student-form-inner">
+                <input type="text" id="delete-student-name" placeholder="Name" required>
+                <button type="submit">Delete student</button>
+                <button type="reset">Reset</button>
+            </form>
+        </div>
+
+        <!-- Change Student Class Form -->
+        <div class="content" id="change-student-class-form" style="display:none;">
+            <h2>Change a student of class</h2>
+            <form id="change-student-class-form-inner">
+                <input type="text" id="change-student-name" placeholder="Name" required>
+                <select id="current-class" required>
+                    <option value="">Current Class</option>
+                </select>
+                <select id="new-class" required>
+                    <option value="">New Class</option>
+                </select>
+                <button type="submit">Change class</button>
+                <button type="reset">Reset</button>
+            </form>
+        </div>
+
+        <!-- Change Teacher Time Slot Form -->
+        <div class="content" id="change-teacher-timeslot-form" style="display:none;">
+            <h2>Change a teacher of time slot</h2>
+            <form id="change-teacher-timeslot-form-inner">
+                <input type="text" id="change-teacher-name" placeholder="Teacher Name" required>
+                <select id="current-slot" required>
+                    <option value="">Current Slot</option>
+                </select>
+                <select id="new-slot" required>
+                    <option value="">New Slot</option>
+                </select>
+                <button type="submit">Change time slot</button>
+                <button type="reset">Reset</button>
+            </form>
+        </div>
+    </div>
+    <script src="/Modify student/modify-student.js"></script>
+</body>
+</html>
