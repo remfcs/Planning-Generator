@@ -1,6 +1,6 @@
 import sqlite3
 
-Data = 'data/test.sqlite3'
+Data = 'data/database.sqlite3'
 
 
 def Delete_one_table(Data, name_table):
@@ -29,7 +29,7 @@ def Delete_all_tables(Data):
     return 
 
 
-Delete_all_tables(Data)
+#Delete_all_tables(Data)
 
 
 def Create_tables(filename):

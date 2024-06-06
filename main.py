@@ -4,7 +4,7 @@ import numpy as np
 from algo_feature import function_conflict, function_file_db, function_database, function_read_folder, function_create_groups
 from back_up import back_up
 
-Data = 'data/test.sqlite3'
+Data = 'data/database.sqlite3'
 
 
 depot_info_folder = './data/input_info'
@@ -35,15 +35,6 @@ df = function_read_folder.file_data_Student(depot_info_folder)
 
 #Récupère les notes dans étudiants pour les mettre dans la df et sortir une df 'students_info' avec toutes les infos des étudiants
 students_info = function_read_folder.add_student_grade(depot_note_folder, df)
-
-#print(students_info.head())
-def find_duplicate_emails(students_info):
-    duplicate_emails = students_info.groupby('EMAIL').filter(lambda x: len(x) > 1)['EMAIL'].unique()
-    return duplicate_emails
-
-# Exemple d'utilisation
-duplicate_emails = find_duplicate_emails(students_info)
-#print("Emails en doublon :", duplicate_emails)
 
 #crée le backup
 back_up.backup(Data)
