@@ -9,6 +9,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = '././data/uploads'
 UPLOAD_FOLDER_LEVEL = '././data/uploads/input_level'
 UPLOAD_FOLDER_INFO = '././data/uploads/input_info'
+TEACHERS_JSON_PATH = os.path.join(UPLOAD_FOLDER, 'teachers.json')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_INFO'] = UPLOAD_FOLDER_INFO
@@ -53,6 +54,8 @@ def submit():
             
     teachers_json = request.form.get('teachers', '[]')  # Default to an empty list as JSON
     teachers = json.loads(teachers_json)  # Decode the JSON string
+    with open(TEACHERS_JSON_PATH, 'w') as json_file:
+        json.dump(teachers, json_file, indent=4)
 
 # Afficher les données pour vérification (peut être remplacé par une autre logique)
     response_data = {
@@ -61,8 +64,7 @@ def submit():
     "students_files": ", ".join(saved_files['students_files']),
     "level_files": ", ".join(saved_files['level_files']),
     "teacher:": teachers
-    }
-
+    }    
     return jsonify(response_data)
 
 
