@@ -42,25 +42,37 @@ document.addEventListener('DOMContentLoaded', function () {
         let promo = document.getElementById('student-promo').value;
         promo = promo.substring(0, 2);
         const english_course = document.getElementById('english-course').value;
-        if (lv2 && promo) {
-            fetch(`/groups/${promo}/${lv2}`)
-                .then(response => response.json())
-                .then(courses => {
-                    console.log('Courses fetched:', courses);
-                    // Clear existing options
+        fetch(`/timeslot?course=${english_course}`)
+            .then(response => response.json())
+            .then(timeslot => {
+                if (lv2 && promo) {
+                    fetch(`/groups/${promo}/${lv2}`)
+                        .then(response => response.json())
+                        .then(courses => {
+                            // Clear existing options
+                            lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
+                            
+                            // Add new options
+                            courses.forEach(course => {
+                                const timeslot_last = timeslot.substring(timeslot.length - 1);
+                                fetch(`/timeslot?course=${course}`)
+                                    .then(response => response.json())
+                                    .then(timeslot2 => {
+                                        const timeslot2_last = timeslot2.substring(timeslot2.length - 1);
+                                        const option = document.createElement('option');
+                                        option.value = course;
+                                        option.textContent = course;            
+                                        if (timeslot_last === timeslot2_last) {
+                                            option.disabled = true;
+                                        }        
+                                        lv2CourseSelect.appendChild(option);
+                                    })
+                            });
+                        })
+                } else {
                     lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
-                    
-                    // Add new options
-                    courses.forEach(course => {
-                        const option = document.createElement('option');
-                        option.value = course;
-                        option.textContent = course;
-                        lv2CourseSelect.appendChild(option);
-                    });
-                })
-        } else {
-            lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
-        }
+                }
+            })
     });
 
 

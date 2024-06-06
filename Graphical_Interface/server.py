@@ -199,21 +199,14 @@ def add_list2():
     conn.close()
 
 @app.route('/timeslot')
-def add_list2(course):
-    data_lv2 = request.get_json()
-    new_student = (
-        data_lv2['course'],
-        data_lv2['email']
-    )
+def get_timeslot():
+    course = request.args.get('course') 
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
-        VALUES (?, ?)
-        """, new_student)
-    conn.commit()
+    cursor.execute("SELECT ID_AVAILABILITY FROM Courses WHERE ID_COURSE LIKE ?", (course,))
+    timeslot = cursor.fetchone()
     conn.close()
-    return jsonify(timeslot)
+    return jsonify(timeslot[0])
 
 # Route pour servir le fichier HTML des professeurs
 @app.route('/professors')
