@@ -66,6 +66,8 @@ def add_student():
             return jsonify({'error': 'SQL error'}), 500
     else:
         return jsonify({'error': 'Database connection failed'}), 500
+    
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const englishCourseSelect = document.getElementById('english-course');
 
     promoSelect.addEventListener('change', (event) => {
-        const promo = event.target.value;
+        let promo = event.target.value;
+        promo = promo.substring(0, 2);
         if (promo) {
             fetch(`/groups/${promo}/ANG`)
                 .then(response => response.json())
@@ -38,7 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if(lv2==='Chinese'){
             lv2 = 'CHI'
         }
-        const promo = document.getElementById('student-promo').value;
+        let promo = document.getElementById('student-promo').value;
+        promo = promo.substring(0, 2);
+        const english_course = document.getElementById('english-course').value;
         if (lv2 && promo) {
             fetch(`/groups/${promo}/${lv2}`)
                 .then(response => response.json())
@@ -62,13 +65,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
+        let lv2_student = document.getElementById('student-lv2').value;
+        if(lv2_student==='Spanish'){
+            lv2_student = 'ESPAGNOL'
+        }
+        if(lv2_student==='German'){
+            lv2_student = 'ALLEMAND'
+        }
+        if(lv2_student==='Chinese'){
+            lv2_student = 'CHINOIS'
+        }
+
         const data = {
             email: document.getElementById('student-email').value,
             name: document.getElementById('student-name').value,
             surname: document.getElementById('student-firstname').value,
             school_year: document.getElementById('student-promo').value,
-            lv1: 'ANG',
-            lv2: document.getElementById('student-lv2').value,
+            lv1: 'ANGLAIS',
+            lv2: lv2_student,
             reducedExam: document.getElementById('student-reduced-exam').checked
         };
 
@@ -81,5 +95,33 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     });
 
+    document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
+        const data_english = {
+            english: document.getElementById('english-course').value,
+            email: document.getElementById('student-email').value
+        };
 
+        fetch('/add2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data_english),
+        })
+    });
+
+    document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
+        const data_lv2 = {
+            lv2: document.getElementById('lv2-course').value,
+            email: document.getElementById('student-email').value
+        };
+
+        fetch('/add3', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data_lv2),
+        })
+    });
 })

@@ -167,6 +167,54 @@ def add_student():
     conn.commit()
     conn.close()
 
+@app.route('/add2', methods=['POST'])
+def add_list():
+    data_english = request.get_json()
+    new_student = (
+        data_english['course'],
+        data_english['email']
+    )
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
+        VALUES (?, ?)
+        """, new_student)
+    conn.commit()
+    conn.close()
+
+@app.route('/add3', methods=['POST'])
+def add_list2():
+    data_lv2 = request.get_json()
+    new_student = (
+        data_lv2['course'],
+        data_lv2['email']
+    )
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
+        VALUES (?, ?)
+        """, new_student)
+    conn.close()
+
+@app.route('/timeslot')
+def add_list2(course):
+    data_lv2 = request.get_json()
+    new_student = (
+        data_lv2['course'],
+        data_lv2['email']
+    )
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
+        VALUES (?, ?)
+        """, new_student)
+    conn.commit()
+    conn.close()
+    return jsonify(timeslot)
+
 # Route pour servir le fichier HTML des professeurs
 @app.route('/professors')
 def serve_professors_html():
