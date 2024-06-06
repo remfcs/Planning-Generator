@@ -1,81 +1,85 @@
-function showForm() {
-    const addStudentForm = document.getElementById('addStudentForm');
-    const deleteStudentForm = document.getElementById('deleteStudentForm');
-    const changeStudentClassForm = document.getElementById('changeStudentClassForm');
-    const changeTeacherTimeSlotForm = document.getElementById('changeTeacherTimeSlotForm');
+document.addEventListener('DOMContentLoaded', function () {
+    const promoSelect = document.getElementById('student-promo');
+    const englishCourseSelect = document.getElementById('english-course');
 
-    addStudentForm.classList.add('hidden');
-    deleteStudentForm.classList.add('hidden');
-    changeStudentClassForm.classList.add('hidden');
-    changeTeacherTimeSlotForm.classList.add('hidden');
-
-    if (document.getElementById('addStudent').checked) {
-        addStudentForm.classList.remove('hidden');
-    } else if (document.getElementById('deleteStudent').checked) {
-        deleteStudentForm.classList.remove('hidden');
-    } else if (document.getElementById('changeStudentClass').checked) {
-        changeStudentClassForm.classList.remove('hidden');
-    } else if (document.getElementById('changeTeacher').checked) {
-        changeTeacherTimeSlotForm.classList.remove('hidden');
-    }
-}
-
-function sendData(url, data) {
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            alert('Operation successful');
+    promoSelect.addEventListener('change', (event) => {
+        const promo = event.target.value;
+        if (promo) {
+            fetch(`/groups/${promo}/ANG`)
+                .then(response => response.json())
+                .then(courses => {
+                    // Clear existing options
+                    englishCourseSelect.innerHTML = '<option value="">Select English Course</option>';
+                    
+                    // Add new options
+                    courses.forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course;
+                        option.textContent = course;
+                        englishCourseSelect.appendChild(option);
+                    });
+                })
         } else {
-            alert('Operation failed');
+            englishCourseSelect.innerHTML = '<option value="">Select English Course</option>';
         }
     });
-}
 
-function addStudent() {
-    const data = {
-        name: document.querySelector('#addStudentForm input[placeholder="Name"]').value,
-        first_name: document.querySelector('#addStudentForm input[placeholder="First name"]').value,
-        promo: document.querySelector('#addStudentForm select').value,
-        email: document.querySelector('#addStudentForm input[placeholder="@epfedu.fr"]').value,
-        english_level: document.querySelector('#addStudentForm input[placeholder="English level /10"]').value,
-        lv2: document.querySelector('#addStudentForm select').value,
-        lv2_level: document.querySelector('#addStudentForm input[placeholder="LV2 level /10"]').value,
-        reduced_exam: document.querySelector('#addStudentForm input[type="checkbox"]').checked
-    };
-    sendData('/add_student', data);
-}
+    const lv2Select = document.getElementById('student-lv2');
+    const lv2CourseSelect = document.getElementById('lv2-course');
 
-function deleteStudent() {
-    const data = {
-        name: document.querySelector('#deleteStudentForm input[placeholder="Search student by name"]').value
-    };
-    sendData('/delete_student', data);
-}
+    lv2Select.addEventListener('change', (event) => {
+        let lv2 = event.target.value;
+        if(lv2==='Spanish'){
+            lv2 = 'ESP'
+        }
+        if(lv2==='German'){
+            lv2 = 'ALL'
+        }
+        if(lv2==='Chinese'){
+            lv2 = 'CHI'
+        }
+        const promo = document.getElementById('student-promo').value;
+        if (lv2 && promo) {
+            fetch(`/groups/${promo}/${lv2}`)
+                .then(response => response.json())
+                .then(courses => {
+                    console.log('Courses fetched:', courses);
+                    // Clear existing options
+                    lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
+                    
+                    // Add new options
+                    courses.forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course;
+                        option.textContent = course;
+                        lv2CourseSelect.appendChild(option);
+                    });
+                })
+        } else {
+            lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
+        }
+    });
 
-function changeStudentClass() {
-    const data = {
-        name: document.querySelector('#changeStudentClassForm input[placeholder="Student name"]').value,
-        new_class: document.querySelector('#changeStudentClassForm select').value
-    };
-    sendData('/change_student_class', data);
-}
 
-function changeTeacherTimeSlot() {
-    const data = {
-        name: document.querySelector('#changeTeacherTimeSlotForm input[placeholder="Teacher name"]').value,
-        new_time_slot: document.querySelector('#changeTeacherTimeSlotForm input[placeholder="New time slot"]').value
-    };
-    sendData('/change_teacher_time_slot', data);
-}
+    document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
+        const data = {
+            email: document.getElementById('student-email').value,
+            name: document.getElementById('student-name').value,
+            surname: document.getElementById('student-firstname').value,
+            school_year: document.getElementById('student-promo').value,
+            lv1: 'ANG',
+            lv2: document.getElementById('student-lv2').value,
+            reducedExam: document.getElementById('student-reduced-exam').checked
+        };
 
-window.onload = showForm;
-document.querySelectorAll('input[name="modifyOption"]').forEach(el => {
-    el.addEventListener('change', showForm);
-});
+        fetch('/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+    });
+
+
+})
