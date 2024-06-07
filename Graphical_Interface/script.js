@@ -46,25 +46,38 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-    // Fetch groups
+    // Fetch all groups and store them for filtering
+    let allGroups = [];
     fetchData('/groups')
         .then(data => {
             console.log('Groups data:', data);
-            const groupSelect = document.getElementById('group_lv1');
-            groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
-            data.forEach(group => {
+            allGroups = data; // Store all groups
+            updateGroupOptions(allGroups, '');
+        });
+
+    // Function to update group options based on selected language
+    function updateGroupOptions(groups, selectedLanguage) {
+        const groupSelect = document.getElementById('group_lv1');
+        groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
+        groups.forEach(group => {
+            if (!selectedLanguage || group.endsWith(selectedLanguage) || group.endsWith(`_${selectedLanguage}_D`)) {
                 const option = document.createElement('option');
                 option.value = group;
                 option.textContent = group;
                 groupSelect.appendChild(option);
-            });
+            }
         });
+    }
 
     // Add event listeners to filter elements
     document.getElementById('studentName').addEventListener('input', applyFilters);
     document.getElementById('niveau').addEventListener('change', applyFilters);
     document.getElementById('professeur').addEventListener('change', applyFilters);
-    document.getElementById('langue').addEventListener('change', applyFilters);
+    document.getElementById('langue').addEventListener('change', function () {
+        const selectedLanguage = this.value;
+        updateGroupOptions(allGroups, selectedLanguage);
+        applyFilters(); // Apply filters after updating group options
+    });
     document.getElementById('group_lv1').addEventListener('change', applyFilters);
 
     // Function to populate the student table
