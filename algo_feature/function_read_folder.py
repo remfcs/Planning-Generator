@@ -63,7 +63,7 @@ def clean_text(text):
 
 def csv_into_dataframe(file_path, db_column_mapping):
     df = pd.read_csv(file_path, encoding='utf-8-sig')
-    df = df.applymap(clean_text)   
+    df = df.applymap(clean_text)    # type: ignore
     df.rename(columns=db_column_mapping, inplace=True)
     df = df[list(db_column_mapping.values())]
     return df
@@ -118,7 +118,7 @@ def update_students_info_csv(file_path, students_info, LV):
     with open(file_path, 'r', encoding='utf-8-sig'):
         csv_reader = pd.read_csv(file_path, encoding='utf-8-sig')
         csv_reader.columns = [clean_text(col) for col in csv_reader.columns]
-        csv_reader = csv_reader.applymap(clean_text)
+        csv_reader = csv_reader.applymap(clean_text) # type: ignore
         csv_reader['Note/10'] = csv_reader['Note/10'].replace('', np.nan)
         csv_reader['Note/10'] = csv_reader['Note/10'].replace(';', '.')
         csv_reader['Note/10'] = csv_reader['Note/10'].astype(float)
