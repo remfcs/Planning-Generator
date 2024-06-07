@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     const promoSelect = document.getElementById('student-promo');
     const englishCourseSelect = document.getElementById('english-course');
+    const addSecondLanguageCheckbox = document.getElementById('add-second-language');
+    const secondLanguageSection = document.getElementById('second-language-section');
+    const studentLv2 = document.getElementById('student-lv2');
+    const lv2Course = document.getElementById('lv2-course');
 
     promoSelect.addEventListener('change', (event) => {
         let promo = event.target.value;
@@ -23,6 +27,32 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             englishCourseSelect.innerHTML = '<option value="">Select English Course</option>';
         }
+
+        const toggleSecondLanguageSection = () => {
+            const promoValue = promoSelect.value;
+            if (promoValue === '1A' || promoValue === '2A' || promoValue === '3A') {
+                secondLanguageSection.style.display = 'block';
+                studentLv2.style.display = 'block';
+                lv2Course.style.display = 'block';
+                addSecondLanguageCheckbox.style.display = 'none';
+            } else if (promoValue === '1ABEE' || promoValue === '2ABEE' || promoValue === '3ABEE') {
+                secondLanguageSection.style.display = 'none';
+            } else if (promoValue === '1AFT' || promoValue === '2AFT') {
+                secondLanguageSection.style.display = 'block';
+                addSecondLanguageCheckbox.style.display = 'block';
+                studentLv2.style.display = addSecondLanguageCheckbox.checked ? 'block' : 'none';
+                lv2Course.style.display = addSecondLanguageCheckbox.checked ? 'block' : 'none';
+            } else if (promoValue === 'Promo'){
+                secondLanguageSection.style.display = 'none';
+            }
+        };
+
+        promoSelect.addEventListener('change', toggleSecondLanguageSection);
+        addSecondLanguageCheckbox.addEventListener('change', toggleSecondLanguageSection);
+
+        // Appeler la fonction au chargement pour définir l'état initial
+        toggleSecondLanguageSection()
+
     });
 
     const lv2Select = document.getElementById('student-lv2');

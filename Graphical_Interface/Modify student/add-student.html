@@ -53,15 +53,20 @@
                 <select id="english-course" class="form-control" required>
                     <option value="">Select English Course</option>
                 </select>
-                <select id="student-lv2" class="form-control" required>
-                    <option value="">Select LV2</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="German">German</option>
-                    <option value="Chinese">Chinese</option>
-                </select>
-                <select id="lv2-course" class="form-control" required>
-                    <option value="">Select LV2 Course</option>
-                </select>
+                <div id="second-language-section" style="display: none">
+                    <label>
+                        <input type="checkbox" id="add-second-language"> Add a second language
+                    </label>
+                    <select id="student-lv2" class="form-control" required>
+                        <option value="">Select LV2</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="German">German</option>
+                        <option value="Chinese">Chinese</option>
+                    </select>
+                    <select id="lv2-course" class="form-control" required>
+                        <option value="">Select LV2 Course</option>
+                    </select>
+                </div>
                 <label>
                     <input type="checkbox" id="student-reduced-exam"> Reduced exam
                 </label>
