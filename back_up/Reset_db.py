@@ -1,35 +1,86 @@
 import sqlite3
 
+# Path to the SQLite database file
 Data = 'data/database.sqlite3'
 
-
 def Delete_one_table(Data, name_table):
+    """
+    Deletes a single table from the SQLite database.
+
+    Parameters:
+    Data (str): Path to the SQLite database file.
+    name_table (str): Name of the table to be deleted.
+
+    Returns:
+    list: Names of the remaining tables in the database.
+    """
+    # Connect to the SQLite database
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
+
+    # Execute the SQL command to drop the specified table
     cursor.execute("DROP TABLE " + name_table + ";")
+
+    # Fetch the names of the remaining tables
     tables = cursor.fetchall()
+
+    # Close the connection
     conn.close()
+
+    # Return the list of remaining table names
     return [table[0] for table in tables]
 
 def list_tables(Data):
+    """
+    Lists all tables in the SQLite database.
+
+    Parameters:
+    Data (str): Path to the SQLite database file.
+
+    Returns:
+    list: Names of all tables in the database.
+    """
+    # Connect to the SQLite database
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
+
+    # Execute the SQL command to retrieve table names
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+
+    # Fetch all table names
     tables = cursor.fetchall()
+
+    # Close the connection
     conn.close()
+
+    # Return the list of table names
     return [table[0] for table in tables]
 
 def Delete_all_tables(Data):
+    """
+    Deletes all tables from the SQLite database except 'sqlite_sequence'.
+
+    Parameters:
+    Data (str): Path to the SQLite database file.
+    """
+    # Connect to the SQLite database
     conn = sqlite3.connect(Data)
+
+    # Retrieve the list of all tables
     for i in list_tables(Data):
         cursor = conn.cursor()
+
+        # Skip the 'sqlite_sequence' table, which is used for autoincrement keys
         if i != 'sqlite_sequence':
+            # Execute the SQL command to drop the table
             cursor.execute("DROP TABLE " + i + ";")
+
+    # Close the connection
     conn.close()
-    return 
 
-
+# Delete all tables in the database
 Delete_all_tables(Data)
+
 
 
 def Create_tables(filename):

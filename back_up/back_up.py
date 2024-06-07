@@ -1,46 +1,45 @@
 import os
 import shutil
 
-
 def backup(Data):
     try:
-        # Construction du nom de fichier pour la sauvegarde en ajoutant un préfixe "backup_" au nom du fichier de base de données
+        # Constructing the filename for the backup by adding a "backup_" prefix to the database file's name
         name = "backup_" + os.path.splitext(os.path.basename(Data))[0]
         rename_data = os.path.join(os.path.dirname(Data), name) + ".sqlite3"
-        # Copie du fichier de base de données vers la sauvegarde
+        # Copying the database file to the backup
         shutil.copy2(Data, rename_data)
     except FileNotFoundError:
-        # Gestion de l'erreur si le fichier source n'existe pas
-        print("Le fichier source n'existe pas.")
+        # Handling the error if the source file does not exist
+        print("The source file does not exist.")
     except PermissionError:
-        # Gestion de l'erreur si la permission est refusée pour copier ou renommer le fichier
-        print("Permission refusée pour copier ou renommer le fichier.")
+        # Handling the error if permission is denied to copy or rename the file
+        print("Permission denied to copy or rename the file.")
     except Exception as e:
-        # Gestion de toutes les autres erreurs possibles
-        print(f"Une erreur s'est produite : {e}")
-        
-def restor_backup(Data):
+        # Handling all other possible errors
+        print(f"An error occurred: {e}")
+
+def restore_backup(Data):
     try:
-        # Construction du nom de fichier de la sauvegarde en ajoutant un préfixe "backup_" au nom du fichier de base de données
+        # Constructing the filename for the backup by adding a "backup_" prefix to the database file's name
         name = "backup_" + os.path.splitext(os.path.basename(Data))[0]
         rename_data = os.path.join(os.path.dirname(Data), name) + ".sqlite3"
         #print(rename_data)
-        # Vérification de l'existence de la sauvegarde
+        # Checking if the backup exists
         if os.path.exists(rename_data):
-            # Suppression du fichier de base de données actuel
+            # Deleting the current database file
             os.remove(Data)
-            # Renommage de la sauvegarde pour restaurer le fichier de base de données
+            # Renaming the backup to restore the database file
             os.rename(rename_data, Data)
         else:
-            # Affichage d'un message d'erreur si aucune sauvegarde n'est trouvée
-            print(f"Impossible, there is no backup.")
+            # Displaying an error message if no backup is found
+            print("Impossible, there is no backup.")
             return False
     except FileNotFoundError:
-        # Gestion de l'erreur si le fichier source n'existe pas
-        print("Le fichier n'existe pas.")
+        # Handling the error if the source file does not exist
+        print("The file does not exist.")
     except PermissionError:
-        # Gestion de l'erreur si la permission est refusée pour supprimer ou renommer le fichier
-        print("Permission refusée pour supprimer le fichier.")
+        # Handling the error if permission is denied to delete or rename the file
+        print("Permission denied to delete the file.")
     except Exception as e:
-        # Gestion de toutes les autres erreurs possibles
-        print(f"Une erreur s'est produite : {e}")
+        # Handling all other possible errors
+        print(f"An error occurred: {e}")
