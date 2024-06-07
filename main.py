@@ -7,15 +7,19 @@ import json
 import os
 
 '''
-    reste a faire :
-    -refaire numberclass
-    -phoenix
+    À faire :
+
+    - refaire numberclass
+    - phoenix
+    - mapper les colonnes dans function_read_folder
     # ? Documenter toutes les fonctions
     # ? faire le doc de la maintenance        
-    -rajouter les 3A ft
-    -1A, 2A et 3A peuvent avoir cours en même temps de Allemand et Chinois !
-    -améliorer la balance des conflits
+    - rajouter les 3A ft
+    - 1A, 2A et 3A peuvent avoir cours en même temps de Allemand et Chinois !
+    - améliorer la balance des conflits
+    - 
 ''' 
+
 Data = 'data/database.sqlite3'
 
 #depot_info_folder = './data/uploads/input_info'

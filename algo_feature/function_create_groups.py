@@ -2,10 +2,7 @@ import algo_feature.function_database as function_database
 import sqlite3
 
 """ 
-Refaire 'nomber_class' en calculant le nb de prof dispo afin 
-
-
-
+Refaire 'nomber_class' en calculant le nb de prof dispo.
 """
 
 def nomber_class(nomber_student, nomber_by_class):
@@ -151,9 +148,6 @@ def make_association(Data, promo_pair):
             conn.commit()  # Insert the final insertion into the Courses table and commit the changes
 
     conn.close()  # Close the database connection
-
-
-
 
 
 """
