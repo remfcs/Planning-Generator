@@ -5,10 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student and Teacher Management</title>
-    <link rel="stylesheet" href="./start.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <div class="text-left" style="position: relative; margin: 50px;">
+        <a href="/" class="btn btn-danger">Back</a>
+    </div>
     <div class="container">
         <h1>Student and Teacher Management</h1>
 
@@ -132,7 +136,6 @@
                         </div>
                         <button type='button' id="123" class="btn" onclick="addTeacher()">Add Teacher</button>
                     </form>
-
                 </div>
                 <div class="teacher-list-section">
                     <h3>Teachers List</h3>
@@ -144,7 +147,7 @@
 
             <div class="section">
                 <button class="btn" id="create-planning-btn" onclick="createPlanning()">Create the Planning</button>
-                <button type='button' class="btn cancel-btn" onclick="cancelPlanning()">Cancel</button>
+                <button type='button' class="btn btn-danger" onclick="cancelPlanning()">Cancel</button>
             </div>
         </form>
     </div>

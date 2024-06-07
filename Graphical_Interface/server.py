@@ -30,7 +30,7 @@ if not os.path.exists(UPLOAD_FOLDER_INFO):
 def start():
     return send_from_directory('.', 'start/start.html')
 
-@app.route('/start/submit', methods=['POST'])
+@app.route('/create_planning', methods=['POST'])
 def submit():
     # Récupérer les valeurs des champs de formulaire
     estimate_number_student = request.form.get('estimate_number_student')
@@ -67,8 +67,17 @@ def submit():
     "students_files": ", ".join(saved_files['students_files']),
     "level_files": ", ".join(saved_files['level_files']),
     "teacher:": teachers
-    }    
-    return jsonify(response_data)
+    }
+    try:
+        # Exécuter le script main.py
+        result = subprocess.run(['python', '././main.py'], capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            return jsonify({"status": "success", "message": result.stdout.strip()})
+        else:
+            return jsonify({"status": "error", "message": result.stderr.strip()})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
 
 @app.route('/create_planning', methods=['POST'])
 def create_planning_route():
