@@ -10,8 +10,8 @@ import os
     reste a faire :
     -refaire numberclass
     -phoenix
-    -Documenter toutes les fonctions
-    -faire le doc de la maintenance        
+    # ? Documenter toutes les fonctions
+    # ? faire le doc de la maintenance        
     -rajouter les 3A ft
     -1A, 2A et 3A peuvent avoir cours en même temps de Allemand et Chinois !
     -améliorer la balance des conflits
