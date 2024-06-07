@@ -37,12 +37,15 @@ def make_group(list_student, number_class):
 
         return groups  # Return the list of groups
 
-def nomber_class(Data, students, promo_association,  max_by_class):
+def nomber_class(sum, nb_students,  Data, students, promo_association,  max_by_class):
     lv = next(iter(students.keys()))
     list_slots = function_database.get_lv_slot(Data, promo_association)
     nb_slots = function_database.get_nb_available_teacher(Data, list_slots, lv)
     #print(nb_slots)
-    number_class = { }
+    nb_slots = round(nb_slots * nb_students / (sum + nb_students))
+    #print(nb_slots)
+
+    number_class = {}
     nb_students =0 
     for key, value in students.items():
         number_class[key] = 0
@@ -76,7 +79,25 @@ def make_groups(Data, promo_pair, max_by_class):
             list_lv.remove(lv + " -débutant (jamais étudié)")
             deb = 2
         promo_list = promo_pair[lv]
+        
+        slots = {}
         for promo_association in promo_list :
+            list_slots = function_database.get_lv_slot(Data, promo_association)
+            name = ', '.join(f"'{item}'" for item in promo_association)
+            slots[name] = list_slots
+        #print(slots)
+
+        inverse_slots = {}
+        # Parcourir les éléments de slots
+        for key, value in slots.items():
+            # Convertir la liste en tuple pour l'utiliser comme clé dans inverse_slots (car les listes ne sont pas hashables)
+            value_tuple = tuple(value)
+            if value_tuple not in inverse_slots:
+                inverse_slots[value_tuple] = []
+            inverse_slots[value_tuple].append(key)
+        #print(inverse_slots)
+
+        def get_students_and_nb_students(lv, promo_association):
             students = { }
             if deb ==0 :
                 students[lv ] = []
@@ -112,15 +133,34 @@ def make_groups(Data, promo_pair, max_by_class):
 
                     students[i] += student  # Add the students to the list
             nb_students =0 
-
             for key, value in students.items():
                 nb_students += len(value)
                 #print(lv, promo_association,f"Clé : {key}, Nombre d'éléments : {len(value)}")
             #print(promo_association, next(iter(students.keys())))
+            return students, nb_students
 
-            nb_class = nomber_class(Data, students, promo_association,  max_by_class)  # Calculate the number of classes needed
 
-            #print(nb_class)
+        for promo_association in promo_list :
+            sum = 0
+            a = ', '.join(f"'{item}'" for item in promo_association)
+            # Afficher les clés des éléments identiques
+            #print(promo_association, sum)
+            for value_tuple, keys in inverse_slots.items():
+                if  (len(keys) > 1) & (a in keys): 
+                    #print(a, keys, len(keys))
+                    for i in keys:
+                        association = [item.strip("'") for item in i.split(', ')]
+                        #print(association, promo_association)
+                        if association != promo_association:  
+                            st, nb = get_students_and_nb_students(lv, association)
+                            sum += nb
+            #print(lv, promo_association, sum)
+
+            students, nb_students = get_students_and_nb_students(lv, promo_association)
+            #print(sum, nb_students)
+            nb_class = nomber_class(sum,nb_students, Data, students, promo_association,  max_by_class)  # Calculate the number of classes needed
+            print(nb_class)
+
             for key, value in nb_class.items():
                 students2 = students[key]
                 groups = make_group(students2, value)  # Create groups based on the number of classes
@@ -134,6 +174,7 @@ def make_groups(Data, promo_pair, max_by_class):
                 for group in groups:  # type: ignore
                     group_name = 'G' + str(i) + "_{" + result_str + "}" + language + name  # Create a unique group name
                     for student in group:
+                        cursor = conn.cursor()
                         cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?, ?);", (group_name, student))
                         conn.commit()  # Insert each student into the group and commit the changes
                     i += 1  # Increment the group counter
