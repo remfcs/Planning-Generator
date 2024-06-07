@@ -13,6 +13,7 @@ UPLOAD_FOLDER = '././data/uploads'
 UPLOAD_FOLDER_LEVEL = '././data/uploads/input_level'
 UPLOAD_FOLDER_INFO = '././data/uploads/input_info'
 TEACHERS_JSON_PATH = os.path.join(UPLOAD_FOLDER, 'teachers.json')
+DATABASE_PATH = './data/database.sqlite3'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_INFO'] = UPLOAD_FOLDER_INFO
@@ -91,8 +92,6 @@ def create_planning_route():
             return jsonify({"status": "error", "message": result.stderr.strip()})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
-
-DATABASE_PATH = './data/database.sqlite3'
 
 def get_student_details(name=None, niveau=None, professeur=None, langue=None, group_lv1=None):
     conn = sqlite3.connect(DATABASE_PATH)
@@ -176,7 +175,34 @@ def get_professors():
 
 @app.route('/api/professors', methods=['GET'])
 def api_professors():
-    professors = get_professors()
+    language = request.args.get('language')
+    group = request.args.get('group')
+
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    query = """
+        SELECT T.name, T.surname, T.mail, T.Subject, 
+               GROUP_CONCAT(A.Day || ' ' || A.Hour) as availabilities
+        FROM Teachers T
+        LEFT JOIN Availability_Teachers AT ON T.ID_Teacher = AT.ID_Teacher
+        LEFT JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
+        WHERE 1=1
+    """
+    params = []
+
+    if language:
+        query += " AND T.Subject LIKE ?"
+        params.append(f"%{language}%")
+    if group:
+        query += " AND T.ID_Teacher IN (SELECT ID_Teacher FROM Courses WHERE ID_COURSE = ?)"
+        params.append(group)
+
+    query += " GROUP BY T.name, T.surname, T.mail, T.Subject"
+    
+    cursor.execute(query, params)
+    professors = cursor.fetchall()
+    conn.close()
+
     professor_list = []
     for professor in professors:
         professor_list.append({
@@ -187,6 +213,43 @@ def api_professors():
             "availability": professor[4]
         })
     return jsonify(professor_list)
+
+@app.route('/api/professor_details', methods=['GET'])
+def get_professor_details():
+    professor_name = request.args.get('professor')
+    if not professor_name:
+        return jsonify([])
+
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    # Séparez le prénom et le nom du professeur
+    name_parts = professor_name.split()
+    if len(name_parts) < 2:
+        return jsonify([])  # Nom de professeur invalide
+
+    first_name = name_parts[0]
+    last_name = name_parts[1]
+
+    # Récupérer les langues et les groupes enseignés par le professeur
+    cursor.execute("""
+        SELECT DISTINCT c.Language, lg.ID_COURSE
+        FROM Teachers t
+        JOIN Courses c ON t.ID_Teacher = c.ID_Teacher
+        JOIN List_Groups_Students lg ON c.ID_COURSE = lg.ID_COURSE
+        WHERE t.name = ? AND t.surname = ?
+    """, (first_name, last_name))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    languages = list(set(row[0] for row in rows))
+    groups = list(set(row[1] for row in rows))
+
+    return jsonify({
+        'languages': languages,
+        'groups': groups
+    })
 
 @app.route('/languages')
 def get_languages():
@@ -217,7 +280,7 @@ def get_courses_by_promo(promo, language):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     query = "SELECT DISTINCT ID_COURSE FROM List_Groups_Students WHERE ID_COURSE LIKE ?"
-    cursor.execute(query, ('%_' + language,))
+    cursor.execute(query, ('%' + language,))
     courses = cursor.fetchall()
     filtered_courses = []
     for course in courses:
@@ -234,28 +297,26 @@ def get_courses_by_promo(promo, language):
 
 @app.route('/add', methods=['POST'])
 def add_student():
-    try:
-        data = request.get_json()
-        new_student = (
-            data['email'],
-            data['name'],
-            data['surname'],
-            data['school_year'],
-            data['lv1'],
-            data['lv2'],
-            1 if data['reducedExam'] else 0
-        )
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, new_student)
-        conn.commit()
-        conn.close()
-        return jsonify({'status': 'success'})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)})
+    data = request.get_json()
+    new_student = (
+        data['email'],
+        data['name'],
+        data['surname'],
+        data['school_year'],
+        data['lv1'],
+        data['lv2'],
+        1 if data['reducedExam'] else 0
+    )
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, new_student)
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'success'})
+
 
 @app.route('/add2', methods=['POST'])
 def add_list():

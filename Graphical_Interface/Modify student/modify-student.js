@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     const promoSelect = document.getElementById('student-promo');
     const englishCourseSelect = document.getElementById('english-course');
+    const addSecondLanguageCheckbox = document.getElementById('add-second-language');
+    const secondLanguageSection = document.getElementById('second-language-section');
+    const studentLv2 = document.getElementById('student-lv2');
+    const lv2Course = document.getElementById('lv2-course');
 
     promoSelect.addEventListener('change', (event) => {
         let promo = event.target.value;
@@ -23,6 +27,34 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             englishCourseSelect.innerHTML = '<option value="">Select English Course</option>';
         }
+
+        const toggleSecondLanguageSection = () => {
+            const promoValue = promoSelect.value;
+            if (promoValue === '1A' || promoValue === '2A' || promoValue === '3A') {
+                secondLanguageSection.style.display = 'block';
+                studentLv2.style.display = 'block';
+                lv2Course.style.display = 'block';
+                addSecondLanguageCheckbox.style.display = 'none';
+            } else if (promoValue === '1ABEE' || promoValue === '2ABEE' || promoValue === '3ABEE') {
+                secondLanguageSection.style.display = 'none';
+                studentLv2.value = "";
+                lv2Course.value = "";
+            } else if (promoValue === '1AFT' || promoValue === '2AFT') {
+                secondLanguageSection.style.display = 'block';
+                addSecondLanguageCheckbox.style.display = 'block';
+                studentLv2.style.display = addSecondLanguageCheckbox.checked ? 'block' : 'none';
+                lv2Course.style.display = addSecondLanguageCheckbox.checked ? 'block' : 'none';
+            } else if (promoValue === 'Promo'){
+                secondLanguageSection.style.display = 'none';
+            }
+        };
+
+        promoSelect.addEventListener('change', toggleSecondLanguageSection);
+        addSecondLanguageCheckbox.addEventListener('change', toggleSecondLanguageSection);
+
+        // Appeler la fonction au chargement pour définir l'état initial
+        toggleSecondLanguageSection()
+
     });
 
     const lv2Select = document.getElementById('student-lv2');
@@ -87,6 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if(lv2_student==='Chinese'){
             lv2_student = 'CHINOIS'
         }
+        if(lv2_student===''){
+            lv2_student = 'None'
+        }
 
         const data = {
             email: document.getElementById('student-email').value,
@@ -113,10 +148,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert("Error: " + data.message);
             }
         })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert("Error: An error occurred while adding the student.");
-        });
     });
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
@@ -135,17 +166,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
-        const data_lv2 = {
-            lv2: document.getElementById('lv2-course').value,
-            email: document.getElementById('student-email').value
-        };
+        if(document.getElementById('lv2-course').value !== ''){
+            const data_lv2 = {
+                lv2: document.getElementById('lv2-course').value,
+                email: document.getElementById('student-email').value
+            };
 
-        fetch('/add3', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data_lv2),
-        })
+            fetch('/add3', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_lv2),
+            })
+        }
     });
 })
