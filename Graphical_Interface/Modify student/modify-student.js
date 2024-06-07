@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 addSecondLanguageCheckbox.style.display = 'none';
             } else if (promoValue === '1ABEE' || promoValue === '2ABEE' || promoValue === '3ABEE') {
                 secondLanguageSection.style.display = 'none';
+                studentLv2.value = "";
+                lv2Course.value = "";
             } else if (promoValue === '1AFT' || promoValue === '2AFT') {
                 secondLanguageSection.style.display = 'block';
                 addSecondLanguageCheckbox.style.display = 'block';
@@ -117,6 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if(lv2_student==='Chinese'){
             lv2_student = 'CHINOIS'
         }
+        if(lv2_student===''){
+            lv2_student = 'None'
+        }
 
         const data = {
             email: document.getElementById('student-email').value,
@@ -165,17 +170,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
-        const data_lv2 = {
-            lv2: document.getElementById('lv2-course').value,
-            email: document.getElementById('student-email').value
-        };
+        if(document.getElementById('lv2-course').value !== ''){
+            const data_lv2 = {
+                lv2: document.getElementById('lv2-course').value,
+                email: document.getElementById('student-email').value
+            };
 
-        fetch('/add3', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data_lv2),
-        })
+            fetch('/add3', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_lv2),
+            })
+        }
     });
 })
