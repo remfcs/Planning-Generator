@@ -148,10 +148,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert("Error: " + data.message);
             }
         })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert("Error: An error occurred while adding the student.");
-        });
     });
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {

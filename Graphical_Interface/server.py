@@ -297,28 +297,26 @@ def get_courses_by_promo(promo, language):
 
 @app.route('/add', methods=['POST'])
 def add_student():
-    try:
-        data = request.get_json()
-        new_student = (
-            data['email'],
-            data['name'],
-            data['surname'],
-            data['school_year'],
-            data['lv1'],
-            data['lv2'],
-            1 if data['reducedExam'] else 0
-        )
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, new_student)
-        conn.commit()
-        conn.close()
-        return jsonify({'status': 'success'})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)})
+    data = request.get_json()
+    new_student = (
+        data['email'],
+        data['name'],
+        data['surname'],
+        data['school_year'],
+        data['lv1'],
+        data['lv2'],
+        1 if data['reducedExam'] else 0
+    )
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, new_student)
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'success'})
+
 
 @app.route('/add2', methods=['POST'])
 def add_list():
