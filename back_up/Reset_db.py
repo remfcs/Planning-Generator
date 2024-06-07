@@ -1,7 +1,7 @@
 import sqlite3
 
 # Path to the SQLite database file
-Data = 'data/database.sqlite3'
+Data = './data/database.sqlite3'
 
 def Delete_one_table(Data, name_table):
     """
@@ -107,11 +107,11 @@ def Create_tables(filename):
 # create table 'List_Groups_Students'
     cursor.execute("CREATE TABLE IF NOT EXISTS List_Groups_Students (ID_COURSE Varchar (50) , ID_STUDENT Varchar(50) , FOREIGN KEY(ID_COURSE) REFERENCES Courses(ID_COURSE), FOREIGN KEY(ID_STUDENT) REFERENCES Student(EMAIL));")
 # create table 'Availability_Teachers'
-    cursor.execute("CREATE TABLE IF NOT EXISTS Availability_Teachers (ID_Teacher INT, ID_Availability INT, FOREIGN KEY(ID_Teacher) REFERENCES Teachers(ID_teacher), FOREIGN KEY(ID_Availability) REFERENCES Availabilities(ID_Availability));")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Availability_Teachers (ID_Teacher INT, ID_Availability INT, ACTIVE BOOLEAN DEFAULT 0, FOREIGN KEY(ID_Teacher) REFERENCES Teachers(ID_teacher), FOREIGN KEY(ID_Availability) REFERENCES Availabilities(ID_Availability));")
 # create table 'Availability_Rooms'
-    cursor.execute("CREATE TABLE IF NOT EXISTS Availability_Rooms (ID_Room INT, ID_Availability INT, FOREIGN KEY(ID_Room) REFERENCES Rooms(ID_room), FOREIGN KEY(ID_Availability) REFERENCES Availabilities(ID_Availability));")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Availability_Rooms (ID_Room INT, ID_Availability INT, ACTIVE BOOLEAN DEFAULT 0, FOREIGN KEY(ID_Room) REFERENCES Rooms(ID_room), FOREIGN KEY(ID_Availability) REFERENCES Availabilities(ID_Availability));")
 # create table 'Availability_Class'
-    cursor.execute("CREATE TABLE IF NOT EXISTS Availability_Class (ID_Class VARCHAR(5), ID_Availability INT, FOREIGN KEY(ID_Class) REFERENCES Student(CLASSE), FOREIGN KEY(ID_Availability) REFERENCES Availabilities(ID_Availability));")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Availability_Class (ID_Class VARCHAR(5), ID_Availability INT, ACTIVE BOOLEAN DEFAULT 0, FOREIGN KEY(ID_Class) REFERENCES Student(CLASSE), FOREIGN KEY(ID_Availability) REFERENCES Availabilities(ID_Availability));")
 
     cursor.fetchall()
     conn.commit()

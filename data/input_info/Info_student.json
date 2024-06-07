@@ -4,420 +4,421 @@
         "Pr\u00e9nom": "Lucas",
         "ID": "",
         "mail": "john.doe@example.com",
-        "Class": "1A"
+        "Class": "BE2"
     },
     {
         "Nom": "BERNARD",
         "Pr\u00e9nom": "Emma",
         "ID": "",
         "mail": "emma.smith@example.com",
-        "Class": "1A"
+        "Class": "BE2"
     },
     {
         "Nom": "DUBOIS",
         "Pr\u00e9nom": "Gabriel",
         "ID": "",
         "mail": "david.johnson@example.com",
-        "Class": "1A"
+        "Class": "BE2"
     },
     {
         "Nom": "THOMAS",
         "Pr\u00e9nom": "L\u00e9a",
         "ID": "",
         "mail": "sarah.williams@example.com",
-        "Class": "1A"
+        "Class": "BE2"
     },
     {
         "Nom": "ROBERT",
         "Pr\u00e9nom": "Louis",
         "ID": "",
         "mail": "james.brown@example.com",
-        "Class": "1A"
+        "Class": "BE2"
     },
     {
         "Nom": "RICHARD",
         "Pr\u00e9nom": "Chlo\u00e9",
         "ID": "",
         "mail": "emily.jones@example.com",
-        "Class": "1A"
+        "Class": "BE1"
     },
     {
         "Nom": "PETIT",
         "Pr\u00e9nom": "Adam",
         "ID": "",
         "mail": "michael.davis@example.com",
-        "Class": "1A"
+        "Class": "BE1"
     },
     {
         "Nom": "DURAND",
         "Pr\u00e9nom": "Manon",
         "ID": "",
         "mail": "olivia.miller@example.com",
-        "Class": "1A"
+        "Class": "BE1"
     },
+
     {
         "Nom": "LEROY",
         "Pr\u00e9nom": "Hugo",
         "ID": "",
         "mail": "robert.wilson@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MOREAU",
         "Pr\u00e9nom": "Jade",
         "ID": "",
         "mail": "sophia.moore@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "SIMON",
         "Pr\u00e9nom": "Nathan",
         "ID": "",
         "mail": "william.taylor@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LAURENT",
         "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "isabella.anderson@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LEFEBVRE",
         "Pr\u00e9nom": "Ethan",
         "ID": "",
         "mail": "benjamin.thomas@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MICHEL",
         "Pr\u00e9nom": "Camille",
         "ID": "",
         "mail": "mia.jackson@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "GARCIA",
         "Pr\u00e9nom": "L\u00e9o",
         "ID": "",
         "mail": "ethan.white@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "DAVID",
         "Pr\u00e9nom": "Sarah",
         "ID": "",
         "mail": "ava.harris@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "ROUX",
         "Pr\u00e9nom": "Th\u00e9o",
         "ID": "",
         "mail": "alexander.martin@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "VINCENT",
         "Pr\u00e9nom": "Zo\u00e9",
         "ID": "",
         "mail": "madison.thompson@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "FOURNIER",
         "Pr\u00e9nom": "Rapha\u00ebl",
         "ID": "",
         "mail": "daniel.garcia@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MOREL",
         "Pr\u00e9nom": "Louise",
         "ID": "",
         "mail": "chloe.martinez@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "GIRARD",
         "Pr\u00e9nom": "Arthur",
         "ID": "",
         "mail": "matthew.robinson@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "ANDR\u00c9",
         "Pr\u00e9nom": "Emma",
         "ID": "",
         "mail": "amelia.clark@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LEFEVRE",
         "Pr\u00e9nom": "Jules",
         "ID": "",
         "mail": "joseph.rodriguez@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MERCIER",
         "Pr\u00e9nom": "Alice",
         "ID": "",
         "mail": "harper.lewis@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "DUPONT",
         "Pr\u00e9nom": "Tom",
         "ID": "",
         "mail": "samuel.hall@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LAMBERT",
         "Pr\u00e9nom": "Eva",
         "ID": "",
         "mail": "elizabeth.allen@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "BONNET",
         "Pr\u00e9nom": "Noah",
         "ID": "",
         "mail": "jacob.young@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "FRAN\u00c7OIS",
         "Pr\u00e9nom": "Lina",
         "ID": "",
         "mail": "grace.phillips@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MARTINEZ",
         "Pr\u00e9nom": "Liam",
         "ID": "",
         "mail": "michael.king@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "BRUN",
         "Pr\u00e9nom": "Clara",
         "ID": "",
         "mail": "lily.cook@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "ROUSSEAU",
         "Pr\u00e9nom": "Mathis",
         "ID": "",
         "mail": "logan.lopez@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "ROUSSEL",
         "Pr\u00e9nom": "Rose",
         "ID": "",
         "mail": "mia.hill@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "PIERRE",
         "Pr\u00e9nom": "Nathan",
         "ID": "",
         "mail": "lucas.scott@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "GUERIN",
         "Pr\u00e9nom": "Anna",
         "ID": "",
         "mail": "avery.green@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MALLET",
         "Pr\u00e9nom": "Enzo",
         "ID": "",
         "mail": "jack.adams@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "DUMAS",
         "Pr\u00e9nom": "L\u00e9na",
         "ID": "",
         "mail": "sophia.mitchell@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LEMAIRE",
         "Pr\u00e9nom": "Sacha",
         "ID": "",
         "mail": "benjamin.carter@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "FAURE",
         "Pr\u00e9nom": "Elsa",
         "ID": "",
         "mail": "riley.perez@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "DESCHAMPS",
         "Pr\u00e9nom": "Gabin",
         "ID": "",
         "mail": "dylan.roberts@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "NOEL",
         "Pr\u00e9nom": "Juliette",
         "ID": "",
         "mail": "ella.turner@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MENARD",
         "Pr\u00e9nom": "Tim\u00e9o",
         "ID": "",
         "mail": "noah.wright@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MEUNIER",
         "Pr\u00e9nom": "Manon",
         "ID": "",
         "mail": "charlotte.garcia@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MARCHAND",
         "Pr\u00e9nom": "Ma\u00ebl",
         "ID": "",
         "mail": "liam.howard@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "NICOLAS",
         "Pr\u00e9nom": "Emma",
         "ID": "",
         "mail": "amelia.morris@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "HUBERT",
         "Pr\u00e9nom": "Noah",
         "ID": "",
         "mail": "jackson.baker@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "RENAULT",
         "Pr\u00e9nom": "Chlo\u00e9",
         "ID": "",
         "mail": "abigail.bailey@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LEMOINE",
         "Pr\u00e9nom": "Ethan",
         "ID": "",
         "mail": "lucas.rivera@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "DUPUIS",
         "Pr\u00e9nom": "In\u00e8s",
         "ID": "",
         "mail": "ella.cooper@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "CHEVALIER",
         "Pr\u00e9nom": "Noah",
         "ID": "",
         "mail": "oliver.wood@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "BOUCHARD",
         "Pr\u00e9nom": "L\u00e9a",
         "ID": "",
         "mail": "emma.reed@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "MORIN",
         "Pr\u00e9nom": "Liam",
         "ID": "",
         "mail": "ethan.ross@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LECLERC",
         "Pr\u00e9nom": "Zo\u00e9",
         "ID": "",
         "mail": "isabella.ortiz@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LACROIX",
         "Pr\u00e9nom": "Arthur",
         "ID": "",
         "mail": "aiden.gomez@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "POIRIER",
         "Pr\u00e9nom": "Jade",
         "ID": "",
         "mail": "mia.bell@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "GAUTHIER",
         "Pr\u00e9nom": "Lucas",
         "ID": "",
         "mail": "james.murray@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "ROUILLARD",
         "Pr\u00e9nom": "Camille",
         "ID": "",
         "mail": "sophia.collins@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "BOYER",
         "Pr\u00e9nom": "Gabriel",
         "ID": "",
         "mail": "logan.flores@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "BONNIN",
         "Pr\u00e9nom": "Louise",
         "ID": "",
         "mail": "olivia.washington@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "GARNIER",
         "Pr\u00e9nom": "L\u00e9o",
         "ID": "",
         "mail": "michael.nguyen@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "RENARD",
         "Pr\u00e9nom": "Sarah",
         "ID": "",
         "mail": "emily.nelson@example.com",
-        "Class": "1A"
+        "Class": "2A"
     },
     {
         "Nom": "LOUIS",
@@ -2517,286 +2518,286 @@
         "Pr\u00e9nom": "Louise",
         "HD": "",
         "mail": "mia.davis@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "PHLLHTHHR",
         "Pr\u00e9nom": "L\u00e9o",
         "HD": "",
         "mail": "olivia.wright@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "BHHLANGHR",
         "Pr\u00e9nom": "Sarah",
         "HD": "",
         "mail": "james.wood@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "FHRRHHRA",
         "Pr\u00e9nom": "Louis",
         "HD": "",
         "mail": "lily.cruz@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "PHRRHN",
         "Pr\u00e9nom": "Hva",
         "HD": "",
         "mail": "oliver.foster@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "GALLHT",
         "Pr\u00e9nom": "Th\u00e9o",
         "HD": "",
         "mail": "emily.perez@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "GHHRHN",
         "Pr\u00e9nom": "Clara",
         "HD": "",
         "mail": "jack.bailey@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "LHCAS",
         "Pr\u00e9nom": "Adam",
         "HD": "",
         "mail": "sophia.hernandez@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MAHLLARD",
         "Pr\u00e9nom": "Juliette",
         "HD": "",
         "mail": "noah.dixon@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "LHGHR",
         "Pr\u00e9nom": "Tom",
         "HD": "",
         "mail": "lily.long@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "AHBHRT",
         "Pr\u00e9nom": "Rose",
         "HD": "",
         "mail": "logan.gordon@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "LHNHHR",
         "Pr\u00e9nom": "Jules",
         "HD": "",
         "mail": "mia.fisher@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MHLLHR",
         "Pr\u00e9nom": "Lina",
         "HD": "",
         "mail": "olivia.murray@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "LHCLHRCQ",
         "Pr\u00e9nom": "Ma\u00ebl",
         "HD": "",
         "mail": "lucas.owens@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "LHCLHRC",
         "Pr\u00e9nom": "Anna",
         "HD": "",
         "mail": "amelia.jordan@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MHRCHHR",
         "Pr\u00e9nom": "Hnzo",
         "HD": "",
         "mail": "ethan.brooks@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "BLAHSH",
         "Pr\u00e9nom": "Hlsa",
         "HD": "",
         "mail": "sophia.arnold@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "GAHTHHHR",
         "Pr\u00e9nom": "Rapha\u00ebl",
         "HD": "",
         "mail": "daniel.kim@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "DHLATTRH",
         "Pr\u00e9nom": "Manon",
         "HD": "",
         "mail": "emma.willis@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MARCHAND",
         "Pr\u00e9nom": "Nathan",
         "HD": "",
         "mail": "alexander.garcia@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "LHCLHRC",
         "Pr\u00e9nom": "Hmma",
         "HD": "",
         "mail": "grace.pierce@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "BARRHAH",
         "Pr\u00e9nom": "Hugo",
         "HD": "",
         "mail": "jacob.patterson@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "CHSTH",
         "Pr\u00e9nom": "Hn\u00e8s",
         "HD": "",
         "mail": "mia.washington@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "NHHL",
         "Pr\u00e9nom": "Hthan",
         "HD": "",
         "mail": "olivia.richards@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "HLHVHHR",
         "Pr\u00e9nom": "Chlo\u00e9",
         "HD": "",
         "mail": "james.ramirez@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "PHTHT",
         "Pr\u00e9nom": "Noah",
         "HD": "",
         "mail": "lily.myers@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "GALLHHS",
         "Pr\u00e9nom": "L\u00e9a",
         "HD": "",
         "mail": "oliver.brown@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MARCHAL",
         "Pr\u00e9nom": "Liam",
         "HD": "",
         "mail": "emily.reyes@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "PHLTHHR",
         "Pr\u00e9nom": "Zo\u00e9",
         "HD": "",
         "mail": "jack.hall@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "BARRH",
         "Pr\u00e9nom": "Arthur",
         "HD": "",
         "mail": "sophia.stewart@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "HHNRY",
         "Pr\u00e9nom": "Jade",
         "HD": "",
         "mail": "noah.wells@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "CARLHHR",
         "Pr\u00e9nom": "Lucas",
         "HD": "",
         "mail": "lily.hudson@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "GAHTHHR",
         "Pr\u00e9nom": "Camille",
         "HD": "",
         "mail": "logan.burns@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "PR\u00c9VHST",
         "Pr\u00e9nom": "Gabriel",
         "HD": "",
         "mail": "mia.bryant@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MHCHHL",
         "Pr\u00e9nom": "Louise",
         "HD": "",
         "mail": "olivia.russell@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MASSHN",
         "Pr\u00e9nom": "L\u00e9o",
         "HD": "",
         "mail": "lucas.welch@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "PHTHT",
         "Pr\u00e9nom": "Sarah",
         "HD": "",
         "mail": "amelia.warren@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "BHHRGHHHS",
         "Pr\u00e9nom": "Louis",
         "HD": "",
         "mail": "ethan.fowler@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MHRHAH",
         "Pr\u00e9nom": "Hva",
         "HD": "",
         "mail": "sophia.knight@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "BHSNARD",
         "Pr\u00e9nom": "Th\u00e9o",
         "HD": "",
         "mail": "daniel.hayes@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     },
     {
         "Nom": "MHCHH",
         "Pr\u00e9nom": "Clara",
         "HD": "",
         "mail": "emma.hanson@example.fr",
-        "Class": "1AFG"
+        "Class": "2AFG"
     }
 ]

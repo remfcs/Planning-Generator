@@ -111,3 +111,7 @@ for row in students_with_grades_in_groups:
     print(row)
 
 print(get_average(data_path))
+
+
+
+

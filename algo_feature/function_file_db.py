@@ -48,7 +48,7 @@ def Set_table_de_jointure(Data, table, list_availibity_rooms):
     cursor = conn.cursor()
     cursor.execute("DELETE FROM '" + table + "';")
     for i in list_availibity_rooms :
-        cursor.execute("INSERT INTO '" + table + "' VALUES (?,?);",(i[0],i[1]))
+        cursor.execute("INSERT INTO '" + table + "' VALUES (?,?,?);",(i[0],i[1], 0))
     conn.commit() 
     conn.close()
 
