@@ -66,11 +66,14 @@ button:hover {
     background-color: #0056b3;
 }
 
-button[type="reset"] {
+
+button[type="reset"],
+button#resetFilters {
     background-color: #6c757d;
 }
 
-button[type="reset"]:hover {
+button[type="reset"]:hover,
+button#resetFilters:hover {
     background-color: #5a6268;
 }
 
