@@ -98,25 +98,29 @@ function_database.delete_table_data(Data, "List_Groups_Students")
 function_create_groups.make_groups(Data, promo_pair, max_by_class) # ! à revoir 
 function_create_groups.make_association(Data, promo_pair)
 
-def boucle(m,l):
-    n=0
-    while n !=2:
-        #standart
-        for i in range (0,m):
-            function_conflict.resolution_conflict(Data)
-            function_conflict.balance_groups(Data, max_by_class)
+function_conflict.resolve_conflict(Data)
 
-        #changement pour eviter les boucles infinies
-        for i in range (0,l):   
-            function_conflict.resolution_conflict_inverse(Data)
-            function_conflict.balance_groups(Data, max_by_class)
-        n +=1
-    # affichage
-    print(function_conflict.get_nb_student_by_group(Data))
-    print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
-    print(function_conflict.get_students_with_schedule_conflicts(Data))
-    return
+#function_conflict.get_students_with_schedule_conflicts(Data)
+
+# def boucle(m,l):
+#     n=0
+#     while n !=2:
+#         #standart
+#         for i in range (0,m):
+#             function_conflict.resolution_conflict(Data)
+#             function_conflict.balance_groups(Data, max_by_class)
+
+#         #changement pour eviter les boucles infinies
+#         for i in range (0,l):   
+#             function_conflict.resolution_conflict_inverse(Data)
+#             function_conflict.balance_groups(Data, max_by_class)
+#         n +=1
+#     # affichage
+#     print(function_conflict.get_nb_student_by_group(Data))
+#     print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
+#     print(function_conflict.get_students_with_schedule_conflicts(Data))
+#     return
 
 ####       Meilleur compromis trouvé        #####
 
-boucle(6,5)
+# boucle(6,5)
