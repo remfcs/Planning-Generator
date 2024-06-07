@@ -23,6 +23,7 @@ Data = 'data/database.sqlite3'
 
 depot_info_folder = './data/input_info'
 depot_note_folder ='./data/input_notes'
+
 max_by_class = 16
 
 DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') 
