@@ -29,7 +29,7 @@ max_by_class = 16
 DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') 
 
 nb_slot = 6
-promo_pair = [['1A','2A']]
+promo_pair = [['1A','2A', '1AFG'], ['3A']]
 Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104', 'M01', 'M02') 
 list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
 
@@ -42,10 +42,10 @@ list_availibity_rooms = [('K03', 'Thu_2'), ('K03', 'Thu_1'), ('K03', 'Thu_3'), (
 list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3')]
 
 
-# # Example usage
-# json_path = 'data/uploads/teachers.json'
-# list_teacher, list_availability_teachers = function_read_folder.load_teachers(json_path)
-# print(list_teacher)
+# Example usage
+#json_path = 'data/uploads/teachers.json'
+#list_teacher, list_availability_teachers = function_read_folder.load_teachers(json_path)
+#print(list_teacher)
 
 
 #charge une df avec les infos des étudiants depuis le fichier info_student

@@ -24,7 +24,7 @@ function setupUploadArea(uploadAreaId, fileInputId, uploadedFilesId) {
         event.preventDefault();
         uploadArea.classList.remove('dragover');
         const files = event.dataTransfer.files;
-        handleFiles(files, uploadedFiles, fileInput);  // **Modifié**
+        handleFiles(files, uploadedFiles, fileInput);
     });
 
     uploadArea.addEventListener('click', () => {
@@ -33,7 +33,7 @@ function setupUploadArea(uploadAreaId, fileInputId, uploadedFilesId) {
 
     fileInput.addEventListener('change', () => {
         const files = fileInput.files;
-        handleFiles(files, uploadedFiles, fileInput);  // **Modifié**
+        handleFiles(files, uploadedFiles, fileInput);
     });
 }
 
@@ -48,19 +48,19 @@ function handleFiles(files, uploadedFiles, fileInput) {
         deleteButton.classList.add('btn', 'cancel-btn');
         deleteButton.addEventListener('click', () => {
             fileElement.remove();
-            removeFileFromFormData(file, fileInput.name);  // **Modifié**
+            removeFileFromFormData(file, fileInput.name);
         });
 
         fileElement.appendChild(deleteButton);
         uploadedFiles.appendChild(fileElement);
 
-        addFileToFormData(file, fileInput.name);  // **Modifié**
+        addFileToFormData(file, fileInput.name);
     });
 }
 
 function addFileToFormData(file, inputName) {
-    formData.append(inputName, file);  // **Ajouté**
-    console.log(`Ajouté ${file.name} à FormData sous la clé ${inputName}`);  // **Ajouté**
+    formData.append(inputName, file);
+    console.log(`Ajouté ${file.name} à FormData sous la clé ${inputName}`);
 }
 
 function removeFileFromFormData(file, inputName) {
@@ -71,13 +71,12 @@ function removeFileFromFormData(file, inputName) {
         }
     });
     formData = newFormData;
-    console.log(`Supprimé ${file.name} de FormData sous la clé ${inputName}`);  // **Ajouté**
+    console.log(`Supprimé ${file.name} de FormData sous la clé ${inputName}`);
 }
 
 function uploadAllFiles(event) {
     event.preventDefault();
 
-    // **Ajout des autres champs de formulaire à formData**
     const estimateNumberStudent = document.getElementById('estimate_number_student').value;
     const halfdaySlot = document.getElementById('halfday_slot').value;
     formData.append('estimate_number_student', estimateNumberStudent);
@@ -113,14 +112,9 @@ function closePopup() {
     document.getElementById('info-popup').style.display = 'none';
 }
 
-
-
-
-
 let teachers = [];
 
-
-function addTeacher() {
+function addTeacher(event) {
     event.preventDefault(); // Prevent form submission
 
     const name = document.getElementById('name').value.trim();
@@ -140,8 +134,6 @@ function addTeacher() {
         return;
     }
 
-    console.log(availabilities)
-
     const teacherData = {
         id: Date.now(),  // Unique ID for each teacher for tracking/modifications
         name,
@@ -151,14 +143,12 @@ function addTeacher() {
         availabilities
     };
 
-    console.log(teacherData)
-
     teachers.push(teacherData);  // Add to the local array
 
     // Update UI
     const li = document.createElement('li');
     li.setAttribute('id', `teacher-${teacherData.id}`);
-    li.textContent = `${name} ${surname} (${email}, ${subject}, availabilities: ${availabilities}) `;
+    li.textContent = `${name} ${surname} (${email}, ${subject}, availabilities: ${availabilities.join(', ')}) `;
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('btn', 'cancel-btn');
@@ -175,23 +165,11 @@ function removeTeacher(id) {
 }
 
 function resetTeacherForm() {
-    // Reset all text inputs
     document.getElementById('name').value = '';
     document.getElementById('surname').value = '';
     document.getElementById('email').value = '';
-
-    // Reset the select dropdown to its first option
     document.getElementById('subject').selectedIndex = 0;
-
-    // Reset all checkboxes within the form
-    const checkboxes = document.querySelectorAll('#teacherForm input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
-}
-
-function modifyTeacher() {
-    // Implémentez ici la logique de modification de l'enseignant
+    document.querySelectorAll('#teacherForm input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
 }
 
 function createPlanning() {
@@ -206,7 +184,6 @@ function createPlanning() {
             if (data.status === "success") {
                 console.log(data.message);
                 alert("Planning created successfully!");
-                // Ajoutez une popup supplémentaire pour indiquer que le script est terminé
                 alert("The script has finished executing.");
             } else {
                 console.error("Error:", data.message);

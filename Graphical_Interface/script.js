@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             professorSelect.innerHTML = '<option value="">Select a Teacher</option>';
             data.forEach(prof => {
                 const option = document.createElement('option');
-                option.value = prof.email; // Use email as a unique value
+                option.value = `${prof.name} ${prof.surname}`; // Use full name as value
                 option.textContent = `${prof.name} ${prof.surname}`; // Display full name
                 professorSelect.appendChild(option);
             });
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let query = '/students?';
         if (studentName) query += `name=${studentName}&`;
         if (niveau) query += `niveau=${niveau}&`;
-        if (professeur) query += `professeur=${professeur}&`;
+        if (professeur) query += `professeur=${encodeURIComponent(professeur)}&`;  // encodeURIComponent to handle spaces
         if (langue) query += `langue=${langue}&`;
         if (groupLv1) query += `group_lv1=${groupLv1}&`;
 

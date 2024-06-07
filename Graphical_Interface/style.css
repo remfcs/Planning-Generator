@@ -111,3 +111,57 @@ button[type="reset"]:hover {
     font-weight: bold;
     background-color: #f8f9fa;
 }
+
+/* Additional styles for the availability section */
+#availability-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.availability-slot {
+    flex: 0 1 calc(50% - 10px);
+}
+
+/* Styles for the popup info button */
+.info-btn {
+    margin-left: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+.info-btn:hover {
+    color: #0056b3;
+}
+
+/* Popup styling */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    padding: 20px;
+}
+
+.popup-content {
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+}
