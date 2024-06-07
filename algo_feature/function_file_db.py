@@ -6,7 +6,8 @@ def Set_Availabilities(Data, DAYS, nb_H_per_day):
     cursor = conn.cursor()
     for i in DAYS :
         for j in range (nb_H_per_day):
-            hour = "slot" + str(j+1)
+            #hour = "slot" + str(j+1)
+            hour = j+1
             ID = str(i[:3]) +  "_" + str(hour)
             cursor.execute("INSERT INTO Availabilities VALUES (?,?,?);",(ID,i, hour ))
     conn.commit() 

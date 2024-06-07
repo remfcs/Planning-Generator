@@ -88,7 +88,7 @@ def make_groups(Data, promo_pair, nb_by_class):
             result_str = ', '.join(promo_list)  # Create a string representation of the promo list
 
             for group in groups:  # type: ignore
-                group_name = 'G' + str(i) + "{" + result_str + "}" + language + name  # Create a unique group name
+                group_name = 'G' + str(i) + "_{" + result_str + "}" + language + name  # Create a unique group name
                 for student in group:
                     cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?, ?);", (group_name, student))
                     conn.commit()  # Insert each student into the group and commit the changes

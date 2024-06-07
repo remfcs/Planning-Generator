@@ -35,11 +35,11 @@ list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','
 
 #simuler les tables de jointure de disponibilité
 list_ID_Teacher, list_ID_room, list_ID_Availability, list_ID_Class = function_file_db.get_list(Data)
-list_availability_teachers =[('BER_ANG', 'Thu_slot3'), ('BER_ANG', 'Thu_slot1'), ('BER_ANG', 'Thu_slot2'),  ('DUB_ANG', 'Thu_slot1'), ('DUB_ANG', 'Thu_slot3'), ('DUB_ANG', 'Thu_slot2'),  ('DUR_ESP', 'Thu_slot1'), ('DUR_ESP', 'Thu_slot2'),  ('LAU_CHI', 'Thu_slot3'), ('LAU_CHI', 'Thu_slot1'), ('LAU_CHI', 'Thu_slot2'), ('LER_ESP', 'Thu_slot2'), ('LER_ESP', 'Thu_slot3'),  ('MAR_ANG', 'Thu_slot3'), ('MAR_ANG', 'Thu_slot2'), ('MAR_ANG', 'Thu_slot1'),  ('MOR_ALL', 'Thu_slot3'), ('MOR_ALL', 'Thu_slot2'), ('MOR_ALL', 'Thu_slot1'), ('ROB_ANG', 'Thu_slot2'), ('ROB_ANG', 'Thu_slot3'), ('ROB_ANG', 'Thu_slot1'), ('PET_ESP','Thu_slot1'), ('PET_ESP','Thu_slot2'),('RIC_ESP','Thu_slot3'), ('RIC_ESP','Thu_slot2')]
+list_availability_teachers =[('BER_ANG', 'Thu_3'), ('BER_ANG', 'Thu_1'), ('BER_ANG', 'Thu_2'),  ('DUB_ANG', 'Thu_1'), ('DUB_ANG', 'Thu_3'), ('DUB_ANG', 'Thu_2'),  ('DUR_ESP', 'Thu_1'), ('DUR_ESP', 'Thu_2'),  ('LAU_CHI', 'Thu_3'), ('LAU_CHI', 'Thu_1'), ('LAU_CHI', 'Thu_2'), ('LER_ESP', 'Thu_2'), ('LER_ESP', 'Thu_3'),  ('MAR_ANG', 'Thu_3'), ('MAR_ANG', 'Thu_2'), ('MAR_ANG', 'Thu_1'),  ('MOR_ALL', 'Thu_3'), ('MOR_ALL', 'Thu_2'), ('MOR_ALL', 'Thu_1'), ('ROB_ANG', 'Thu_2'), ('ROB_ANG', 'Thu_3'), ('ROB_ANG', 'Thu_1'), ('PET_ESP','Thu_1'), ('PET_ESP','Thu_2'),('RIC_ESP','Thu_3'), ('RIC_ESP','Thu_2')]
 #list_availibity_rooms = function_file_db.create_random_pairs(list_ID_room, list_ID_Availability,6)
-list_availibity_rooms = [('K03', 'Thu_slot2'), ('K03', 'Thu_slot1'), ('K03', 'Thu_slot3'), ('K04', 'Thu_slot1'), ('K04', 'Thu_slot3'), ('K04', 'Thu_slot2'), ('K05', 'Thu_slot3'), ('K05', 'Thu_slot2'), ('K05', 'Thu_slot1'), ('M101', 'Thu_slot3'), ('M101', 'Thu_slot2'), ('M101', 'Thu_slot1'), ('M102', 'Thu_slot3'), ('M102', 'Thu_slot2'), ('M102', 'Thu_slot1'), ('M103', 'Thu_slot1'), ('M103', 'Thu_slot2'), ('M103', 'Thu_slot3'), ('M104', 'Thu_slot1'), ('M104', 'Thu_slot2'), ('M104', 'Thu_slot3'), ('M01', 'Thu_slot1'), ('M01', 'Thu_slot2'), ('M01', 'Thu_slot3'), ('M02', 'Thu_slot3'), ('M02', 'Thu_slot2'), ('M02', 'Thu_slot1')]
+list_availibity_rooms = [('K03', 'Thu_2'), ('K03', 'Thu_1'), ('K03', 'Thu_3'), ('K04', 'Thu_1'), ('K04', 'Thu_3'), ('K04', 'Thu_2'), ('K05', 'Thu_3'), ('K05', 'Thu_2'), ('K05', 'Thu_1'), ('M101', 'Thu_3'), ('M101', 'Thu_2'), ('M101', 'Thu_1'), ('M102', 'Thu_3'), ('M102', 'Thu_2'), ('M102', 'Thu_1'), ('M103', 'Thu_1'), ('M103', 'Thu_2'), ('M103', 'Thu_3'), ('M104', 'Thu_1'), ('M104', 'Thu_2'), ('M104', 'Thu_3'), ('M01', 'Thu_1'), ('M01', 'Thu_2'), ('M01', 'Thu_3'), ('M02', 'Thu_3'), ('M02', 'Thu_2'), ('M02', 'Thu_1')]
 #list_availibity_class = function_file_db.create_random_pairs(list_ID_Class,list_ID_Availability, 3)
-list_availibity_class = [('1A', 'Thu_slot1'), ('1A', 'Thu_slot2'), ('1A', 'Thu_slot3')]
+list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3')]
 
 
 import json
@@ -60,21 +60,21 @@ def load_teachers(file_path):
     }
 
     day_slot_mapping = {
-        'Monday Morning': 'Mon_slot1',
-        'Monday Afternoon': 'Mon_slot2',
-        'Monday Evening': 'Mon_slot3',
-        'Tuesday Morning': 'Tue_slot1',
-        'Tuesday Afternoon': 'Tue_slot2',
-        'Tuesday Evening': 'Tue_slot3',
-        'Wednesday Morning': 'Wed_slot1',
-        'Wednesday Afternoon': 'Wed_slot2',
-        'Wednesday Evening': 'Wed_slot3',
-        'Thursday Morning': 'Thu_slot1',
-        'Thursday Afternoon': 'Thu_slot2',
-        'Thursday Evening': 'Thu_slot3',
-        'Friday Morning': 'Fri_slot1',
-        'Friday Afternoon': 'Fri_slot2',
-        'Friday Evening': 'Fri_slot3'
+        'Monday Morning': 'Mon_1',
+        'Monday Afternoon': 'Mon_2',
+        'Monday Evening': 'Mon_3',
+        'Tuesday Morning': 'Tue_1',
+        'Tuesday Afternoon': 'Tue_2',
+        'Tuesday Evening': 'Tue_3',
+        'Wednesday Morning': 'Wed_1',
+        'Wednesday Afternoon': 'Wed_2',
+        'Wednesday Evening': 'Wed_3',
+        'Thursday Morning': 'Thu_1',
+        'Thursday Afternoon': 'Thu_2',
+        'Thursday Evening': 'Thu_3',
+        'Friday Morning': 'Fri_1',
+        'Friday Afternoon': 'Fri_2',
+        'Friday Evening': 'Fri_3'
     }
 
     for teacher in data:
