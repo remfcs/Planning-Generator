@@ -4,6 +4,57 @@ import os
 import numpy as np
 import sqlite3
 
+def load_teachers(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    list_teacher = []
+    list_availability_teachers = []
+
+    # Mapping for subject names and abbreviations for availability codes
+    subject_mapping = {
+        'English': 'ANGLAIS',
+        'Spanish': 'ESPAGNOL',
+        'German': 'ALLEMAND',
+        'Chinese': 'CHINOIS'
+    }
+
+    day_slot_mapping = {
+        'Monday Morning': 'Mon_1',
+        'Monday Afternoon': 'Mon_2',
+        'Monday Evening': 'Mon_3',
+        'Tuesday Morning': 'Tue_1',
+        'Tuesday Afternoon': 'Tue_2',
+        'Tuesday Evening': 'Tue_3',
+        'Wednesday Morning': 'Wed_1',
+        'Wednesday Afternoon': 'Wed_2',
+        'Wednesday Evening': 'Wed_3',
+        'Thursday Morning': 'Thu_1',
+        'Thursday Afternoon': 'Thu_2',
+        'Thursday Evening': 'Thu_3',
+        'Friday Morning': 'Fri_1',
+        'Friday Afternoon': 'Fri_2',
+        'Friday Evening': 'Fri_3'
+    }
+
+    for teacher in data:
+        name_parts = teacher['name'].upper().split()
+        surname_parts = teacher['surname'].upper().split()
+        email = teacher['email']
+        subject = subject_mapping.get(teacher['subject'], teacher['subject'])
+
+        teacher_tuple = (name_parts[0], surname_parts[0], email, subject)
+        list_teacher.append(teacher_tuple)
+
+        # Generate the teacher's availability code
+        teacher_code = f"{surname_parts[0][:3]}_{subject[:3].upper()}"
+
+        for availability in teacher['availabilities']:
+            availability_code = day_slot_mapping.get(availability, availability)
+            list_availability_teachers.append((teacher_code, availability_code))
+
+    return list_teacher, list_availability_teachers
+
 def file_data_Student(depot_info_folder): 
     for file in [f for f in os.listdir(depot_info_folder)]:
         if os.path.splitext(os.path.basename(file))[0] == 'Info_student' :
