@@ -248,8 +248,8 @@ def add_student():
 @app.route('/add2', methods=['POST'])
 def add_list():
     data_english = request.get_json()
-    new_student = (
-        data_english['course'],
+    new_english_course = (
+        data_english['english'],
         data_english['email']
     )
     conn = sqlite3.connect(DATABASE_PATH)
@@ -257,26 +257,35 @@ def add_list():
     cursor.execute("""
         INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
         VALUES (?, ?)
-        """, new_student)
+        """, new_english_course)
     conn.commit()
     conn.close()
     return jsonify({'status': 'success'})
 
 @app.route('/add3', methods=['POST'])
 def add_list2():
-    data_lv2 = request.get_json()
-    new_student = (
-        data_lv2['course'],
-        data_lv2['email']
-    )
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
-        VALUES (?, ?)
-        """, new_student)
-    conn.close()
-    return jsonify({'status': 'success'})
+    try:
+        data = request.get_json()
+        new_student = (
+            data['email'],
+            data['name'],
+            data['surname'],
+            data['school_year'],
+            data['lv1'],
+            data['lv2'],
+            1 if data['reducedExam'] else 0
+        )
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, new_student)
+        conn.commit()
+        conn.close()
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
 
 @app.route('/timeslot')
 def get_timeslot():

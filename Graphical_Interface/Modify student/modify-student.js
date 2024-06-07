@@ -105,6 +105,18 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(data),
         })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("Student added successfully!");
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert("Error: An error occurred while adding the student.");
+        });
     });
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
