@@ -243,6 +243,7 @@ def add_student():
         """, new_student)
     conn.commit()
     conn.close()
+    return jsonify({'status': 'success'})
 
 @app.route('/add2', methods=['POST'])
 def add_list():
@@ -259,6 +260,7 @@ def add_list():
         """, new_student)
     conn.commit()
     conn.close()
+    return jsonify({'status': 'success'})
 
 @app.route('/add3', methods=['POST'])
 def add_list2():
@@ -274,6 +276,7 @@ def add_list2():
         VALUES (?, ?)
         """, new_student)
     conn.close()
+    return jsonify({'status': 'success'})
 
 @app.route('/timeslot')
 def get_timeslot():
