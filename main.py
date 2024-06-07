@@ -25,11 +25,11 @@ import os
 
 Data = 'data/database.sqlite3'
 
-depot_info_folder = './data/uploads/input_info'
-depot_note_folder ='./data/uploads/input_level'
+#depot_info_folder = './data/uploads/input_info'
+#depot_note_folder ='./data/uploads/input_level'
 
-#depot_info_folder = './data/input_info'
-#depot_note_folder ='./data/input_notes'
+depot_info_folder = './data/input_info'
+depot_note_folder ='./data/input_notes'
 
 max_by_class = 16
 
@@ -46,13 +46,13 @@ list_availability_teachers =[('BER_ANG', 'Thu_3'), ('BER_ANG', 'Thu_1'), ('BER_A
 #list_availibity_rooms = function_file_db.create_random_pairs(list_ID_room, list_ID_Availability,6)
 list_availibity_rooms = [('K03', 'Thu_2'), ('K03', 'Thu_1'), ('K03', 'Thu_3'), ('K04', 'Thu_1'), ('K04', 'Thu_3'), ('K04', 'Thu_2'), ('K05', 'Thu_3'), ('K05', 'Thu_2'), ('K05', 'Thu_1'), ('M101', 'Thu_3'), ('M101', 'Thu_2'), ('M101', 'Thu_1'), ('M102', 'Thu_3'), ('M102', 'Thu_2'), ('M102', 'Thu_1'), ('M103', 'Thu_1'), ('M103', 'Thu_2'), ('M103', 'Thu_3'), ('M104', 'Thu_1'), ('M104', 'Thu_2'), ('M104', 'Thu_3'), ('M01', 'Thu_1'), ('M01', 'Thu_2'), ('M01', 'Thu_3'), ('M02', 'Thu_3'), ('M02', 'Thu_2'), ('M02', 'Thu_1')]
 #list_availibity_class = function_file_db.create_random_pairs(list_ID_Class,list_ID_Availability, 3)
-list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A', 'Thu_1'), ('2A', 'Thu_2'), ('3A', 'Thu_3'),('3A', 'Thu_1'), ('3A', 'Thu_2'), ('3A', 'Thu_3')]
+list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A', 'Thu_1'), ('2A', 'Thu_2'), ('2A', 'Thu_3')]
 
 
 # Example usage
-json_path = 'data/uploads/teachers.json'
-list_teacher, list_availability_teachers = function_read_folder.load_teachers(json_path)
-print(list_teacher)
+#json_path = 'data/uploads/teachers.json'
+#list_teacher, list_availability_teachers = function_read_folder.load_teachers(json_path)
+#print(list_teacher)
 
 
 #charge une df avec les infos des étudiants depuis le fichier info_student
