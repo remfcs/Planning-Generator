@@ -384,6 +384,11 @@ def serve_home_html():
 def modifications():
     return send_from_directory('.', 'Modify student/add-student.html')
 
+# Ajouter la route pour servir la page Export.html
+@app.route('/export')
+def serve_export_html():
+    return send_from_directory('.', './Export/export.html')
+
 if __name__ == '__main__':
     def open_browser():
         webbrowser.open_new('http://127.0.0.1:5000')
