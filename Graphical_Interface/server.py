@@ -279,11 +279,16 @@ def get_groups():
 def get_courses_by_promo(promo, language):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    query = "SELECT DISTINCT ID_COURSE FROM List_Groups_Students WHERE ID_COURSE LIKE ?"
+    query = """
+    SELECT ID_COURSE, COUNT(*) AS student_count 
+    FROM List_Groups_Students 
+    WHERE ID_COURSE LIKE ? 
+    GROUP BY ID_COURSE
+    """
     cursor.execute(query, ('%' + language,))
-    courses = cursor.fetchall()
+    courses_with_count = cursor.fetchall()
     filtered_courses = []
-    for course in courses:
+    for course in courses_with_count:
         course_id = course[0]
         # Extract the part inside the braces {}
         start = course_id.find('{') + 1
@@ -291,7 +296,7 @@ def get_courses_by_promo(promo, language):
         if start > 0 and end > start:
             promos = course_id[start:end].split(', ')
             if promo in promos:
-                filtered_courses.append(course_id)
+                filtered_courses.append({'course_id': course_id, 'student_count': course[1]})
     conn.close()
     return jsonify(filtered_courses)
 
