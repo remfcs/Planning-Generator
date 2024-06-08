@@ -359,13 +359,18 @@ def add_list2():
 
 @app.route('/timeslot')
 def get_timeslot():
-    course = request.args.get('course') 
+    course = request.args.get('course')
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT ID_AVAILABILITY FROM Courses WHERE ID_COURSE LIKE ?", (course,))
-    timeslot = cursor.fetchone()
-    conn.close()
-    return jsonify(timeslot[0])
+    try:
+        cursor.execute("SELECT ID_AVAILABILITY FROM Courses WHERE ID_COURSE LIKE ?", (course,))
+        timeslot = cursor.fetchone()
+        if timeslot is None:
+            return jsonify({"error": "No timeslot found"}), 404
+        return jsonify({"timeslot": timeslot[0]})
+    finally:
+        cursor.close()
+        conn.close()
 
 # Route pour servir le fichier HTML des professeurs
 @app.route('/professors')

@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <title>Student Modifications</title>
+    <style>
+        button:disabled {
+            background-color: grey;
+            color: white;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 
 <body>
@@ -78,11 +85,18 @@
         <!-- Delete Student Form -->
         <div class="content" id="delete-student-form" style="display:none;">
             <h2>Delete a student</h2>
-            <form id="delete-student-form-inner">
-                <input type="text" id="delete-student-name" class="form-control" placeholder="Name" required>
-                <button type="submit" class="btn btn-primary">Delete student</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
-            </form>
+            <div>
+                <input type="text" id="student-search-input" list="student-list" placeholder="Type the name of the student you want to delete...">
+                <datalist id="student-list"></datalist>
+            </div>
+            <div id="student-details" style="display:none;">
+                <h3>You want to delete this student:</h3>
+                <p>Name: <span id="student-name"></span></p>
+                <p>First name: <span id="student-firstname"></span></p>
+                <p>Promo: <span id="student-promo"></span></p>
+                <p>Email: <span id="student-email"></span></p>
+            </div>
+            <div><button id="delete-student-button" disabled>Delete This Student</button></div>
         </div>
 
         <!-- Change Student Class Form -->

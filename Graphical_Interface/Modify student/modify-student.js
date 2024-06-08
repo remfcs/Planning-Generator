@@ -1,4 +1,41 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Select all radio buttons and forms
+    const radioButtons = document.querySelectorAll('input[name="action"]');
+    const forms = {
+        "add-student": document.getElementById('add-student-form'),
+        "delete-student": document.getElementById('delete-student-form'),
+        "change-student-class": document.getElementById('change-student-class-form'),
+        "change-teacher-timeslot": document.getElementById('change-teacher-timeslot-form')
+    };
+
+    // Function to hide all forms
+    function hideAllForms() {
+        for (let key in forms) {
+            if (forms.hasOwnProperty(key)) {
+                forms[key].style.display = 'none';
+            }
+        }
+    }
+
+    // Event listener for each radio button
+    radioButtons.forEach(button => {
+        button.addEventListener('change', function() {
+            hideAllForms(); // First, hide all forms
+            // Show the form corresponding to the checked radio button
+            if (this.checked) {
+                forms[this.value].style.display = 'block';
+            }
+        });
+    });
+
+    // Initially hide all forms except the one for the checked radio button
+    hideAllForms();
+    const checkedRadioButton = document.querySelector('input[name="action"]:checked');
+    if (checkedRadioButton) {
+        forms[checkedRadioButton.value].style.display = 'block';
+    }
+
     const promoSelect = document.getElementById('student-promo');
     const englishCourseSelect = document.getElementById('english-course');
     const addSecondLanguageCheckbox = document.getElementById('add-second-language');
@@ -18,9 +55,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                     // Add new options
                     courses.forEach(course => {
+                        const className = course.course_id;
+                        const studentCount = course.student_count;
+                        // Create and append option element
                         const option = document.createElement('option');
-                        option.value = course;
-                        option.textContent = course;
+                        option.value = className;
+                        option.textContent = `${className} (${studentCount} students)`;
                         englishCourseSelect.appendChild(option);
                     });
                 })
@@ -62,50 +102,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
     lv2Select.addEventListener('change', (event) => {
         let lv2 = event.target.value;
-        if(lv2==='Spanish'){
-            lv2 = 'ESP'
-        }
-        if(lv2==='German'){
-            lv2 = 'ALL'
-        }
-        if(lv2==='Chinese'){
-            lv2 = 'CHI'
-        }
-        let promo = document.getElementById('student-promo').value;
-        promo = promo.substring(0, 2);
+        if (lv2 === 'Spanish') { lv2 = 'ESP'; }
+        if (lv2 === 'German') { lv2 = 'ALL'; }
+        if (lv2 === 'Chinese') { lv2 = 'CHI'; }
+        let promo = document.getElementById('student-promo').value.substring(0, 2);
         const english_course = document.getElementById('english-course').value;
+    
         fetch(`/timeslot?course=${english_course}`)
             .then(response => response.json())
-            .then(timeslot => {
+            .then(data => {
+                if (data.error) {
+                    console.error('Error:', data.error);
+                    return;
+                }
+                const timeslot_last = data.timeslot[data.timeslot.length - 1];
+    
                 if (lv2 && promo) {
                     fetch(`/groups/${promo}/${lv2}`)
                         .then(response => response.json())
                         .then(courses => {
-                            // Clear existing options
                             lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
-                            
-                            // Add new options
                             courses.forEach(course => {
-                                const timeslot_last = timeslot.substring(timeslot.length - 1);
-                                fetch(`/timeslot?course=${course}`)
+                                const className = course.course_id;
+                                const studentCount = course.student_count;
+    
+                                fetch(`/timeslot?course=${className}`)
                                     .then(response => response.json())
-                                    .then(timeslot2 => {
-                                        const timeslot2_last = timeslot2.substring(timeslot2.length - 1);
+                                    .then(timeslot2Data => {
+                                        const timeslot2_last = timeslot2Data.timeslot[timeslot2Data.timeslot.length - 1];
                                         const option = document.createElement('option');
-                                        option.value = course;
-                                        option.textContent = course;            
+                                        option.value = className;
+                                        option.textContent = `${className} (${studentCount} students)`;
                                         if (timeslot_last === timeslot2_last) {
                                             option.disabled = true;
-                                        }        
+                                        }
                                         lv2CourseSelect.appendChild(option);
-                                    })
+                                    });
                             });
-                        })
+                        });
                 } else {
                     lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
                 }
             })
+            .catch(error => console.error('Fetch Error:', error));
     });
+    
 
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
