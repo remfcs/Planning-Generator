@@ -23,6 +23,17 @@
                 <option value="pdf">PDF</option>
                 <option value="excel">Excel</option>
             </select>
+            <label for="groupSelect" class="sr-only">Sélectionner un groupe :</label>
+            <select id="groupSelect" name="groupSelect" class="form-control mb-2 mr-sm-2">
+                <option value="professors">Professors</option>
+                <!-- Options will be dynamically populated -->
+            </select>
+            <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="exportAllGroups" name="exportAllGroups">
+                <label class="form-check-label" for="exportAllGroups">
+                    Exporter tous les groupes
+                </label>
+            </div>
             <button type="button" id="exportButton" class="btn btn-primary mb-2">Exporter</button>
         </form>
     </div>

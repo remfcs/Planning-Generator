@@ -1,17 +1,28 @@
-import sqlite3
-from flask import Flask, jsonify, request, send_from_directory
-import threading
-import webbrowser
+import pdfkit
+import logging
+from flask import Flask, jsonify, request, send_from_directory, send_file, make_response
 import os
-import subprocess
+import webbrowser
+import threading
 import json
+import subprocess
+import sqlite3
+import csv
+import io
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
-# Définir le dossier de téléchargement
-UPLOAD_FOLDER = '././data/uploads'
-UPLOAD_FOLDER_LEVEL = '././data/uploads/input_level'
-UPLOAD_FOLDER_INFO = '././data/uploads/input_info'
+# Configurez le logging
+logging.basicConfig(level=logging.DEBUG)
+
+# Chemin vers le binaire wkhtmltopdf sur Windows
+path_wkhtmltopdf = r'C:\Users\GIMOND\OneDrive - Fondation EPF\Documents\4A\Project Taylor\Planning-Generator\Graphical_Interface\Export\wkhtmltopdf\bin\wkhtmltopdf.exe'
+logging.debug(f"Using wkhtmltopdf path: {path_wkhtmltopdf}")
+config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+
+UPLOAD_FOLDER = './data/uploads'
+UPLOAD_FOLDER_LEVEL = './data/uploads/input_level'
+UPLOAD_FOLDER_INFO = './data/uploads/input_info'
 TEACHERS_JSON_PATH = os.path.join(UPLOAD_FOLDER, 'teachers.json')
 DATABASE_PATH = './data/database.sqlite3'
 
@@ -19,13 +30,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_INFO'] = UPLOAD_FOLDER_INFO
 app.config['UPLOAD_FOLDER_LEVEL'] = UPLOAD_FOLDER_LEVEL
 
-# Créer le dossier de téléchargement s'il n'existe pas
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-if not os.path.exists(UPLOAD_FOLDER_LEVEL):
-    os.makedirs(UPLOAD_FOLDER_LEVEL)
-if not os.path.exists(UPLOAD_FOLDER_INFO):
-    os.makedirs(UPLOAD_FOLDER_INFO)
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(UPLOAD_FOLDER_LEVEL, exist_ok=True)
+os.makedirs(UPLOAD_FOLDER_INFO, exist_ok=True)
 
 @app.route('/start')
 def start():
@@ -55,24 +62,23 @@ def submit():
             file_path = os.path.join(app.config['UPLOAD_FOLDER_LEVEL'], file.filename)
             file.save(file_path)
             saved_files['level_files'].append(file.filename)
-            
+
     teachers_json = request.form.get('teachers', '[]')  # Default to an empty list as JSON
     teachers = json.loads(teachers_json)  # Decode the JSON string
     with open(TEACHERS_JSON_PATH, 'w') as json_file:
         json.dump(teachers, json_file, indent=4)
 
-# Afficher les données pour vérification (peut être remplacé par une autre logique)
     response_data = {
-    "estimation": f"Estimation du nombre de nouveaux étudiants: {estimate_number_student}",
-    "halfday_slots": f"Nombre de demi-journées: {halfday_slot}",
-    "students_files": ", ".join(saved_files['students_files']),
-    "level_files": ", ".join(saved_files['level_files']),
-    "teacher:": teachers
+        "estimation": f"Estimation du nombre de nouveaux étudiants: {estimate_number_student}",
+        "halfday_slots": f"Nombre de demi-journées: {halfday_slot}",
+        "students_files": ", ".join(saved_files['students_files']),
+        "level_files": ", ".join(saved_files['level_files']),
+        "teacher:": teachers
     }
     try:
         # Exécuter le script main.py
-        result = subprocess.run(['python', '././main.py'], capture_output=True, text=True)
-        
+        result = subprocess.run(['python', './main.py'], capture_output=True, text=True)
+
         if result.returncode == 0:
             return jsonify({"status": "success", "message": result.stdout.strip()})
         else:
@@ -84,8 +90,8 @@ def submit():
 def create_planning_route():
     try:
         # Exécuter le script main.py
-        result = subprocess.run(['python', '././main.py'], capture_output=True, text=True)
-        
+        result = subprocess.run(['python', './main.py'], capture_output=True, text=True)
+
         if result.returncode == 0:
             return jsonify({"status": "success", "message": result.stdout.strip()})
         else:
@@ -141,6 +147,7 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
         students.append(student)
 
     conn.close()
+    logging.debug(f"Retrieved students: {students}")
     return students
 
 @app.route('/')
@@ -198,14 +205,14 @@ def api_professors():
         params.append(group)
 
     query += " GROUP BY T.name, T.surname, T.mail, T.Subject"
-    
+
     cursor.execute(query, params)
     professors = cursor.fetchall()
     conn.close()
 
     professor_list = []
     for professor in professors:
-        professor_list.append({
+                professor_list.append({
             "name": professor[0],
             "surname": professor[1],
             "email": professor[2],
@@ -223,7 +230,6 @@ def get_professor_details():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
 
-    # Séparez le prénom et le nom du professeur
     name_parts = professor_name.split()
     if len(name_parts) < 2:
         return jsonify([])  # Nom de professeur invalide
@@ -231,7 +237,6 @@ def get_professor_details():
     first_name = name_parts[0]
     last_name = name_parts[1]
 
-    # Récupérer les langues et les groupes enseignés par le professeur
     cursor.execute("""
         SELECT DISTINCT c.Language, lg.ID_COURSE
         FROM Teachers t
@@ -290,7 +295,6 @@ def get_courses_by_promo(promo, language):
     filtered_courses = []
     for course in courses_with_count:
         course_id = course[0]
-        # Extract the part inside the braces {}
         start = course_id.find('{') + 1
         end = course_id.find('}')
         if start > 0 and end > start:
@@ -321,7 +325,6 @@ def add_student():
     conn.commit()
     conn.close()
     return jsonify({'status': 'success'})
-
 
 @app.route('/add2', methods=['POST'])
 def add_list():
@@ -359,20 +362,18 @@ def add_list2():
 
 @app.route('/timeslot')
 def get_timeslot():
-    course = request.args.get('course') 
+    course = request.args.get('course')
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     cursor.execute("SELECT ID_AVAILABILITY FROM Courses WHERE ID_COURSE LIKE ?", (course,))
     timeslot = cursor.fetchone()
     conn.close()
-    return jsonify(timeslot[0])
+    return jsonify(timeslot)
 
-# Route pour servir le fichier HTML des professeurs
 @app.route('/professors')
 def serve_professors_html():
     return send_from_directory('.', 'professors.html')
 
-# Routes pour servir les fichiers statiques
 @app.route('/script.js')
 def serve_script_js():
     return send_from_directory('.', 'script.js')
@@ -389,10 +390,168 @@ def serve_home_html():
 def modifications():
     return send_from_directory('.', 'Modify student/add-student.html')
 
-# Ajouter la route pour servir la page Export.html
 @app.route('/export')
-def serve_export_html():
-    return send_from_directory('.', './Export/export.html')
+def export_page():
+    return send_from_directory('Export', 'Export.html')
+
+@app.route('/export.js')
+def serve_export_js():
+    return send_from_directory('Export', 'export.js')
+
+def generate_professors_csv():
+    professors = get_professors()
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability"])
+    for professor in professors:
+        writer.writerow(professor)
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+def generate_group_csv(group_id):
+    students = get_student_details(group_lv1=group_id)
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
+    for student in students:
+        writer.writerow(student.values())
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = f'attachment; filename=group_{group_id}.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+def export_all_groups_csv():
+    groups = get_groups().json
+    if not groups:
+        return "No groups found", 400
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
+    
+    for group in groups:
+        students = get_student_details(group_lv1=group)
+        for student in students:
+            writer.writerow([group] + list(student.values()))
+    
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=all_groups.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+@app.route('/export_file', methods=['GET'])
+def export_file():
+    file_type = request.args.get('fileType')
+    group_id = request.args.get('groupId')
+    export_all = request.args.get('exportAll', 'false') == 'true'
+
+    logging.debug(f"Received parameters - fileType: {file_type}, groupId: {group_id}, exportAll: {export_all}")
+
+    if not file_type:
+        return "Missing fileType parameter", 400
+
+    if file_type == 'pdf':
+        if export_all:
+            return export_all_groups()
+        elif group_id:
+            if group_id == "professors":
+                return generate_professors_pdf()
+            else:
+                return generate_group_pdf(group_id)
+        else:
+            return "Missing groupId parameter", 400
+    elif file_type == 'csv':
+        if export_all:
+            return export_all_groups_csv()
+        elif group_id:
+            if group_id == "professors":
+                return generate_professors_csv()
+            else:
+                return generate_group_csv(group_id)
+        else:
+            return "Missing groupId parameter", 400
+
+    return "Invalid file type", 400
+
+def generate_group_pdf(group_id):
+    students = get_student_details(group_lv1=group_id)
+    html_content = f"<h1>Group {group_id}</h1><ul>"
+    for student in students:
+        html_content += f"<li>{student['Name']} {student['Surname']} - {student['Email']} - {student['Class']}</li>"
+    html_content += "</ul>"
+
+    logging.debug(f"HTML content for group {group_id}: {html_content}")
+
+    # Define the correct output path and filename
+    output_path = f"./group_{group_id}.pdf"
+    absolute_output_path = os.path.abspath(output_path)
+
+    # Generate PDF
+    pdfkit.from_string(html_content, output_path, configuration=config)
+
+    # Ensure the file exists
+    if not os.path.exists(absolute_output_path):
+        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
+        return "Failed to create PDF file", 500
+
+    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
+    return send_file(absolute_output_path, as_attachment=True, download_name=f'group_{group_id}.pdf')
+
+def generate_professors_pdf():
+    professors = get_professors()
+    html_content = "<h1>Professors List</h1><ul>"
+    for professor in professors:
+        html_content += f"<li>{professor[0]} {professor[1]} - {professor[2]} - {professor[3]} - {professor[4]}</li>"
+    html_content += "</ul>"
+    pdf = pdfkit.from_string(html_content, False, configuration=config)
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.pdf'
+    return response
+
+def export_all_groups():
+    response = get_groups()
+    if response.status_code != 200:
+        logging.error(f"Failed to get groups: {response.status_code}")
+        return "Failed to get groups", 500
+
+    groups = response.get_json()
+    if not groups:
+        logging.error("No groups found")
+        return "No groups found", 400
+
+    output_path = "./all_groups.pdf"
+    absolute_output_path = os.path.abspath(output_path)
+    logging.debug(f"Generating PDF for all groups at: {absolute_output_path}")
+
+    html_content = "<html><body>"
+    for group in groups:
+        group_id = group  # Assuming each group is identified by a string or number
+        students = get_student_details(group_lv1=group_id)
+        group_html = f"<h1>Group {group_id}</h1><ul>"
+        for student in students:
+            group_html += f"<li>{student['Name']} {student['Surname']} - {student['Email']} - {student['Class']}</li>"
+        group_html += "</ul>"
+        html_content += group_html
+    html_content += "</body></html>"
+
+    logging.debug(f"HTML content for all groups: {html_content}")
+
+    # Generate PDF from HTML content
+    pdfkit.from_string(html_content, output_path, configuration=config)
+
+    if not os.path.exists(absolute_output_path):
+        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
+        return "Failed to create PDF file", 500
+
+    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
+    return send_file(absolute_output_path, as_attachment=True, download_name='all_groups.pdf')
+
 
 if __name__ == '__main__':
     def open_browser():
