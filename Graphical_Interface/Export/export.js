@@ -1,47 +1,47 @@
 $(document).ready(function () {
-    // Example: Populate groupSelect with group options dynamically
-    $.ajax({
-        url: '/groups',
-        method: 'GET',
-        success: function (data) {
-            var groupSelect = $('#groupSelect');
-            data.forEach(function (group) {
-                groupSelect.append(new Option(group, group));
-            });
-        }
+    // Charger les groupes
+    $.get("/groups", function (data) {
+        data.forEach(function (group) {
+            $("#groupSelect").append(new Option(group, group));
+        });
     });
 
-    $('#exportButton').click(function () {
-        var fileType = $('#fileType').val();
-        var groupId = $('#groupSelect').val();
-        var exportAll = $('#exportAllGroups').is(':checked');
-
-        var params = {
-            fileType: fileType,
-            groupId: groupId,
-            exportAll: exportAll
-        };
-
-        $.ajax({
-            url: '/export_file',
-            method: 'GET',
-            data: params,
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function (data, status, xhr) {
-                var blob = new Blob([data], { type: xhr.getResponseHeader('Content-Type') });
-                var downloadUrl = URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = xhr.getResponseHeader('Content-Disposition').split('filename=')[1];
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            },
-            error: function (xhr, status, error) {
-                alert('Failed to export file: ' + error);
-            }
+    // Charger les professeurs
+    $.get("/api/professors", function (data) {
+        data.forEach(function (professor) {
+            $("#professorSelect").append(new Option(professor.name + " " + professor.surname, professor.name + " " + professor.surname));
         });
+    });
+
+    // Exporter les groupes
+    $("#exportGroupButton").click(function () {
+        let fileType = $("#fileTypeGroup").val();
+        let groupId = $("#groupSelect").val();
+        let exportAll = $("#exportAllGroups").prop('checked');
+
+        let url = `/export_group?fileType=${fileType}`;
+        if (!exportAll) {
+            url += `&groupId=${groupId}`;
+        } else {
+            url += `&exportAll=true`;
+        }
+
+        window.location.href = url;
+    });
+
+    // Exporter les professeurs
+    $("#exportProfessorButton").click(function () {
+        let fileType = $("#fileTypeProfessor").val();
+        let professorName = $("#professorSelect").val();
+        let exportAll = $("#exportAllProfessors").prop('checked');
+
+        let url = `/export_professor?fileType=${fileType}`;
+        if (!exportAll) {
+            url += `&professor=${professorName}`;
+        } else {
+            url += `&exportAll=true`;
+        }
+
+        window.location.href = url;
     });
 });
