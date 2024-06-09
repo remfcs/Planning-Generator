@@ -154,10 +154,6 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
     logging.debug(f"Retrieved students: {students}")
     return students
 
-    conn.close()
-    logging.debug(f"Retrieved students: {students}")
-    return students
-
 @app.route('/')
 def index():
     return send_from_directory('.', 'Home Page/home.html')
@@ -175,15 +171,13 @@ def get_students():
 def get_professors():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    # Récupérer les informations des professeurs avec la disponibilité combinée et les groupes distincts
+    # Récupérer les informations des professeurs avec la disponibilité combinée
     cursor.execute("""
         SELECT T.name, T.surname, T.mail, T.Subject, 
-               GROUP_CONCAT(DISTINCT A.Day || ' ' || A.Hour) as availabilities,
-               GROUP_CONCAT(DISTINCT C.ID_COURSE || ' (' || A.Day || ' ' || A.Hour || ')') as groups
+               GROUP_CONCAT(A.Day || ' ' || A.Hour) as availabilities
         FROM Teachers T
         LEFT JOIN Availability_Teachers AT ON T.ID_Teacher = AT.ID_Teacher
         LEFT JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
-        LEFT JOIN Courses C ON T.ID_Teacher = C.ID_Teacher
         GROUP BY T.name, T.surname, T.mail, T.Subject
     """)
     professors = cursor.fetchall()
@@ -246,7 +240,7 @@ def get_professor_details(professor_name):
     last_name = name_parts[1]
 
     cursor.execute("""
-        SELECT t.name, t.surname, t.mail, t.Subject, 
+        SELECT DISTINCT t.name, t.surname, t.mail, t.Subject, 
                GROUP_CONCAT(A.Day || ' ' || A.Hour) as availabilities
         FROM Teachers t
         LEFT JOIN Availability_Teachers AT ON t.ID_Teacher = AT.ID_Teacher
@@ -494,199 +488,73 @@ def export_professor():
             return generate_professor_csv(professor_name)
         else:
             return "Missing professorId parameter", 400
+    elif file_type == 'excel':
+        if export_all:
+            return export_all_professors_excel()
+        elif professor_name:
+            return generate_professor_excel(professor_name)
+        else:
+            return "Missing professorId parameter", 400
 
     return "Invalid file type", 400
 
 def export_all_groups():
-    groups_response = get_groups()
-    if groups_response.status_code != 200:
+    response = get_groups()
+    if response.status_code != 200:
+        logging.error(f"Failed to get groups: {response.status_code}")
         return "Failed to get groups", 500
 
-    groups = groups_response.get_json()
+    groups = response.get_json()
     if not groups:
+        logging.error("No groups found")
         return "No groups found", 400
-
-    html_content = """
-    <html>
-    <head>
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-            color: #333;
-        }
-        h1, h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #2c3e50;
-            padding-bottom: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            background-color: #f2f2f2;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px 15px;
-            text-align: left;
-        }
-        th {
-            background-color: #2980b9;
-            color: white;
-            text-transform: uppercase;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        </style>
-    </head>
-    <body>
-    <h1>All Groups</h1>
-    """
-
-    for group_id in groups:
-        students = get_student_details(group_lv1=group_id)
-        html_content += f"""
-        <h2>Group {group_id}</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>Class</th>
-                </tr>
-            </thead>
-            <tbody>
-        """
-        for student in students:
-            html_content += f"""
-                <tr>
-                    <td>{student['Name']}</td>
-                    <td>{student['Surname']}</td>
-                    <td>{student['Email']}</td>
-                    <td>{student['Class']}</td>
-                </tr>
-            """
-        html_content += """
-            </tbody>
-        </table>
-        """
-    html_content += """
-    </body>
-    </html>
-    """
 
     output_path = "./all_groups.pdf"
     absolute_output_path = os.path.abspath(output_path)
+    logging.debug(f"Generating PDF for all groups at: {absolute_output_path}")
 
+    html_content = "<html><body>"
+    for group in groups:
+        group_id = group  # Assuming each group is identified by a string or number
+        students = get_student_details(group_lv1=group_id)
+        group_html = f"<h1>Group {group_id}</h1><ul>"
+        for student in students:
+            group_html += f"<li>{student['Name']} {student['Surname']} - {student['Email']} - {student['Class']}</li>"
+        group_html += "</ul>"
+        html_content += group_html
+    html_content += "</body></html>"
+
+    logging.debug(f"    html_content for all groups: {html_content}")
+
+    # Generate PDF from HTML content
     pdfkit.from_string(html_content, output_path, configuration=config)
 
     if not os.path.exists(absolute_output_path):
+        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
         return "Failed to create PDF file", 500
 
+    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
     return send_file(absolute_output_path, as_attachment=True, download_name='all_groups.pdf')
 
 def generate_professors_pdf():
-    professors = get_professors_with_groups()
-    html_content = """
-    <html>
-    <head>
-        <style>
-            body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; color: #333; }
-            h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
-            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9em; background-color: #f2f2f2; }
-            th, td { border: 1px solid #ddd; padding: 12px 15px; text-align: left; }
-            th { background-color: #2980b9; color: white; text-transform: uppercase; }
-            tr:nth-child(even) { background-color: #f9f9f9; }
-            tr:hover { background-color: #f1f1f1; }
-        </style>
-    </head>
-    <body>
-        <h1>Professors List</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>Subject</th>
-                    <th>Availability</th>
-                    <th>Groups</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
+    professors = get_professors()
+    html_content = "<h1>Professors List</h1><ul>"
     for professor in professors:
-        name, surname, email, subject, availability, groups = professor
-        availability = "<br>".join(set(availability.split(','))) if availability else ""
-        if groups:
-            groups_list = groups.split(',')
-            unique_groups = list(dict.fromkeys(groups_list))
-            groups_html = "<br>".join(unique_groups)
-        else:
-            groups_html = ""
-        html_content += f"""
-            <tr>
-                <td>{name}</td>
-                <td>{surname}</td>
-                <td>{email}</td>
-                <td>{subject}</td>
-                <td>{availability}</td>
-                <td>{groups_html}</td>
-            </tr>
-        """
-    html_content += """
-            </tbody>
-        </table>
-    </body>
-    </html>
-    """
+        html_content += f"<li>{professor[0]} {professor[1]} - {professor[2]} - {professor[3]} - {professor[4]}</li>"
+    html_content += "</ul>"
     pdf = pdfkit.from_string(html_content, False, configuration=config)
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'attachment; filename=professors_list.pdf'
     return response
 
-
-def get_professors_with_groups():
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT T.name, T.surname, T.mail, T.Subject, 
-               GROUP_CONCAT(DISTINCT A.Day || ' ' || A.Hour) as availabilities,
-               GROUP_CONCAT(DISTINCT C.ID_COURSE || ' (' || A.Day || ' ' || A.Hour || ')') as groups
-        FROM Teachers T
-        LEFT JOIN Availability_Teachers AT ON T.ID_Teacher = AT.ID_Teacher
-        LEFT JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
-        LEFT JOIN Courses C ON T.ID_Teacher = C.ID_Teacher
-        GROUP BY T.name, T.surname, T.mail, T.Subject
-    """)
-    professors = cursor.fetchall()
-    conn.close()
-    return professors
-
 def generate_professors_csv():
     professors = get_professors()
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
+    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability"])
     for professor in professors:
-        name, surname, email, subject, availability, groups = professor
-        availability = availability.replace(",", ", ") if availability else ""
-        if groups:
-            groups_list = groups.split(',')
-            unique_groups = list(dict.fromkeys(groups_list))
-            groups = ', '.join(unique_groups)
-        else:
-            groups = ""
-        writer.writerow([name, surname, email, subject, availability, groups])
+        writer.writerow(professor)
     output.seek(0)
     response = make_response(output.getvalue())
     response.headers['Content-Disposition'] = 'attachment; filename=professors_list.csv'
@@ -720,17 +588,13 @@ def export_all_groups_csv():
 
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname", "Day", "Time"])
-
+    writer.writerow(["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
+    
     for group in groups:
         students = get_student_details(group_lv1=group)
         for student in students:
-            teacher_name = student.get('TeacherName', 'Unknown')
-            teacher_surname = student.get('TeacherSurname', 'Unknown')
-            day = student.get('Day', 'Unknown')  # Modify this if 'Day' is not included in student details
-            time = student.get('Hour', 'Unknown')  # Modify this if 'Hour' is not included in student details
-            writer.writerow([group, student['Surname'], student['Name'], student['Email'], student['Class'], student['GROUP_LV1'], student['Language'], teacher_name, teacher_surname, day, time])
-
+            writer.writerow([group] + list(student.values()))
+    
     output.seek(0)
     response = make_response(output.getvalue())
     response.headers['Content-Disposition'] = 'attachment; filename=all_groups.csv'
@@ -775,20 +639,15 @@ def export_all_groups_excel():
     return response
 
 def generate_professor_csv(professor_name):
-    professor_details = get_professor_details(professor_name=professor_name)
-    if not professor_details:
+    professors = get_professor_details(professor_name=professor_name)
+    if not professors:
         return "No professor details found", 404
     
-    groups = get_professor_groups(professor_name)
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
-    
-    for detail in professor_details:
-        name, surname, email, subject, availability = detail
-        group_details = "; ".join([f"{group[0]} ({group[1]} {group[2]})" for group in groups])
-        writer.writerow([name, surname, email, subject, availability, group_details])
-    
+    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability"])
+    for professor in professors:
+        writer.writerow([professor['name'], professor['surname'], professor['email'], professor['subject'], professor['availability']])
     output.seek(0)
     response = make_response(output.getvalue())
     response.headers['Content-Disposition'] = f'attachment; filename=professor_{professor_name}.csv'
@@ -822,240 +681,51 @@ def export_all_professors_excel():
 
 def generate_group_pdf(group_id):
     students = get_student_details(group_lv1=group_id)
-    html_content = """
-    <html>
-    <head>
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-            color: #333;
-        }
-        h1, h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #2c3e50;
-            padding-bottom: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            background-color: #f2f2f2;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px 15px;
-            text-align: left;
-        }
-        th {
-            background-color: #2980b9;
-            color: white;
-            text-transform: uppercase;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        </style>
-    </head>
-    <body>
-        <h1>Group {group_id}</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>Class</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
+    html_content = f"<h1>Group {group_id}</h1><ul>"
     for student in students:
-        html_content += f"""
-                <tr>
-                    <td>{student['Name']}</td>
-                    <td>{student['Surname']}</td>
-                    <td>{student['Email']}</td>
-                    <td>{student['Class']}</td>
-                </tr>
-        """
-    html_content += """
-            </tbody>
-        </table>
-    </body>
-    </html>
-    """
+        html_content += f"<li>{student['Name']} {student['Surname']} - {student['Email']} - {student['Class']}</li>"
+    html_content += "</ul>"
 
+    logging.debug(f"HTML content for group {group_id}: {html_content}")
+
+    # Define the correct output path and filename
     output_path = f"./group_{group_id}.pdf"
     absolute_output_path = os.path.abspath(output_path)
 
+    # Generate PDF
     pdfkit.from_string(html_content, output_path, configuration=config)
 
+    # Ensure the file exists
     if not os.path.exists(absolute_output_path):
+        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
         return "Failed to create PDF file", 500
 
-    return send_file(absolute_output_path, as_attachment=True, download_name=f'group_{group_id}.pdf')   
+    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
+    return send_file(absolute_output_path, as_attachment=True, download_name=f'group_{group_id}.pdf'.replace('_', ''))
 
 def generate_professor_pdf(professor_name):
     professor_details = get_professor_details(professor_name=professor_name)
     if not professor_details:
         return "No professor details found", 404
 
-    html_content = f"""
-    <html>
-    <head>
-        <style>
-        body {{
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-            color: #333;
-        }}
-        h1, h2 {{
-            color: #2c3e50;
-            border-bottom: 2px solid #2c3e50;
-            padding-bottom: 10px;
-        }}
-        table {{
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            background-color: #f2f2f2;
-        }}
-        th, td {{
-            border: 1px solid #ddd;
-            padding: 12px 15px;
-            text-align: left;
-        }}
-        th {{
-            background-color: #2980b9;
-            color: white;
-            text-transform: uppercase;
-        }}
-        tr:nth-child(even) {{
-            background-color: #f9f9f9;
-        }}
-        tr:hover {{
-            background-color: #f1f1f1;
-        }}
-        </style>
-    </head>
-    <body>
-        <h1>Professor {professor_name}</h1>
-        <h2>Details</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>Subject</th>
-                    <th>Availability</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
+    html_content = f"<h1>Professor {professor_name}</h1><ul>"
     for detail in professor_details:
-        html_content += f"""
-        <tr>
-            <td>{detail['name']}</td>
-            <td>{detail['surname']}</td>
-            <td>{detail['email']}</td>
-            <td>{detail['subject']}</td>
-            <td>{detail['availability'].replace(",", ", ")}</td>
-        </tr>
-        """
-    html_content += """
-            </tbody>
-        </table>
-        <h2>Groups</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Group</th>
-                    <th>Day</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
-    groups = get_professor_groups(professor_name)
-    for group in groups:
-        html_content += f"""
-        <tr>
-            <td>{group[0]}</td>
-            <td>{group[1]}</td>
-            <td>{group[2]}</td>
-        </tr>
-        """
-    html_content += """
-            </tbody>
-        </table>
-    </body>
-    </html>
-    """
-    pdf = pdfkit.from_string(html_content, False, configuration=config)
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'attachment; filename=professor_{professor_name}.pdf'
-    return response
+        html_content += f"<li>{detail['name']} {detail['surname']} - {detail['email']} - {detail['subject']} - {detail['availability']}</li>"
+    html_content += "</ul>"
 
-def get_groups_by_professor(professor_name):
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
+    logging.debug(f"HTML content for professor {professor_name}: {html_content}")
 
-    name_parts = professor_name.split()
-    if len(name_parts) < 2:
-        return []  # Nom de professeur invalide
+    output_path = f"./professor_{professor_name}.pdf"
+    absolute_output_path = os.path.abspath(output_path)
 
-    first_name = name_parts[0]
-    last_name = name_parts[1]
+    pdfkit.from_string(html_content, output_path, configuration=config)
 
-    cursor.execute("""
-        SELECT DISTINCT lg.ID_COURSE, a.Day, a.Hour
-        FROM Teachers t
-        JOIN Courses c ON t.ID_Teacher = c.ID_Teacher
-        JOIN List_Groups_Students lg ON c.ID_COURSE = lg.ID_COURSE
-        JOIN Availability_Teachers at ON t.ID_Teacher = at.ID_Teacher
-        JOIN Availabilities a ON at.ID_Availability = a.ID_Availability
-        WHERE t.name = ? AND t.surname = ?
-    """, (first_name, last_name))
+    if not os.path.exists(absolute_output_path):
+        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
+        return "Failed to create PDF file", 500
 
-    rows = cursor.fetchall()
-    conn.close()
-
-    groups = []
-    for row in rows:
-        groups.append({
-            'group_id': row[0],
-            'day': row[1],
-            'time': row[2]
-        })
-
-    return groups
-
-def get_professor_groups(professor_name):
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT c.ID_COURSE, a.Day, a.Hour
-        FROM Courses c
-        JOIN Teachers t ON c.ID_Teacher = t.ID_Teacher
-        JOIN Availabilities a ON c.ID_Availability = a.ID_Availability
-        WHERE t.name || ' ' || t.surname = ?
-    """, (professor_name,))
-
-    groups = cursor.fetchall()
-    conn.close()
-
-    return groups
+    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
+    return send_file(absolute_output_path, as_attachment=True, download_name=f'professor_{professor_name}.pdf')
 
 if __name__ == '__main__':
     def open_browser():

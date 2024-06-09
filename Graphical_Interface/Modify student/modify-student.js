@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const promoSelect = document.getElementById('student-promo');
     const englishCourseSelect = document.getElementById('english-course');
     const addSecondLanguageCheckbox = document.getElementById('add-second-language');
+    const addSecondLanguage = document.getElementById('add-language');
     const secondLanguageSection = document.getElementById('second-language-section');
     const studentLv2 = document.getElementById('student-lv2');
     const lv2Course = document.getElementById('lv2-course');
@@ -70,18 +71,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const toggleSecondLanguageSection = () => {
             const promoValue = promoSelect.value;
-            if (promoValue === '1A' || promoValue === '2A' || promoValue === '3A') {
+            if (promoValue === '1AFG' || promoValue === '2AFG' || promoValue === '3AFG') {
                 secondLanguageSection.style.display = 'block';
                 studentLv2.style.display = 'block';
                 lv2Course.style.display = 'block';
-                addSecondLanguageCheckbox.style.display = 'none';
+                addSecondLanguage.style.display = 'none';
             } else if (promoValue === '1ABEE' || promoValue === '2ABEE' || promoValue === '3ABEE') {
                 secondLanguageSection.style.display = 'none';
                 studentLv2.value = "";
                 lv2Course.value = "";
             } else if (promoValue === '1AFT' || promoValue === '2AFT') {
                 secondLanguageSection.style.display = 'block';
-                addSecondLanguageCheckbox.style.display = 'block';
+                addSecondLanguage.style.display = 'block';
                 studentLv2.style.display = addSecondLanguageCheckbox.checked ? 'block' : 'none';
                 lv2Course.style.display = addSecondLanguageCheckbox.checked ? 'block' : 'none';
             } else if (promoValue === 'Promo'){
@@ -184,42 +185,115 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.status === "success") {
+                const data_english = {
+                    english: document.getElementById('english-course').value,
+                    email: document.getElementById('student-email').value
+                };
+        
+                fetch('/add2', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data_english),
+                })
+                if(document.getElementById('lv2-course').value !== ''){
+                    const data_lv2 = {
+                        lv2: document.getElementById('lv2-course').value,
+                        email: document.getElementById('student-email').value
+                    };
+        
+                    fetch('/add3', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data_lv2),
+                    })
+                }
                 alert("Student added successfully!");
             } else {
                 alert("Error: " + data.message);
             }
         })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+      
+    const searchStudent = document.getElementById('student-search-input');
+    const studentSelect = document.getElementById('mySelect');
+    var buttonDelete = document.getElementById('delete-student-button');
+
+    searchStudent.addEventListener('change', (event) => {
+        let studentSearched = event.target.value;
+        studentSearched = studentSearched.toLowerCase();
+        fetch('/students')
+            .then(response => response.json())
+            .then(students => {
+                // Clear the select options
+                studentSelect.innerHTML = '';
+                let addedEmails = {};
+                students.forEach(student => {
+                    nameStudent = student.Surname.toLowerCase()
+                    if(nameStudent.startsWith(studentSearched)) {
+                        if (!addedEmails[student.Email]) {
+                            let option = document.createElement('option');
+                            option.value = student.Email;
+                            option.text = student.Name + ' ' + student.Surname;
+                            studentSelect.add(option);
+                            addedEmails[student.Email] = true;
+                        }
+                    }
+                });
+            });
     });
 
-    document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
-        const data_english = {
-            english: document.getElementById('english-course').value,
-            email: document.getElementById('student-email').value
-        };
+    const selectedStudent = document.getElementById('mySelect');
+    const studentDetails = document.getElementById('student-details');
 
-        fetch('/add2', {
+    selectedStudent.addEventListener('change', (event) => {
+        let studentEmail = event.target.value;
+        fetch(`/students`)
+            .then(response => response.json())
+            .then(students => {
+                let student = students.find(s => s.Email === studentEmail);
+                if (student) {
+                    studentDetails.style.display = 'block';
+                    document.getElementById('student-name-delete').textContent = student.Surname;
+                    document.getElementById('student-firstname-delete').textContent = student.Name;
+                    document.getElementById('student-promo-delete').textContent = student.Class;
+                    document.getElementById('student-email-delete').textContent = student.Email;
+                    buttonDelete.removeAttribute('disabled');
+                }
+            });
+    });
+
+    buttonDelete.addEventListener('click', function() {
+        const emailToDelete = selectedStudent.value;
+        fetch('/deleteStudent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data_english),
+            body: JSON.stringify({
+                email: emailToDelete
+            }),
         })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // La suppression a réussi
+                alert('Student deleted successfully!');
+                studentDetails.style.display = 'none';
+                buttonDelete.setAttribute('disabled', 'disabled');
+                searchStudent.value = '';
+                selectedStudent.value = '';
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     });
 
-    document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
-        if(document.getElementById('lv2-course').value !== ''){
-            const data_lv2 = {
-                lv2: document.getElementById('lv2-course').value,
-                email: document.getElementById('student-email').value
-            };
-
-            fetch('/add3', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data_lv2),
-            })
-        }
-    });
-})
+});

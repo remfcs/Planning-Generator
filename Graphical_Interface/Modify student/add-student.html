@@ -46,14 +46,14 @@
                 <input type="text" id="student-name" class="form-control" placeholder="NAME" required>
                 <input type="text" id="student-firstname" class="form-control" placeholder="First name" required>
                 <select id="student-promo" class="form-control" required>
-                    <option value="">Promo</option>
-                    <option value="1A">1A</option>
+                    <option value="Promo">Promo</option>
+                    <option value="1AFG">1AFG</option>
                     <option value="1AFT">1AFT</option>
                     <option value="1ABEE">1ABEE</option>
-                    <option value="2A">2A</option>
+                    <option value="2AFG">2AFG</option>
                     <option value="2AFT">2AFT</option>
                     <option value="2ABEE">2ABEE</option>
-                    <option value="3A">3A</option>
+                    <option value="3AFG">3AFG</option>
                     <option value="3ABEE">3ABEE</option>
                 </select>
                 <input type="email" id="student-email" class="form-control" placeholder="Email" required>
@@ -61,7 +61,7 @@
                     <option value="">Select English Course</option>
                 </select>
                 <div id="second-language-section" style="display: none">
-                    <label>
+                    <label id="add-language">
                         <input type="checkbox" id="add-second-language"> Add a second language
                     </label>
                     <select id="student-lv2" class="form-control">
@@ -86,15 +86,17 @@
         <div class="content" id="delete-student-form" style="display:none;">
             <h2>Delete a student</h2>
             <div>
-                <input type="text" id="student-search-input" list="student-list" placeholder="Type the name of the student you want to delete...">
-                <datalist id="student-list"></datalist>
+                <input type="text" id="student-search-input" placeholder="Type the name of the student you want to delete...">
             </div>
+            <select id="mySelect">
+            </select>
+
             <div id="student-details" style="display:none;">
                 <h3>You want to delete this student:</h3>
-                <p>Name: <span id="student-name"></span></p>
-                <p>First name: <span id="student-firstname"></span></p>
-                <p>Promo: <span id="student-promo"></span></p>
-                <p>Email: <span id="student-email"></span></p>
+                <p>Name: <span id="student-name-delete">None</span></p>
+                <p>First name: <span id="student-firstname-delete">None</span></p>
+                <p>Promo: <span id="student-promo-delete">None</span></p>
+                <p>Email: <span id="student-email-delete">None</span></p>
             </div>
             <div><button id="delete-student-button" disabled>Delete This Student</button></div>
         </div>
