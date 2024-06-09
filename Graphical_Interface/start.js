@@ -78,13 +78,14 @@ function uploadAllFiles(event) {
     event.preventDefault();
 
     // **Ajout des autres champs de formulaire à formData**
-    const estimateNumberStudent = document.getElementById('estimate_number_student').value;
+    //const estimateNumberStudent = document.getElementById('estimate_number_student').value;
     const halfdaySlot = document.getElementById('halfday_slot').value;
-    formData.append('estimate_number_student', estimateNumberStudent);
+    //formData.append('estimate_number_student', estimateNumberStudent);
     formData.append('halfday_slot', halfdaySlot);
     formData.append('teachers', JSON.stringify(teachers));
-    const availabilityJSON = getPromoAvailabilities();
+    const availabilityJSON = getPromoAvailibilities();
     formData.append('availabilityPromo', availabilityJSON);
+    console.log(availabilityJSON)
 
     console.log('FormData avant l\'envoi:');
     formData.forEach((value, key) => {
