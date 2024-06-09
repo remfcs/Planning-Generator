@@ -10,7 +10,7 @@ import os
     À faire :
     - refaire numberclass FAIT
     - si pas assez de place pour les 3as le mardi en espagnol les mettre dans un groupe a part le jeudi   FAT
-    - mapper les colonnes dans function_read_folder FAIT
+    - mapper les colonnes dans function_read_folder FAIT    
     # ? Documenter toutes les fonctions
     # ? faire le doc de la maintenance
     - faire les cours d'allemands et chinois séparé pour les 3a et 1a et 2a
