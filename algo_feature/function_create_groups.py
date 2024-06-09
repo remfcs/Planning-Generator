@@ -186,21 +186,54 @@ def make_association(Data, promo_pair):
         promo_list = promo_pair[lv]
         slots = {}
         for promo_association in promo_list :
+            insertions = []  # Initialize a list to store insertions
+
             list_slots = function_database.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
-            print("\n" ,promo_association, lv, list_slots)
+            print("\n" ,name,  lv, list_slots)
             teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv)  # Get available teachers for the language
             print(teacher_availabilities)            
             cursor = conn.cursor()
-            pattern = '%' + lv[:3] + '%'  # Create a pattern to match courses for the language
-            cursor.execute("SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students WHERE ID_COURSE LIKE ? ORDER BY LENGTH(ID_COURSE), ID_COURSE;", (pattern,))
+            pattern = '%{'+ ', '.join(promo_association) + "}_"+ lv[:3] + '%'  # Create a pattern to match courses for the language
+            print(pattern)
+            cursor.execute("""
+                           SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students 
+                           WHERE ID_COURSE LIKE ? ORDER BY LENGTH(ID_COURSE), ID_COURSE;""",
+                            (pattern,))
             list_groups = cursor.fetchall()
             list_groups = [pos[0] for pos in list_groups]  # Extract course IDs
             print(list_groups)
+            for i in range(len(list_groups)):
+                insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
+                insertions.append(insertion)  # Prepare insertions of teacher and group associations
+                cursor = conn.cursor()
+                print(teacher_availabilities[i][0],teacher_availabilities[i][1])
+                cursor.execute("""
+                                UPDATE Availability_Teachers SET ACTIVE = 1
+                                WHERE ID_Availability LIKE ? AND ID_Teacher LIKE ?;
+                               """, (teacher_availabilities[i][1],teacher_availabilities[i][0]))
+                conn.commit()
+            print(insertions)
+            final_insertions = insertions
+            # final_insertions = []
+            # for slot in list_slots:
+            #     rooms_available = function_database.get_available_room(Data, slot)  # Get available rooms for the slot
 
-
-# .split('_')[2]
+            #     for i in range(len(insertions)):
+            #         if insertions[i][2] == slot[0]:  # Match insertions with the current slot
+            #             if rooms_available:
+            #                 room = rooms_available.pop(0)  # Get the first available room and remove it from the list
+            #             else:
+            #                 room = ('No more available',)
+            #             final_insertion = insertions[i] + room  # Add room information to the insertion
+            #             final_insertions.append(final_insertion)  # Add to the final insertions list
+            for value in final_insertions:
+                result_str = ', '.join(promo_association)  # Create a string representation of the promo list
+                cursor.execute("INSERT INTO Courses(LANGUAGE, ID_COURSE, ID_TEACHER, ID_AVAILABILITY, ID_ROOM, PROMO) VALUES(?, ?, ?, ?, ?, ?);", 
+                            (value[3], value[1], value[0], value[2], "R pour le moment ", result_str))
+                conn.commit()  # Insert the final insertion into the Courses table and commit the changes
+    conn.close()    # Close the database connection
 
 
 
