@@ -156,16 +156,16 @@ def get_available_teacher(Data, slot, lv):
     if '-débutant' in lv:
         lv = lv.split(' -débutant')[0]
     for slo in slot:
-        cursor.execute(
-            """
-            SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
-            FROM Availability_Teachers
-            JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
-            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?;
-            """,
-            (slo[0], lv)
-        )
-        teacher_availabilities.extend(cursor.fetchall())
+        cursor.execute("""
+                    SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability 
+                    FROM Availability_Teachers 
+                    JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher 
+                    WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 1;
+                    """
+                    , (slo[0], lv))
+        results = cursor.fetchall()
+        #print(results)
+        teacher_availabilities.extend(results)
         #print(teacher_availabilities)
     return teacher_availabilities
 
@@ -181,7 +181,7 @@ def get_nb_available_teacher(Data, slot, lv):
             SELECT count(Availability_Teachers.ID_Teacher)
             FROM Availability_Teachers
             JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
-            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?;
+            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 0;
             """,
             (slo[0], lv)
         )
@@ -200,14 +200,14 @@ def get_available_teacher2(Data, slots, lv):
             SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
             FROM Availability_Teachers
             JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
-            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?
+            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 0
             ORDER BY Availability_Teachers.ID_Teacher AND Availability_Teachers.ID_Availability DESC;
             """,
             (slot[0], lv)
         )
         teacher_availabilities.extend(cursor.fetchall())
     teacher_availabilities.sort(key=lambda x: (x[0], x[1]))
-    #print(teacher_availabilities)
+    #print("aaaahhahahaa", teacher_availabilities)
     return teacher_availabilities
 
 def get_available_room(Data, slots):
