@@ -16,26 +16,54 @@
         <div class="text-center mt-4">
             <h1>Export de Fichiers</h1>
         </div>
-        <form id="exportForm" class="form-inline">
-            <label for="fileType" class="sr-only">Type de Fichier :</label>
-            <select id="fileType" name="fileType" class="form-control mb-2 mr-sm-2">
-                <option value="csv">CSV</option>
-                <option value="pdf">PDF</option>
-                <option value="excel">Excel</option>
-            </select>
-            <label for="groupSelect" class="sr-only">Sélectionner un groupe :</label>
-            <select id="groupSelect" name="groupSelect" class="form-control mb-2 mr-sm-2">
-                <option value="professors">Professors</option>
-                <!-- Options will be dynamically populated -->
-            </select>
-            <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="exportAllGroups" name="exportAllGroups">
-                <label class="form-check-label" for="exportAllGroups">
-                    Exporter tous les groupes
-                </label>
-            </div>
-            <button type="button" id="exportButton" class="btn btn-primary mb-2">Exporter</button>
-        </form>
+
+        <!-- Section pour les groupes -->
+        <div class="export-section">
+            <h2>Exporter les Groupes</h2>
+            <form id="exportGroupForm" class="form-inline">
+                <label for="fileTypeGroup" class="sr-only">Type de Fichier :</label>
+                <select id="fileTypeGroup" name="fileTypeGroup" class="form-control mb-2 mr-sm-2">
+                    <option value="csv">CSV</option>
+                    <option value="pdf">PDF</option>
+                    <option value="excel">Excel</option>
+                </select>
+                <label for="groupSelect" class="sr-only">Sélectionner un groupe :</label>
+                <select id="groupSelect" name="groupSelect" class="form-control mb-2 mr-sm-2">
+                    <!-- Options seront peuplées dynamiquement -->
+                </select>
+                <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="exportAllGroups" name="exportAllGroups">
+                    <label class="form-check-label" for="exportAllGroups">
+                        Exporter tous les groupes
+                    </label>
+                </div>
+                <button type="button" id="exportGroupButton" class="btn btn-primary mb-2">Exporter</button>
+            </form>
+        </div>
+
+        <!-- Section pour les professeurs -->
+        <div class="export-section">
+            <h2>Exporter les Professeurs</h2>
+            <form id="exportProfessorForm" class="form-inline">
+                <label for="fileTypeProfessor" class="sr-only">Type de Fichier :</label>
+                <select id="fileTypeProfessor" name="fileTypeProfessor" class="form-control mb-2 mr-sm-2">
+                    <option value="csv">CSV</option>
+                    <option value="pdf">PDF</option>
+                    <option value="excel">Excel</option>
+                </select>
+                <label for="professorSelect" class="sr-only">Sélectionner un professeur :</label>
+                <select id="professorSelect" name="professorSelect" class="form-control mb-2 mr-sm-2">
+                    <!-- Options seront peuplées dynamiquement -->
+                </select>
+                <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="exportAllProfessors" name="exportAllProfessors">
+                    <label class="form-check-label" for="exportAllProfessors">
+                        Exporter tous les professeurs
+                    </label>
+                </div>
+                <button type="button" id="exportProfessorButton" class="btn btn-primary mb-2">Exporter</button>
+            </form>
+        </div>
     </div>
     <script src="export.js"></script>
 </body>

@@ -9,6 +9,7 @@ import subprocess
 import sqlite3
 import csv
 import io
+import pandas as pd  # Ajout de pandas pour l'export en Excel
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -224,40 +225,44 @@ def api_professors():
         })
     return jsonify(professor_list)
 
-@app.route('/api/professor_details', methods=['GET'])
-def get_professor_details():
-    professor_name = request.args.get('professor')
+def get_professor_details(professor_name):
     if not professor_name:
-        return jsonify([])
+        return []
 
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
 
     name_parts = professor_name.split()
     if len(name_parts) < 2:
-        return jsonify([])  # Nom de professeur invalide
+        return []  # Nom de professeur invalide
 
     first_name = name_parts[0]
     last_name = name_parts[1]
 
     cursor.execute("""
-        SELECT DISTINCT c.Language, lg.ID_COURSE
+        SELECT DISTINCT t.name, t.surname, t.mail, t.Subject, 
+               GROUP_CONCAT(A.Day || ' ' || A.Hour) as availabilities
         FROM Teachers t
-        JOIN Courses c ON t.ID_Teacher = c.ID_Teacher
-        JOIN List_Groups_Students lg ON c.ID_COURSE = lg.ID_COURSE
+        LEFT JOIN Availability_Teachers AT ON t.ID_Teacher = AT.ID_Teacher
+        LEFT JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
         WHERE t.name = ? AND t.surname = ?
+        GROUP BY t.name, t.surname, t.mail, t.Subject
     """, (first_name, last_name))
 
     rows = cursor.fetchall()
     conn.close()
 
-    languages = list(set(row[0] for row in rows))
-    groups = list(set(row[1] for row in rows))
+    professors = []
+    for row in rows:
+        professors.append({
+            'name': row[0],
+            'surname': row[1],
+            'email': row[2],
+            'subject': row[3],
+            'availability': row[4]
+        })
 
-    return jsonify({
-        'languages': languages,
-        'groups': groups
-    })
+    return professors
 
 @app.route('/languages')
 def get_languages():
@@ -406,59 +411,13 @@ def export_page():
 def serve_export_js():
     return send_from_directory('Export', 'export.js')
 
-def generate_professors_csv():
-    professors = get_professors()
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability"])
-    for professor in professors:
-        writer.writerow(professor)
-    output.seek(0)
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.csv'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
-
-def generate_group_csv(group_id):
-    students = get_student_details(group_lv1=group_id)
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
-    for student in students:
-        writer.writerow(student.values())
-    output.seek(0)
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = f'attachment; filename=group_{group_id}.csv'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
-
-def export_all_groups_csv():
-    groups = get_groups().json
-    if not groups:
-        return "No groups found", 400
-
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
-    
-    for group in groups:
-        students = get_student_details(group_lv1=group)
-        for student in students:
-            writer.writerow([group] + list(student.values()))
-    
-    output.seek(0)
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = 'attachment; filename=all_groups.csv'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
-
-@app.route('/export_file', methods=['GET'])
-def export_file():
+@app.route('/export_group', methods=['GET'])
+def export_group():
     file_type = request.args.get('fileType')
     group_id = request.args.get('groupId')
     export_all = request.args.get('exportAll', 'false') == 'true'
 
-    logging.debug(f"Received parameters - fileType: {file_type}, groupId: {group_id}, exportAll: {export_all}")
+    logging.debug(f"Received parameters for export_group - fileType: {file_type}, groupId: {group_id}, exportAll: {export_all}")
 
     if not file_type:
         return "Missing fileType parameter", 400
@@ -467,60 +426,53 @@ def export_file():
         if export_all:
             return export_all_groups()
         elif group_id:
-            if group_id == "professors":
-                return generate_professors_pdf()
-            else:
-                return generate_group_pdf(group_id)
+            return generate_group_pdf(group_id)
         else:
             return "Missing groupId parameter", 400
     elif file_type == 'csv':
         if export_all:
             return export_all_groups_csv()
         elif group_id:
-            if group_id == "professors":
-                return generate_professors_csv()
-            else:
-                return generate_group_csv(group_id)
+            return generate_group_csv(group_id)
         else:
             return "Missing groupId parameter", 400
 
     return "Invalid file type", 400
 
-def generate_group_pdf(group_id):
-    students = get_student_details(group_lv1=group_id)
-    html_content = f"<h1>Group {group_id}</h1><ul>"
-    for student in students:
-        html_content += f"<li>{student['Name']} {student['Surname']} - {student['Email']} - {student['Class']}</li>"
-    html_content += "</ul>"
+@app.route('/export_professor', methods=['GET'])
+def export_professor():
+    file_type = request.args.get('fileType')
+    professor_name = request.args.get('professor')
+    export_all = request.args.get('exportAll', 'false') == 'true'
 
-    logging.debug(f"HTML content for group {group_id}: {html_content}")
+    logging.debug(f"Received parameters for export_professor - fileType: {file_type}, professorName: {professor_name}, exportAll: {export_all}")
 
-    # Define the correct output path and filename
-    output_path = f"./group_{group_id}.pdf"
-    absolute_output_path = os.path.abspath(output_path)
+    if not file_type:
+        return "Missing fileType parameter", 400
 
-    # Generate PDF
-    pdfkit.from_string(html_content, output_path, configuration=config)
+    if file_type == 'pdf':
+        if export_all:
+            return generate_professors_pdf()
+        elif professor_name:
+            return generate_professor_pdf(professor_name)
+        else:
+            return "Missing professorId parameter", 400
+    elif file_type == 'csv':
+        if export_all:
+            return generate_professors_csv()
+        elif professor_name:
+            return generate_professor_csv(professor_name)
+        else:
+            return "Missing professorId parameter", 400
+    elif file_type == 'excel':
+        if export_all:
+            return export_all_professors_excel()
+        elif professor_name:
+            return generate_professor_excel(professor_name)
+        else:
+            return "Missing professorId parameter", 400
 
-    # Ensure the file exists
-    if not os.path.exists(absolute_output_path):
-        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
-        return "Failed to create PDF file", 500
-
-    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
-    return send_file(absolute_output_path, as_attachment=True, download_name=f'group_{group_id}.pdf')
-
-def generate_professors_pdf():
-    professors = get_professors()
-    html_content = "<h1>Professors List</h1><ul>"
-    for professor in professors:
-        html_content += f"<li>{professor[0]} {professor[1]} - {professor[2]} - {professor[3]} - {professor[4]}</li>"
-    html_content += "</ul>"
-    pdf = pdfkit.from_string(html_content, False, configuration=config)
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.pdf'
-    return response
+    return "Invalid file type", 400
 
 def export_all_groups():
     response = get_groups()
@@ -548,7 +500,7 @@ def export_all_groups():
         html_content += group_html
     html_content += "</body></html>"
 
-    logging.debug(f"HTML content for all groups: {html_content}")
+    logging.debug(f"    html_content for all groups: {html_content}")
 
     # Generate PDF from HTML content
     pdfkit.from_string(html_content, output_path, configuration=config)
@@ -560,6 +512,196 @@ def export_all_groups():
     logging.debug(f"PDF file created successfully at: {absolute_output_path}")
     return send_file(absolute_output_path, as_attachment=True, download_name='all_groups.pdf')
 
+def generate_professors_pdf():
+    professors = get_professors()
+    html_content = "<h1>Professors List</h1><ul>"
+    for professor in professors:
+        html_content += f"<li>{professor[0]} {professor[1]} - {professor[2]} - {professor[3]} - {professor[4]}</li>"
+    html_content += "</ul>"
+    pdf = pdfkit.from_string(html_content, False, configuration=config)
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.pdf'
+    return response
+
+def generate_professors_csv():
+    professors = get_professors()
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability"])
+    for professor in professors:
+        writer.writerow(professor)
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+def generate_group_csv(group_id):
+    students = get_student_details(group_lv1=group_id)
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
+    for student in students:
+        writer.writerow([student["Surname"], student["Name"], student["Email"], student["Class"], student["GROUP_LV1"], student["Language"], student["TeacherName"], student["TeacherSurname"]])
+    output.seek(0)
+    response = make_response(output.getvalue())
+    logging.debug(f"Setting Content-Disposition header for group {group_id}")
+    response.headers['Content-Disposition'] = f'attachment; filename="group_{group_id}.csv"'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+def export_all_groups_csv():
+    response = get_groups()
+    if response.status_code != 200:
+        logging.error(f"Failed to get groups: {response.status_code}")
+        return "Failed to get groups", 500
+
+    groups = response.get_json()
+    if not groups:
+        logging.error("No groups found")
+        return "No groups found", 400
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
+    
+    for group in groups:
+        students = get_student_details(group_lv1=group)
+        for student in students:
+            writer.writerow([group] + list(student.values()))
+    
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=all_groups.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+def generate_group_excel(group_id):
+    students = get_student_details(group_lv1=group_id)
+    df = pd.DataFrame(students)
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Group Data')
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = f'attachment; filename=group_{group_id}.xlsx'
+    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    return response
+
+def export_all_groups_excel():
+    response = get_groups()
+    if response.status_code != 200:
+        logging.error(f"Failed to get groups: {response.status_code}")
+        return "Failed to get groups", 500
+
+    groups = response.get_json()
+    if not groups:
+        logging.error("No groups found")
+        return "No groups found", 400
+
+    all_data = []
+    for group in groups:
+        students = get_student_details(group_lv1=group)
+        for student in students:
+            all_data.append([group] + list(student.values()))
+
+    df = pd.DataFrame(all_data, columns=["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='All Groups Data')
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=all_groups.xlsx'
+    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    return response
+
+def generate_professor_csv(professor_name):
+    professors = get_professor_details(professor_name=professor_name)
+    if not professors:
+        return "No professor details found", 404
+    
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability"])
+    for professor in professors:
+        writer.writerow([professor['name'], professor['surname'], professor['email'], professor['subject'], professor['availability']])
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = f'attachment; filename=professor_{professor_name}.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+def generate_professor_excel(professor_name):
+    professors = get_professor_details(professor_name=professor_name)
+    if not professors:
+        return "No professor details found", 404
+    
+    df = pd.DataFrame(professors)
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Professor Data')
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = f'attachment; filename=professor_{professor_name}.xlsx'
+    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    return response
+
+def export_all_professors_excel():
+    professors = get_professors()
+    df = pd.DataFrame(professors, columns=["Name", "Surname", "Email", "Subject", "Availability"])
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Professors Data')
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.xlsx'
+    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    return response
+
+def generate_group_pdf(group_id):
+    students = get_student_details(group_lv1=group_id)
+    html_content = f"<h1>Group {group_id}</h1><ul>"
+    for student in students:
+        html_content += f"<li>{student['Name']} {student['Surname']} - {student['Email']} - {student['Class']}</li>"
+    html_content += "</ul>"
+
+    logging.debug(f"HTML content for group {group_id}: {html_content}")
+
+    # Define the correct output path and filename
+    output_path = f"./group_{group_id}.pdf"
+    absolute_output_path = os.path.abspath(output_path)
+
+    # Generate PDF
+    pdfkit.from_string(html_content, output_path, configuration=config)
+
+    # Ensure the file exists
+    if not os.path.exists(absolute_output_path):
+        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
+        return "Failed to create PDF file", 500
+
+    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
+    return send_file(absolute_output_path, as_attachment=True, download_name=f'group_{group_id}.pdf'.replace('_', ''))
+
+def generate_professor_pdf(professor_name):
+    professor_details = get_professor_details(professor_name=professor_name)
+    if not professor_details:
+        return "No professor details found", 404
+
+    html_content = f"<h1>Professor {professor_name}</h1><ul>"
+    for detail in professor_details:
+        html_content += f"<li>{detail['name']} {detail['surname']} - {detail['email']} - {detail['subject']} - {detail['availability']}</li>"
+    html_content += "</ul>"
+
+    logging.debug(f"HTML content for professor {professor_name}: {html_content}")
+
+    output_path = f"./professor_{professor_name}.pdf"
+    absolute_output_path = os.path.abspath(output_path)
+
+    pdfkit.from_string(html_content, output_path, configuration=config)
+
+    if not os.path.exists(absolute_output_path):
+        logging.error(f"Failed to create PDF file at: {absolute_output_path}")
+        return "Failed to create PDF file", 500
+
+    logging.debug(f"PDF file created successfully at: {absolute_output_path}")
+    return send_file(absolute_output_path, as_attachment=True, download_name=f'professor_{professor_name}.pdf')
 
 if __name__ == '__main__':
     def open_browser():
