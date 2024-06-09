@@ -15,8 +15,11 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 # Configurez le logging
 logging.basicConfig(level=logging.DEBUG)
 
-# Chemin vers le binaire wkhtmltopdf sur Windows
-path_wkhtmltopdf = r'C:\Users\GIMOND\OneDrive - Fondation EPF\Documents\4A\Project Taylor\Planning-Generator\Graphical_Interface\Export\wkhtmltopdf\bin\wkhtmltopdf.exe'
+# Détermine le chemin absolu du répertoire du projet
+project_dir = os.path.dirname(os.path.abspath(__file__))
+# Chemin relatif vers wkhtmltopdf
+path_wkhtmltopdf = os.path.join(project_dir, 'Export', 'wkhtmltopdf', 'bin', 'wkhtmltopdf.exe')
+
 logging.debug(f"Using wkhtmltopdf path: {path_wkhtmltopdf}")
 config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
