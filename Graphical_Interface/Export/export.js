@@ -1,25 +1,25 @@
 $(document).ready(function () {
-    // Charger les groupes
-    $.get("/groups", function (data) {
-        data.forEach(function (group) {
-            $("#groupSelect").append(new Option(group, group));
+    // Peupler dynamiquement les options des groupes
+    $.getJSON('/groups', function (data) {
+        var groupSelect = $('#groupSelect');
+        $.each(data, function (index, value) {
+            groupSelect.append($('<option>', { value: value, text: value }));
         });
     });
 
-    // Charger les professeurs
-    $.get("/api/professors", function (data) {
-        data.forEach(function (professor) {
-            $("#professorSelect").append(new Option(professor.name + " " + professor.surname, professor.name + " " + professor.surname));
+    // Peupler dynamiquement les options des professeurs
+    $.getJSON('/api/professors', function (data) {
+        var professorSelect = $('#professorSelect');
+        $.each(data, function (index, value) {
+            professorSelect.append($('<option>', { value: value.name + " " + value.surname, text: value.name + " " + value.surname }));
         });
     });
+    $('#exportGroupButton').click(function () {
+        var fileType = $('#fileTypeGroup').val();
+        var groupId = $('#groupSelect').val();
+        var exportAll = $('#exportAllGroups').is(':checked');
 
-    // Exporter les groupes
-    $("#exportGroupButton").click(function () {
-        let fileType = $("#fileTypeGroup").val();
-        let groupId = $("#groupSelect").val();
-        let exportAll = $("#exportAllGroups").prop('checked');
-
-        let url = `/export_group?fileType=${fileType}`;
+        var url = `/export_group?fileType=${fileType}`;
         if (!exportAll) {
             url += `&groupId=${groupId}`;
         } else {
@@ -29,15 +29,14 @@ $(document).ready(function () {
         window.location.href = url;
     });
 
-    // Exporter les professeurs
-    $("#exportProfessorButton").click(function () {
-        let fileType = $("#fileTypeProfessor").val();
-        let professorName = $("#professorSelect").val();
-        let exportAll = $("#exportAllProfessors").prop('checked');
+    $('#exportProfessorButton').click(function () {
+        var fileType = $('#fileTypeProfessor').val();
+        var professor = $('#professorSelect').val();
+        var exportAll = $('#exportAllProfessors').is(':checked');
 
-        let url = `/export_professor?fileType=${fileType}`;
+        var url = `/export_professor?fileType=${fileType}`;
         if (!exportAll) {
-            url += `&professor=${professorName}`;
+            url += `&professor=${professor}`;
         } else {
             url += `&exportAll=true`;
         }
