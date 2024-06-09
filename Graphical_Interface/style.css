@@ -52,7 +52,7 @@ select:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
 }
 
-button {
+.button {
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
