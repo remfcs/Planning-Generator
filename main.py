@@ -108,7 +108,7 @@ promo_pair = {
     'CHINOIS': [['1A', '2A','3A', '1AFG', '2AFG']],
 }
 
-#function_create_groups.make_association(Data, promo_pair)
+function_create_groups.make_association(Data, promo_pair)
 
 
 
