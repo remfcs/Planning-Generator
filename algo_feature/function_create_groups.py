@@ -191,30 +191,30 @@ def make_association(Data, promo_pair):
             list_slots = function_database.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
-            print("\n" ,name,  lv, list_slots)
+            #print("\n" ,name,  lv, list_slots)
             teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv)  # Get available teachers for the language
-            print(teacher_availabilities)            
+            #print(teacher_availabilities)            
             cursor = conn.cursor()
             pattern = '%{'+ ', '.join(promo_association) + "}_"+ lv[:3] + '%'  # Create a pattern to match courses for the language
-            print(pattern)
+            #print(pattern)
             cursor.execute("""
                            SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students 
                            WHERE ID_COURSE LIKE ? ORDER BY LENGTH(ID_COURSE), ID_COURSE;""",
                             (pattern,))
             list_groups = cursor.fetchall()
             list_groups = [pos[0] for pos in list_groups]  # Extract course IDs
-            print(list_groups)
+            #print(list_groups)
             for i in range(len(list_groups)):
                 insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
                 insertions.append(insertion)  # Prepare insertions of teacher and group associations
                 cursor = conn.cursor()
-                print(teacher_availabilities[i][0],teacher_availabilities[i][1])
+                #print(teacher_availabilities[i][0],teacher_availabilities[i][1])
                 cursor.execute("""
                                 UPDATE Availability_Teachers SET ACTIVE = 1
                                 WHERE ID_Availability LIKE ? AND ID_Teacher LIKE ?;
                                """, (teacher_availabilities[i][1],teacher_availabilities[i][0]))
                 conn.commit()
-            print(insertions)
+            #print(insertions)
             final_insertions = insertions
             # final_insertions = []
             # for slot in list_slots:
