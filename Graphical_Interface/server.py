@@ -28,6 +28,7 @@ UPLOAD_FOLDER = './data/uploads'
 UPLOAD_FOLDER_LEVEL = './data/uploads/input_level'
 UPLOAD_FOLDER_INFO = './data/uploads/input_info'
 TEACHERS_JSON_PATH = os.path.join(UPLOAD_FOLDER, 'teachers.json')
+PROMO_AVAILABILITIES= os.path.join(UPLOAD_FOLDER, 'promo_availabilities.json')
 DATABASE_PATH = './data/database.sqlite3'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -47,6 +48,11 @@ def submit():
     # Récupérer les valeurs des champs de formulaire
     estimate_number_student = request.form.get('estimate_number_student')
     halfday_slot = request.form.get('halfday_slot')
+    
+    availability_Promo_json= request.form.get('availabilityPromo', '[]')
+    availability_Promo = json.loads(availability_Promo_json)
+    with open(TEACHERS_JSON_PATH, 'w') as json_file:
+        json.dump(availability_Promo, json_file, indent=4)
 
     # Récupérer les fichiers uploadés
     students_files = request.files.getlist('students_files[]')
@@ -77,7 +83,8 @@ def submit():
         "halfday_slots": f"Nombre de demi-journées: {halfday_slot}",
         "students_files": ", ".join(saved_files['students_files']),
         "level_files": ", ".join(saved_files['level_files']),
-        "teacher:": teachers
+        "teacher:": teachers, 
+        "Promo availabilities": availability_Promo
     }
     try:
         # Exécuter le script main.py
