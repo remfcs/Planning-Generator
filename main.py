@@ -1,7 +1,7 @@
 import sqlite3
 import pandas as pd
 import numpy as np
-from algo_feature import function_conflict, function_file_db, function_database, function_read_folder, function_create_groups
+from algo_feature import conflict_function, db_file_function, database_function, read_folder_function, create_groups_function
 from back_up import back_up
 import json
 import os
@@ -45,7 +45,7 @@ Rooms = ('K03', 'K04', 'K05', 'M101', 'M102', 'M103', 'M104', 'M01', 'M02')
 list_teacher = [('MARTIN','Lucas','john.doe@example.com','ANGLAIS'),('BERNARD','Emma','emma.smith@example.com','ANGLAIS'),('DUBOIS','Gabriel','david.johnson@example.com','ANGLAIS'),('THOMAS','Léa','sarah.williams@example.com','ANGLAIS'),('ROBERT','Louis','james.brown@example.com','ANGLAIS'),('RICHARD','Chloé','emily.jones@example.com','ESPAGNOL'),('PETIT','Adam','michael.davis@example.com','ESPAGNOL'),('DURAND','Manon','olivia.miller@example.com','ESPAGNOL'),('LEROY','Hugo','robert.wilson@example.com','ESPAGNOL'),('MOREAU','Jade','sophia.moore@example.com','ALLEMAND'),('SIMON','Nathan','william.taylor@example.com','ALLEMAND'),('LAURENT','Inés','isabella.anderson@example.com','CHINOIS')]
 
 #simuler les tables de jointure de disponibilité
-list_ID_Teacher, list_ID_room, list_ID_Availability, list_ID_Class = function_file_db.get_list(Data)
+list_ID_Teacher, list_ID_room, list_ID_Availability, list_ID_Class = db_file_function.get_list(Data)
 
 list_availability_teachers =[('BER_ANG', 'Thu_3'), ('BER_ANG', 'Thu_1'), ('BER_ANG', 'Thu_2'),  ('DUB_ANG', 'Thu_1'), ('DUB_ANG', 'Thu_3'), ('DUB_ANG', 'Thu_2'),  ('DUR_ESP', 'Thu_1'), ('DUR_ESP', 'Thu_2'),  ('LAU_CHI', 'Thu_3'), ('LAU_CHI', 'Thu_1'), ('LAU_CHI', 'Thu_2'), ('LER_ESP', 'Thu_2'), ('LER_ESP', 'Thu_3'),  ('MAR_ANG', 'Thu_3'), ('MAR_ANG', 'Thu_2'), ('MAR_ANG', 'Thu_1'),  ('MOR_ALL', 'Thu_3'), ('MOR_ALL', 'Thu_2'), ('MOR_ALL', 'Tue_1'), ('ROB_ANG', 'Thu_2'), ('ROB_ANG', 'Thu_3'), ('ROB_ANG', 'Thu_1'), ('PET_ESP','Thu_1'), ('PET_ESP','Thu_2'),('RIC_ESP','Thu_3'), ('RIC_ESP','Thu_2'), ('BER_ANG', 'Tue_3'), ('BER_ANG', 'Tue_1'), ('BER_ANG', 'Tue_2'),  ('DUB_ANG', 'Tue_1'), ('DUB_ANG', 'Tue_3'), ('DUB_ANG', 'Tue_2'),  ('DUR_ESP', 'Tue_1'), ('DUR_ESP', 'Tue_2'), ('LER_ESP', 'Tue_2'), ('LER_ESP', 'Tue_3'),  ('MAR_ANG', 'Tue_3'), ('MAR_ANG', 'Tue_2'), ('MAR_ANG', 'Tue_1'),  ('ROB_ANG', 'Tue_2'), ('ROB_ANG', 'Tue_3'), ('ROB_ANG', 'Tue_1'), ('PET_ESP','Tue_1'), ('PET_ESP','Tue_2'), ('RIC_ESP','Tue_3'), ('RIC_ESP','Tue_2')]
 #list_availibity_rooms = function_file_db.create_random_pairs(list_ID_room, list_ID_Availability,6)
@@ -63,76 +63,49 @@ list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A'
 
 
 #charge une df avec les infos des étudiants depuis le fichier info_student
-df = function_read_folder.file_data_Student(depot_info_folder)
+df = read_folder_function.file_data_Student(depot_info_folder)
 
 #Récupère les notes dans étudiants pour les mettre dans la df et sortir une df 'students_info' avec toutes les infos des étudiants
-students_info = function_read_folder.add_student_grade(depot_note_folder, df)
+students_info = read_folder_function.add_student_grade(depot_note_folder, df)
 
 #crée le backup
 back_up.backup(Data)
 
 #supprime les données de la table student
-function_database.delete_table_data(Data, "Student")
+database_function.delete_table_data(Data, "Student")
 
 #charge les données des étudiants dans la table student
 conn = sqlite3.connect(Data)
 students_info.rename(columns={'FIRSTNAME': 'SURNAME'}, inplace=True)
 students_info = students_info.drop_duplicates(subset='EMAIL', keep="first")
 
-function_database.insert_df_into_db(conn, students_info, "Student")
+database_function.insert_df_into_db(conn, students_info, "Student")
 
 
 #supprimer et remplir la table 'Availabilities'
-function_database.delete_table_data(Data, "Availabilities")
-function_file_db.Set_Availabilities(Data, DAYS, nb_slot)
+database_function.delete_table_data(Data, "Availabilities")
+db_file_function.Set_Availabilities(Data, DAYS, nb_slot)
 
 #supprimer et remplir la table 'Rooms'
-function_database.delete_table_data(Data, "Rooms")
-function_file_db.Set_Rooms(Data, Rooms)
+database_function.delete_table_data(Data, "Rooms")
+db_file_function.Set_Rooms(Data, Rooms)
 
 #supprimer et remplir la table 'Teachers'
-function_database.delete_table_data(Data, "Teachers")
-function_file_db.Set_teachers(Data, list_teacher)
+database_function.delete_table_data(Data, "Teachers")
+db_file_function.Set_teachers(Data, list_teacher)
 
 #Remplir les tables de jointure 
-function_file_db.Set_table_de_jointure(Data, 'Availability_Rooms' ,list_availibity_rooms)
-function_file_db.Set_table_de_jointure(Data, 'Availability_Teachers' ,list_availability_teachers)
-function_file_db.Set_table_de_jointure(Data, 'Availability_Class', list_availibity_class)
+db_file_function.Set_table_de_jointure(Data, 'Availability_Rooms' ,list_availibity_rooms)
+db_file_function.Set_table_de_jointure(Data, 'Availability_Teachers' ,list_availability_teachers)
+db_file_function.Set_table_de_jointure(Data, 'Availability_Class', list_availibity_class)
 
 #supprime les données de la table groupe
-function_database.delete_table_data(Data, "Courses")
-function_database.delete_table_data(Data, "List_Groups_Students")
+database_function.delete_table_data(Data, "Courses")
+database_function.delete_table_data(Data, "List_Groups_Students")
 
 #Créer les groupes 
-function_create_groups.make_groups(Data, promo_pair, max_by_class) 
+create_groups_function.make_groups(Data, promo_pair, max_by_class) 
 
-function_create_groups.make_association(Data, promo_pair)
+create_groups_function.make_association(Data, promo_pair)
 
-function_conflict.resolve_conflict(Data)
-
-#function_conflict.resolve_conflict(Data)
-
-#function_conflict.get_students_with_schedule_conflicts(Data)
-
-# def boucle(m,l):
-#     n=0
-#     while n !=2:
-#         #standart
-#         for i in range (0,m):
-#             function_conflict.resolution_conflict(Data)
-#             function_conflict.balance_groups(Data, max_by_class)
-
-#         #changement pour eviter les boucles infinies
-#         for i in range (0,l):   
-#             function_conflict.resolution_conflict_inverse(Data)
-#             function_conflict.balance_groups(Data, max_by_class)
-#         n +=1
-#     # affichage
-#     print(function_conflict.get_nb_student_by_group(Data))
-#     print(len(function_conflict.get_students_with_schedule_conflicts(Data)))
-#     print(function_conflict.get_students_with_schedule_conflicts(Data))
-#     return
-
-####       Meilleur compromis trouvé        #####
-
-#boucle(6,5)
+conflict_function.resolve_conflict(Data)
