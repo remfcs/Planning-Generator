@@ -103,26 +103,22 @@ def load_teachers(file_path):
     }
 
     day_slot_mapping = {
-        'Monday Morning': 'Mon_1',
-        'Monday Afternoon': 'Mon_2',
-        'Monday Evening': 'Mon_3',
-        'Tuesday Morning': 'Tue_1',
-        'Tuesday Afternoon': 'Tue_2',
-        'Tuesday Evening': 'Tue_3',
-        'Wednesday Morning': 'Wed_1',
-        'Wednesday Afternoon': 'Wed_2',
-        'Wednesday Evening': 'Wed_3',
-        'Thursday Morning': 'Thu_1',
-        'Thursday Afternoon': 'Thu_2',
-        'Thursday Evening': 'Thu_3',
-        'Friday Morning': 'Fri_1',
-        'Friday Afternoon': 'Fri_2',
-        'Friday Evening': 'Fri_3'
+        'Monday Morning': ('Mon_1','Mon_2', 'Mon_3'),
+        'Monday Afternoon': ('Mon_4','Mon_5', 'Mon_6'),
+        'Tuesday Morning': ('Thu_1','Thu_2', 'Thu_3'),
+        'Tuesday Afternoon': ('Thu_4','Thu_5', 'Thu_6'),
+        'Wednesday Morning': ('Wed_1','Wed_2', 'Wed_3'),
+        'Wednesday Afternoon': ('Wed_4','Wed_5', 'Wed_6'),
+        'Thursday Morning': ('Thu_1','Thu_2', 'Thu_3'),
+        'Thursday Afternoon': ('Thu_4','Thu_5', 'Thu_6'),
+        'Friday Morning': ('Fri_1','Fri_2', 'Fri_3'),
+        'Friday Afternoon': ('Fri_4','Fri_5', 'Fri_6'),
+        'Saturday Morning': ('Sat_1','Sat_2', 'Sat_3'),
     }
 
     for teacher in data:
         name_parts = teacher['name'].upper().split()
-        FIRSTNAME_parts = teacher['FIRSTNAME'].upper().split()
+        FIRSTNAME_parts = teacher['surname'].upper().split()
         email = teacher['email']
         subject = subject_mapping.get(teacher['subject'], teacher['subject'])
 
@@ -133,10 +129,53 @@ def load_teachers(file_path):
         teacher_code = f"{FIRSTNAME_parts[0][:3]}_{subject[:3].upper()}"
 
         for availability in teacher['availabilities']:
+            #print(availability)
             availability_code = day_slot_mapping.get(availability, availability)
-            list_availability_teachers.append((teacher_code, availability_code))
+            #print(availability_code)
+            for i in availability_code:
+                list_availability_teachers.append((teacher_code, i))
 
     return list_teacher, list_availability_teachers
+
+
+def load_class(file_path):
+    """
+    This functiont transform the Json file that contains the teachers from the website into 2 lists
+    Args:
+        file_path: the path of the Json file that contains the teachers
+    Returns:
+        list of teachers
+        list of the availibility of the teachers
+    """    
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    list_class = []
+    list_availability_class = []
+
+    # Mapping for subject names and abbreviations for availability codes
+
+
+    day_slot_mapping = {
+        'Monday Morning': ('Mon_1','Mon_2', 'Mon_3'),
+        'Monday Afternoon': ('Mon_4','Mon_5', 'Mon_6'),
+        'Tuesday Morning': ('Thu_1','Thu_2', 'Thu_3'),
+        'Tuesday Afternoon': ('Thu_4','Thu_5', 'Thu_6'),
+        'Wednesday Morning': ('Wed_1','Wed_2', 'Wed_3'),
+        'Wednesday Afternoon': ('Wed_4','Wed_5', 'Wed_6'),
+        'Thursday Morning': ('Thu_1','Thu_2', 'Thu_3'),
+        'Thursday Afternoon': ('Thu_4','Thu_5', 'Thu_6'),
+        'Friday Morning': ('Fri_1','Fri_2', 'Fri_3'),
+        'Friday Afternoon': ('Fri_4','Fri_5', 'Fri_6'),
+        'Saturday Morning': ('Sat_1','Sat_2', 'Sat_3'),
+    }
+
+
+
+
+    return list_class, list_availability_class
+
+
 
 def file_data_Student(depot_info_folder): 
     """
