@@ -8,24 +8,10 @@ import os
 
 """
     À faire :
-
-    - adapter les colonnes dans function_read_folder    
-    - mapper les colonnes dans function_read_folder
     # TODO Documenter toutes les fonctions
     # TODO faire le doc de la maintenance
-    - rajouter les 3A ft
-    - améliorer la balance des conflits
     # ? BALEK => BEE et FT trop faible pas de LV2 (note<5= faible)
-    - 
-    - refaire numberclass FAIT
-    - si pas assez de place pour les 3as le mardi en espagnol les mettre dans un groupe a part le jeudi   FAT
-    - mapper les colonnes dans function_read_folder FAIT    
-    # ? Documenter toutes les fonctions
-    # ? faire le doc de la maintenance
-    - faire les cours d'allemands et chinois séparé pour les 3a et 1a et 2a
-    - 1A, 2A et 3A peuvent avoir cours en même temps d'Allemand et Chinois !
     - améliorer la balance des conflits NORMALEMENT FINI
-    - BEE et FT trop faible pas de LV2 (note<5= faible)
 """
 
 Data = 'data/database_test.sqlite3'
@@ -35,10 +21,10 @@ Data = 'data/database_test.sqlite3'
 #depot_info_folder = './data/uploads/input_info'
 #depot_note_folder ='./data/uploads/input_level'
 
-depot_info_folder = './data/input_info'
-depot_note_folder ='./data/input_notes'
-depot_info_folder = './data/input_info'
-depot_note_folder ='./data/input_notes'
+#depot_info_folder = './data/input_info'
+#depot_note_folder ='./data/input_notes'
+#depot_info_folder = './data/input_info'
+#depot_note_folder ='./data/input_notes'
 depot_info_folder = './data/xlsx/input_info'
 depot_note_folder ='./data/xlsx/input_notes'
 
@@ -48,10 +34,12 @@ DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')
 
 nb_slot = 6
 promo_pair = {
-    'ANGLAIS': [['1A', '1AFG', 'BE1'],['2A', '2AFG', 'BE2'], ['3A']],
-    'ALLEMAND': [['1A', '2A', '1AFG', '2AFG'], ['3A']],
-    'ESPAGNOL': [['1A', '2A', '1AFG', '2AFG'], ['3A']],
-    'CHINOIS': [['1A', '2A','3A', '1AFG', '2AFG']],
+    'ANGLAIS': [['1AFT', '1AFG', '1ABEE'],['2AFT', '2AFG', '2ABEE'], ['3AFG']],
+    'ALLEMAND': [['1AFT', '2AFT', '1AFG', '2AFG'], ['3AFG']],
+    'ESPAGNOL': [['1AFT', '2AFT', '1AFG', '2AFG'], ['3AFG']],
+    'CHINOIS': [['1AFT', '2AFT','3AFG', '1AFG', '2AFG']],
+    'ANGLAIS COMPLEMENTAIRE' : [['1AFT', '2AFT', '1AFG', '2AFG', '1ABEE', '2ABEE']],
+    'DISPENSE D\'ANGLAIS' : [['1AFT', '2AFT', '1AFG', '2AFG', '1ABEE', '2ABEE']]
 }
 
 
@@ -67,7 +55,7 @@ list_availibity_rooms = [('K03', 'Thu_2'), ('K03', 'Thu_1'), ('K03', 'Thu_3'), (
 #list_availibity_class = function_file_db.create_random_pairs(list_ID_Class,list_ID_Availability, 3)
 #list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A', 'Thu_1'), ('2A', 'Thu_2'), ('2A', 'Thu_3')]
 #list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A', 'Thu_1'), ('2A', 'Thu_2'), ('3A', 'Thu_3'),('3A', 'Tue_1'), ('3A', 'Tue_2'), ('3A', 'Tue_3'), ('1AFG', 'Thu_1'), ('1AFG', 'Thu_2'), ('1AFG', 'Thu_3'), ('2AFG', 'Thu_1'), ('2AFG', 'Thu_2'), ('2AFG', 'Thu_3'), ('BEE', 'Thu_1'), ('BEE', 'Thu_2'), ('BEE', 'Thu_3')]
-list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A', 'Thu_1'), ('2A', 'Thu_2'),('3A', 'Tue_1'), ('3A', 'Tue_2'), ('3A', 'Tue_3'), ('1AFG', 'Thu_1'), ('1AFG', 'Thu_2'), ('1AFG', 'Thu_3'), ('2AFG', 'Thu_1'), ('2AFG', 'Thu_2'), ('2AFG', 'Thu_3'), ('BEE', 'Thu_1'), ('BEE', 'Thu_2'), ('BEE', 'Thu_3')]
+list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A', 'Thu_1'), ('2A', 'Thu_2'),('3A', 'Tue_1'), ('3A', 'Tue_2'), ('3A', 'Tue_3'), ('1AFG', 'Thu_1'), ('1AFG', 'Thu_2'), ('1AFG', 'Thu_3'), ('2AFG', 'Thu_1'), ('2AFG', 'Thu_2'), ('2AFG', 'Thu_3'), ('BEE', 'Thu_1'), ('BEE', 'Thu_2'), ('BEE', 'Thu_3'), ('3AFG', 'Tue_1'), ('3AFG', 'Tue_2'), ('3AFG', 'Tue_3')]
 
 
 # Example usage
@@ -120,18 +108,7 @@ function_database.delete_table_data(Data, "List_Groups_Students")
 #Créer les groupes 
 function_create_groups.make_groups(Data, promo_pair, max_by_class) 
 
-
-promo_pair = {
-    'ANGLAIS': [['1A', '1AFG', 'BE1'],['2A', '2AFG', 'BE2'], ['3A']],
-    'ALLEMAND': [['1A', '2A', '1AFG', '2AFG'], ['3A']],
-    'ESPAGNOL': [['1A', '2A', '1AFG', '2AFG'], ['3A']],
-    'CHINOIS': [['1A', '2A','3A', '1AFG', '2AFG']],
-}
-
 function_create_groups.make_association(Data, promo_pair)
-
-
-
 
 function_conflict.resolve_conflict(Data)
 

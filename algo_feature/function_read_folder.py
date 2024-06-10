@@ -153,7 +153,7 @@ def xlsx_into_dataframe(file_path, db_column_mapping):
 
 def update_lv2_from_csv(students_info, file_path):
     csv_reader = pd.read_csv(file_path, encoding='utf-8-sig')
-    df = df.applymap(clean_text)
+    df = df.applymap(clean_text) # type: ignore
     for index, row in csv_reader.iterrows():
         if ((students_info['NAME'] == row['Nom']) & (students_info['FIRSTNAME'] == row['Prénom'])).any():
                 students_info.loc[(students_info['NAME'] == row['Nom']) & (students_info['FIRSTNAME'] == row['Prénom']), 'LV2'] = row['Langues']

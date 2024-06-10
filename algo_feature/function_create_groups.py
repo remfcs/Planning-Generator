@@ -53,7 +53,9 @@ def nomber_class(sum, nb_students,  Data, students, promo_association,  max_by_c
         number_class[key] = nb_slots
     else :
         for key, value in students.items():
-            number_class[key] = round(nb_slots * (len(value) / nb_students))
+            #number_class[key] = round(nb_slots * (len(value) / nb_students))
+            number_class[key] = round(nb_slots * (len(value) / nb_students)) if round(nb_slots * (len(value) / nb_students)) != 0 else 1
+            print(number_class[key])
     # print(number_class)
     # def contains_only_3A(lst):
     #     return lst == ['3A']
@@ -66,7 +68,7 @@ def make_groups(Data, promo_pair, max_by_class):
     conn = sqlite3.connect(Data)
     list_lv = function_database.find_list_lv(Data)
     while list_lv:
-        #print(list_lv)
+        print(list_lv)
         lv = list_lv.pop(0)
         deb = 0
         if '-débutant' in lv:
@@ -83,7 +85,7 @@ def make_groups(Data, promo_pair, max_by_class):
             list_slots = function_database.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
-        #print(slots)
+        print(slots)
 
         inverse_slots = {}
         # Parcourir les éléments de slots
@@ -155,11 +157,12 @@ def make_groups(Data, promo_pair, max_by_class):
             #print(lv, promo_association, sum)
 
             students, nb_students = get_students_and_nb_students(lv, promo_association)
-            #print(sum, nb_students)
+            print(promo_association, sum, nb_students)
             nb_class = nomber_class(sum,nb_students, Data, students, promo_association,  max_by_class)  # Calculate the number of classes needed
-            #print(nb_class)
+            print(nb_class)
 
             for key, value in nb_class.items():
+                #print(key, value)
                 students2 = students[key]
                 groups = make_group(students2, value)  # Create groups based on the number of classes
                 language = "_" + key[:3]  # Extract language abbreviation
