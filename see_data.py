@@ -175,3 +175,4 @@ print(conflict)
         
 
 get_number_of_students_per_group(Data)
+get_number_of_students_per_group(Data)

@@ -135,6 +135,8 @@ function_create_groups.make_association(Data, promo_pair)
 
 function_conflict.resolve_conflict(Data)
 
+function_conflict.resolve_conflict(Data)
+
 #function_conflict.get_students_with_schedule_conflicts(Data)
 
 # def boucle(m,l):
