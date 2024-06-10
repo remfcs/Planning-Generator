@@ -11,7 +11,11 @@ if defined _OLD_CODEPAGE (
 rem Définir le chemin relatif basé sur le répertoire du script
 set SCRIPT_DIR=%~dp0
 
-set VIRTUAL_ENV=%SCRIPT_DIR%env
+set VIRTUAL_ENV=%SCRIPT_DIR%..\..
+
+rem Afficher le chemin relatif
+echo Chemin du script: %SCRIPT_DIR%
+echo Chemin de l'environnement virtuel: %VIRTUAL_ENV%
 
 if not defined PROMPT set PROMPT=$P$G
 
