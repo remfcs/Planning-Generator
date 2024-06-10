@@ -38,8 +38,8 @@ promo_pair = {
     'ALLEMAND': [['1AFT', '2AFT', '1AFG', '2AFG'], ['3AFG']],
     'ESPAGNOL': [['1AFT', '2AFT', '1AFG', '2AFG'], ['3AFG']],
     'CHINOIS': [['1AFT', '2AFT','3AFG', '1AFG', '2AFG']],
-    'ANGLAIS COMPLEMENTAIRE' : [['1AFT', '2AFT', '1AFG', '2AFG', '1ABEE', '2ABEE']],
-    'DISPENSE D\'ANGLAIS' : [['1AFT', '2AFT', '1AFG', '2AFG', '1ABEE', '2ABEE']]
+    'ANGLAIS COMPLEMENTAIRE' : [['1AFT', '2AFT', '1ABEE', '2ABEE']],
+    'DISPENSE D\'ANGLAIS' : [['1ABEE', '2ABEE']]
 }
 
 
