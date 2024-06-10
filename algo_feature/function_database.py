@@ -194,19 +194,22 @@ def get_available_teacher2(Data, slots, lv):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
     teacher_availabilities = []
-    for slot in slots:
-        cursor.execute(
-            """
-            SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
-            FROM Availability_Teachers
-            JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
-            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 0
-            ORDER BY Availability_Teachers.ID_Teacher AND Availability_Teachers.ID_Availability DESC;
-            """,
-            (slot[0], lv)
-        )
-        teacher_availabilities.extend(cursor.fetchall())
-    teacher_availabilities.sort(key=lambda x: (x[0], x[1]))
+    if "COMPLEMENTAIRE" in lv or "DISPENSE" in lv :
+        teacher_availabilities.append(('r', 'r'))    
+    else : 
+        for slot in slots:
+            cursor.execute(
+                """
+                SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
+                FROM Availability_Teachers
+                JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
+                WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 0
+                ORDER BY Availability_Teachers.ID_Teacher AND Availability_Teachers.ID_Availability DESC;
+                """,
+                (slot[0], lv)
+            )
+            teacher_availabilities.extend(cursor.fetchall())
+        teacher_availabilities.sort(key=lambda x: (x[0], x[1]))
     #print("aaaahhahahaa", teacher_availabilities)
     return teacher_availabilities
 

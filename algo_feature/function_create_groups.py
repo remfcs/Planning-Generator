@@ -40,7 +40,7 @@ def nomber_class(sum, nb_students,  Data, students, promo_association,  max_by_c
     list_slots = function_database.get_lv_slot(Data, promo_association)
     nb_slots = function_database.get_nb_available_teacher(Data, list_slots, lv)
     #print(nb_slots)
-    nb_slots = round(nb_slots * nb_students / (sum + nb_students))
+    nb_slots = round(nb_slots * nb_students / (sum + nb_students)) if round(nb_slots * nb_students / (sum + nb_students)) !=0 else 1
     #print(nb_slots)
 
     number_class = {}
@@ -55,7 +55,7 @@ def nomber_class(sum, nb_students,  Data, students, promo_association,  max_by_c
         for key, value in students.items():
             #number_class[key] = round(nb_slots * (len(value) / nb_students))
             number_class[key] = round(nb_slots * (len(value) / nb_students)) if round(nb_slots * (len(value) / nb_students)) != 0 else 1
-            print(number_class[key])
+            #print(number_class[key])
     # print(number_class)
     # def contains_only_3A(lst):
     #     return lst == ['3A']
@@ -68,7 +68,7 @@ def make_groups(Data, promo_pair, max_by_class):
     conn = sqlite3.connect(Data)
     list_lv = function_database.find_list_lv(Data)
     while list_lv:
-        print(list_lv)
+        #print(list_lv)
         lv = list_lv.pop(0)
         deb = 0
         if '-débutant' in lv:
@@ -85,7 +85,7 @@ def make_groups(Data, promo_pair, max_by_class):
             list_slots = function_database.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
-        print(slots)
+        #print(slots)
 
         inverse_slots = {}
         # Parcourir les éléments de slots
@@ -157,9 +157,9 @@ def make_groups(Data, promo_pair, max_by_class):
             #print(lv, promo_association, sum)
 
             students, nb_students = get_students_and_nb_students(lv, promo_association)
-            print(promo_association, sum, nb_students)
+            #print(promo_association, sum, nb_students)
             nb_class = nomber_class(sum,nb_students, Data, students, promo_association,  max_by_class)  # Calculate the number of classes needed
-            print(nb_class)
+            #print(nb_class)
 
             for key, value in nb_class.items():
                 #print(key, value)
@@ -169,6 +169,8 @@ def make_groups(Data, promo_pair, max_by_class):
                 name = ""
                 if "-débutant (jamais étudié)" in key:
                     name = "_D"  # Append '_D' for beginner groups
+                if "COMPLEMENTAIRE" in key:
+                    name = "_C"  # Append '_C' for complementary groups
                 i = 1
                 result_str = ', '.join(promo_association)  # Create a string representation of the promo list
                 #print(groups)
@@ -194,9 +196,9 @@ def make_association(Data, promo_pair):
             list_slots = function_database.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
-            #print("\n" ,name,  lv, list_slots)
+            print("\n" ,name,  lv, list_slots)
             teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv)  # Get available teachers for the language
-            #print(teacher_availabilities)            
+            print(teacher_availabilities)            
             cursor = conn.cursor()
             pattern = '%{'+ ', '.join(promo_association) + "}_"+ lv[:3] + '%'  # Create a pattern to match courses for the language
             #print(pattern)
@@ -206,7 +208,7 @@ def make_association(Data, promo_pair):
                             (pattern,))
             list_groups = cursor.fetchall()
             list_groups = [pos[0] for pos in list_groups]  # Extract course IDs
-            #print(list_groups)
+            print(list_groups)
             for i in range(len(list_groups)):
                 insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
                 insertions.append(insertion)  # Prepare insertions of teacher and group associations
