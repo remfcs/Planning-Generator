@@ -1,4 +1,4 @@
-import pdfkit
+import pdfkit # type: ignore
 import logging
 from flask import Flask, jsonify, request, send_from_directory, send_file, make_response
 import os
