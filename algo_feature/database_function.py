@@ -1,6 +1,68 @@
+####################################################################################
+#                                Database Functions                                #
+####################################################################################
+# Provides functionalities to interact with the SQLite database, including         #
+# deleting table data, inserting data frames into tables, and retrieving specific  #
+# lists and information based on queries.                                          #
+####################################################################################
+
+# --------------------------------------------------------------------------------
+# Modules:
+# --------------------------------------------------------------------------------
+# 1. delete_table_data:
+#    - Deletes all data from a specified table.
+#
+# 2. insert_df_into_db:
+#    - Inserts a DataFrame into a specified table in the database.
+#
+# 3. find_list_SCHOOL_YEAR:
+#    - Retrieves a list of distinct school years from the Student table.
+#
+# 4. find_list_LV2:
+#    - Retrieves a list of distinct LV2 (language) options for specified school years.
+#
+# 5. find_list_LV1:
+#    - Retrieves a list of distinct LV1 (language) options for specified school years.
+#
+# 6. find_list_lv:
+#   - Retrieves a list of all distinct LV (language) from the database.
+#
+# 7. get_all_students_from_a_pair_and_lv:
+#   - Retrieves a list of all students from the database for a given language and school years.
+#
+# 8. get_all_students_from_a_pair_studying_this_lv:
+#   - Retrieves the list of studient for a specified school years and language.
+#
+# 9. assigns_groups_to_students:
+#   - Inserts a combinaison of id group and id student into a specified table in the database.
+#
+# 10. get_students_count:
+#   - Retrieves the number of student for a specified school years.
+#
+# 11. get_lv_slot:
+#   - Retrieves the list of slot for specified school years.
+#
+# 12. get_available_teacher:
+#   - Retrieves the list of available teachers for a given slot and language.
+#
+# 13. get_nb_available_teacher.
+#   - Retrieves the number of available teachers for a given slot and language.
+#
+# 14. get_available_teacher2:
+#   - Retrieves the list of available teachers for given slots and language.
+#
+# 15. get_available_room:
+#   - Retrieves the list of available rooms for given slots.
+# --------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------
+# Dependencies:
+# --------------------------------------------------------------------------------
+# - sqlite3
+# --------------------------------------------------------------------------------
+
 import sqlite3
 
-# Fonction pour supprimer toutes les données d'une table donnée
 def delete_table_data(filename, table):
     # Connexion à la base de données
     conn = sqlite3.connect(filename)
@@ -13,8 +75,6 @@ def delete_table_data(filename, table):
     conn.close()
     # La fonction ne retourne rien, elle modifie la base de données directement
  
-
-
 def insert_df_into_db(conn, students_info, table):
     conn.cursor()
     students_info.to_sql(table, conn, if_exists='append', index=False)
