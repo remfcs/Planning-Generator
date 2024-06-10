@@ -10,7 +10,6 @@ import os
     À faire :
     # TODO Documenter toutes les fonctions
     # TODO faire le doc de la maintenance
-    - améliorer la balance des conflits NORMALEMENT FINI
 """
 
 Data = 'data/database_test.sqlite3'
