@@ -43,4 +43,10 @@ $(document).ready(function () {
 
         window.location.href = url;
     });
+
+    $('#exportLV1Button').click(function () {
+        var fileType = $('#fileTypeLV1').val();
+        var url = `/export_lv1?fileType=${fileType}`;
+        window.location.href = url;
+    });
 });
