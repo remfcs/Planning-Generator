@@ -52,11 +52,34 @@ Ces 4 colonnes apparaissent
 
 
 ## File Structure
+    ```css
+        Planning-Generator/
+        ├── algo_feature/
+        │   ├── components/
+        │   │   └── Header.js
+        │   ├── styles/
+        │   │   └── main.css
+        │   ├── App.js
+        │   ├── index.js
+        ├── back_up/
+        │   ├── App.test.js
+        │   └── [Other files]
+        ├── .gitignore
+        ├── main.py
+        ├── start_app.sh
+        ├── start_app.bat
+        ├── README.md
+        └── [Other files]
 
+    ```
 
 
 ## Testing
 
+- 
+- 
+- 
+- 
 
 
 ## Contributor
