@@ -1,4 +1,4 @@
-import algo_feature.function_database as function_database 
+import algo_feature.database_function as database_function
 import sqlite3
 
 
@@ -37,8 +37,8 @@ def make_group(list_student, number_class):
 
 def nomber_class(sum, nb_students,  Data, students, promo_association,  max_by_class):
     lv = next(iter(students.keys()))
-    list_slots = function_database.get_lv_slot(Data, promo_association)
-    nb_slots = function_database.get_nb_available_teacher(Data, list_slots, lv)
+    list_slots = database_function.get_lv_slot(Data, promo_association)
+    nb_slots = database_function.get_nb_available_teacher(Data, list_slots, lv)
     #print(nb_slots)
     nb_slots = round(nb_slots * nb_students / (sum + nb_students)) if round(nb_slots * nb_students / (sum + nb_students)) !=0 else 1
     #print(nb_slots)
@@ -66,7 +66,7 @@ def nomber_class(sum, nb_students,  Data, students, promo_association,  max_by_c
 
 def make_groups(Data, promo_pair, max_by_class):
     conn = sqlite3.connect(Data)
-    list_lv = function_database.find_list_lv(Data)
+    list_lv = database_function.find_list_lv(Data)
     while list_lv:
         #print(list_lv)
         lv = list_lv.pop(0)
@@ -82,7 +82,7 @@ def make_groups(Data, promo_pair, max_by_class):
         
         slots = {}
         for promo_association in promo_list :
-            list_slots = function_database.get_lv_slot(Data, promo_association)
+            list_slots = database_function.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
         #print(slots)
@@ -193,11 +193,11 @@ def make_association(Data, promo_pair):
         for promo_association in promo_list :
             insertions = []  # Initialize a list to store insertions
 
-            list_slots = function_database.get_lv_slot(Data, promo_association)
+            list_slots = database_function.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
             #print("\n" ,name,  lv, list_slots)
-            teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv)  # Get available teachers for the language
+            teacher_availabilities = database_function.get_available_teacher2(Data, list_slots, lv)  # Get available teachers for the language
             #print(teacher_availabilities)            
             cursor = conn.cursor()
             pattern = '%{'+ ', '.join(promo_association) + "}_"+ lv[:3] + '%'  # Create a pattern to match courses for the language
@@ -269,20 +269,20 @@ def make_groups2(list_student, students_distribution):
 def make_groups_lv(Data, promo_pair):
     conn = sqlite3.connect(Data)
     for promo_list in promo_pair:
-        slot_count = function_database.get_lv_slot(Data, promo_list)
+        slot_count = database_function.get_lv_slot(Data, promo_list)
         # slot_count correspond a tous les slots de cours disponible pour les langues (condition: meme slot dispo pour les 2 promos)
-        list_lv = function_database.find_list_LV2(Data, promo_list)
+        list_lv = database_function.find_list_LV2(Data, promo_list)
         # list_lv2: liste de toutes les lv2 de la promo_list 
-        list_lv1 = function_database.find_list_LV1(Data, promo_list)
+        list_lv1 = database_function.find_list_LV1(Data, promo_list)
         list_lv.append(list_lv1)
         for lv in list_lv:
-            teacher_availabilities = function_database.get_available_teacher(Data, slot_count, lv)    
+            teacher_availabilities = database_function.get_available_teacher(Data, slot_count, lv)    
             #slot_nbr_for_lv: nbr de slot dispo pour une langue vivante
             #students_in_promo_pair = function_database.get_students_count(Data, promo_pair) 
-            group = function_database.get_all_students_from_a_pair_and_lv(Data, promo_list, lv)
+            group = database_function.get_all_students_from_a_pair_and_lv(Data, promo_list, lv)
             language = "_"+lv[:3]
             name = ""
-            total_student_studying_this_lv =  function_database.get_all_students_from_a_pair_studying_this_lv(Data, promo_list, lv)
+            total_student_studying_this_lv =  database_function.get_all_students_from_a_pair_studying_this_lv(Data, promo_list, lv)
             if "-débutant (jamais étudié)" in lv :
                 name = "_D"
             #nbr_slot = get_number_of_slot(total_student_studying_this_lv, len(teacher_availabilities), len(group))
@@ -294,7 +294,7 @@ def make_groups_lv(Data, promo_pair):
                 group_name = 'G' + str(i) + language + name       #ESP D si débutant et promo
                 teacher = teacher_availabilities[i-1][0]
                 slot = teacher_availabilities[i-1][1]
-                function_database.assigns_groups_to_students(Data, lv, group_name, group, teacher, slot)
+                database_function.assigns_groups_to_students(Data, lv, group_name, group, teacher, slot)
                 i+=1
         conn.close()
     return 
