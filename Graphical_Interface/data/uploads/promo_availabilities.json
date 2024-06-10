@@ -1,23 +1,34 @@
 {
     "bee": {
-        "lv1": [
+        "1A": [
             "Monday Afternoon"
         ],
-        "lv2": []
+        "2A": [
+            "Thursday Morning",
+            "Friday Afternoon"
+        ]
     },
     "ft": {
-        "lv1": [],
-        "lv2": [
-            "Monday Afternoon"
+        "1A": [
+            "Friday Morning"
+        ],
+        "2A": [
+            "Thursday Afternoon",
+            "Friday Afternoon"
         ]
     },
     "fg": {
-        "lv1": [
-            "Thursday Morning",
-            "Friday Afternoon"
+        "1A": [
+            "Wednesday Morning",
+            "Thursday Afternoon",
+            "Saturday Morning"
         ],
-        "lv2": [
-            "Tuesday Morning"
+        "2A": [
+            "Thursday Afternoon"
+        ],
+        "3A": [
+            "Tuesday Afternoon",
+            "Thursday Afternoon"
         ]
     }
 }
