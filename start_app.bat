@@ -1,44 +1,34 @@
 @echo off
 
-REM Vérifier l'existence du script d'activation
-if not exist "C:\planning-generator\env\Scripts\activate.bat" (
-    echo Le script d'activation n'a pas été trouvé.
-    pause
-    exit /b 1
-)
+rem Définir le chemin relatif basé sur le répertoire du script
+set SCRIPT_DIR=%~dp0
+set ORIGINAL_SCRIPT_DIR=%~dp0
 
-REM Activer l'environnement virtuel
+rem Activer l'environnement virtuel
 echo Activation de l'environnement virtuel...
-call "C:\planning-generator\env\Scripts\activate.bat"
+call "%SCRIPT_DIR%env\Scripts\activate.bat"
 
-REM Vérifier si l'environnement virtuel est activé
-if errorlevel 1 (
-    echo Erreur lors de l'activation de l'environnement virtuel.
-    pause
-    exit /b 1
-)
-echo Environnement virtuel activé avec succès.
 
-REM Installer les modules nécessaires
+rem Utiliser pip et python de l'environnement virtuel
+set PIP_PATH=%ORIGINAL_SCRIPT_DIR%env\Scripts\pip.exe
+set PYTHON_PATH=%ORIGINAL_SCRIPT_DIR%env\Scripts\python.exe
+
+rem Installation des modules nécessaires dans l'environnement virtuel
 echo Installation des modules nécessaires...
-pip install pdfkit
-pip install flask
-pip install pandas
-pip install numpy
+"%PIP_PATH%" install pdfkit flask pandas numpy
 
-REM Vérifier si pip a réussi
-if errorlevel 1 (
-    echo Erreur lors de l'installation des modules.
+rem Vérifier l'existence du fichier server.py
+if not exist "%ORIGINAL_SCRIPT_DIR%Graphical_Interface\server.py" (
+    echo Le fichier server.py n'a pas été trouvé.
     pause
     exit /b 1
 )
-echo Modules installés avec succès.
 
-REM Exécuter le serveur
+rem Exécuter le serveur
 echo Lancement du serveur...
-python "C:\planning-generator\Graphical_Interface\server.py"
+"%PYTHON_PATH%" "%ORIGINAL_SCRIPT_DIR%Graphical_Interface\server.py"
 
-REM Vérifier si le serveur s'est lancé correctement
+rem Vérifier si le serveur s'est lancé correctement
 if errorlevel 1 (
     echo Erreur lors du lancement du serveur.
     pause
@@ -46,6 +36,5 @@ if errorlevel 1 (
 )
 echo Serveur lancé avec succès.
 
-REM Garder la fenêtre ouverte
+rem Garder la fenêtre ouverte
 pause
-    
