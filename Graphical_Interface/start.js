@@ -202,18 +202,19 @@ function getPromoAvailibilities() {
     event.preventDefault();
 
     // Récupérer les valeurs des cases à cocher sélectionnées pour chaque promotion et niveau
-    const beeLv1 = Array.from(document.querySelectorAll('.day-time-BEE-LV1:checked')).map(checkbox => checkbox.value);
-    const beeLv2 = Array.from(document.querySelectorAll('.day-time-BEE-LV2:checked')).map(checkbox => checkbox.value);
-    const ftLv1 = Array.from(document.querySelectorAll('.day-time-FT-LV1:checked')).map(checkbox => checkbox.value);
-    const ftLv2 = Array.from(document.querySelectorAll('.day-time-FT-LV2:checked')).map(checkbox => checkbox.value);
-    const fgLv1 = Array.from(document.querySelectorAll('.day-time-FG-LV1:checked')).map(checkbox => checkbox.value);
-    const fgLv2 = Array.from(document.querySelectorAll('.day-time-FG-LV2:checked')).map(checkbox => checkbox.value);
+    const bee1A = Array.from(document.querySelectorAll('.day-time-BEE-1A:checked')).map(checkbox => checkbox.value);
+    const bee2A = Array.from(document.querySelectorAll('.day-time-BEE-2A:checked')).map(checkbox => checkbox.value);
+    const ft1A = Array.from(document.querySelectorAll('.day-time-FT-1A:checked')).map(checkbox => checkbox.value);
+    const ft2A = Array.from(document.querySelectorAll('.day-time-FT-2A:checked')).map(checkbox => checkbox.value);
+    const fg1A = Array.from(document.querySelectorAll('.day-time-FG-1A:checked')).map(checkbox => checkbox.value);
+    const fg2A = Array.from(document.querySelectorAll('.day-time-FG-2A:checked')).map(checkbox => checkbox.value);
+    const fg3A = Array.from(document.querySelectorAll('.day-time-FG-3A:checked')).map(checkbox => checkbox.value);
 
     // Créer un objet pour stocker les valeurs
     const availabilityData = {
-        bee: { lv1: beeLv1, lv2: beeLv2 },
-        ft: { lv1: ftLv1, lv2: ftLv2 },
-        fg: { lv1: fgLv1, lv2: fgLv2 }
+        BEE: { '1A': bee1A, '2A' : bee2A },
+        FT: { '1A': ft1A, '2A': ft2A },
+        FG: { '1A': fg1A, '2A': fg2A , '3A' : fg3A}
     };
 
     // Convertir l'objet en JSON
