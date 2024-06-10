@@ -63,6 +63,8 @@
 
 import sqlite3
 
+from langcodes import Language
+
 def delete_table_data(filename, table):
     # Connexion à la base de données
     conn = sqlite3.connect(filename)
@@ -281,3 +283,31 @@ def get_available_room(Data, slots):
     rooms_available.extend(cursor.fetchall())
     return rooms_available
 
+def set_group_name(Data):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT c.ID_COURSE, c.ID_AVAILABILITY, c.LANGUAGE, t.NAME, t.SURNAME 
+        FROM Courses c
+        JOIN Teachers t ON c.ID_Teacher = t.ID_TEACHER;
+        """
+    )
+    courses = cursor.fetchall()
+    for course in courses:
+        id_course = course[0]
+        surname_first_letter = course[4][0] 
+        name_first_letter = course[3][0]
+        language = ""
+        if course[2] != 'ANG':
+            language = course[2][:2]
+        slot = course[1].split("_")[0][:2].upper() + course[1].split("_")[1]
+        course_name = language + surname_first_letter + name_first_letter + slot
+        cursor.execute("""
+                       UPDATE Courses
+                        SET ID_GROUP = ?
+                        WHERE ID_COURSE = ?;
+                       """,
+                       (course_name, id_course)
+                       )
+        conn.commit()
