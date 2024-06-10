@@ -332,6 +332,7 @@ def update_lv2_from_xlsx(df, file_path):
 def update_student_grade(grade_list, students_info, LV):
     """
     This function parse the grade_list to update the grade of the student in the dataframe.
+    It required the name and firstname of the student.
     Args:
         grade_list (df): df of the student grades from 1 file
         students_info (df): df of all the student data
