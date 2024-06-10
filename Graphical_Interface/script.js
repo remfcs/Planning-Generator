@@ -49,15 +49,18 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log('Groups data:', data);
             allGroups = data; // Store all groups
-            updateGroupOptions(allGroups, '');
+            updateGroupOptions(allGroups, '', ''); // Update with empty filters initially
         });
 
     // Function to update group options based on selected language
-    function updateGroupOptions(groups, selectedLanguage) {
+    function updateGroupOptions(groups, selectedLanguage, selectedNiveau) {
         const groupSelect = document.getElementById('group_lv1');
         groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
         groups.forEach(group => {
-            if (!selectedLanguage || group.endsWith(selectedLanguage) || group.endsWith(`_${selectedLanguage}_D`)) {
+            if (
+                (!selectedLanguage || group.includes(selectedLanguage)) &&  // Adjusted to use includes
+                (!selectedNiveau || group.startsWith(selectedNiveau))
+            ) {
                 const option = document.createElement('option');
                 option.value = group;
                 option.textContent = group;
@@ -83,7 +86,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event listeners to filter elements
     document.getElementById('studentName').addEventListener('input', applyFilters);
-    document.getElementById('niveau').addEventListener('change', applyFilters);
+    document.getElementById('niveau').addEventListener('change', function () {
+        const selectedNiveau = this.value;
+        updateGroupOptions(allGroups, document.getElementById('langue').value, selectedNiveau);
+        applyFilters(); // Apply filters after updating options
+    });
+
     document.getElementById('professeur').addEventListener('change', function () {
         const selectedProfessor = this.value;
         if (selectedProfessor === "") {
@@ -153,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        const headers = ['NAME', 'Firstname', 'Email', 'Class Level', 'LV1 Group', 'Language', 'Teacher'];
+        const headers = ['NAME', 'Firstname', 'Email', 'Class Level', 'Group', 'Language', 'Teacher'];
 
         headers.forEach(headerText => {
             const header = document.createElement('th');
@@ -256,11 +264,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function updateGroupOptions(groups, selectedLanguage) {
+    function updateGroupOptions(groups, selectedLanguage, selectedNiveau) {
         const groupSelect = document.getElementById('group_lv1');
         groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
         groups.forEach(group => {
-            if (!selectedLanguage || group.endsWith(selectedLanguage) || group.endsWith(`_${selectedLanguage}_D`)) {
+            if (
+                (!selectedLanguage || group.includes(selectedLanguage)) &&  // Adjusted to use includes
+                (!selectedNiveau || group.startsWith(selectedNiveau))
+            ) {
                 const option = document.createElement('option');
                 option.value = group;
                 option.textContent = group;
@@ -284,7 +295,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('studentName').addEventListener('input', applyFilters);
-    document.getElementById('niveau').addEventListener('change', applyFilters);
+    document.getElementById('niveau').addEventListener('change', function () {
+        const selectedNiveau = this.value;
+        updateGroupOptions(allGroups, document.getElementById('langue').value, selectedNiveau);
+        applyFilters(); // Apply filters after updating options
+    });
     document.getElementById('professeur').addEventListener('change', function () {
         const selectedProfessor = this.value;
         if (selectedProfessor === "") {
@@ -332,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        const headers = ['NAME', 'Firstname', 'Email', 'Class Level', 'LV1 Group', 'Language', 'Teacher'];
+        const headers = ['NAME', 'Firstname', 'Email', 'Class Level', 'Group', 'Language', 'Teacher'];
 
         headers.forEach(headerText => {
             const header = document.createElement('th');
@@ -451,11 +466,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function updateGroupOptions(groups, selectedLanguage) {
+    function updateGroupOptions(groups, selectedLanguage, selectedNiveau) {
         const groupSelect = document.getElementById('group_lv1');
         groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
         groups.forEach(group => {
-            if (!selectedLanguage || group.endsWith(selectedLanguage) || group.endsWith(`_${selectedLanguage}_D`)) {
+            if (
+                (!selectedLanguage || group.includes(selectedLanguage)) &&  // Adjusted to use includes
+                (!selectedNiveau || group.startsWith(selectedNiveau))
+            ) {
                 const option = document.createElement('option');
                 option.value = group;
                 option.textContent = group;
@@ -479,7 +497,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('studentName').addEventListener('input', applyFilters);
-    document.getElementById('niveau').addEventListener('change', applyFilters);
+    document.getElementById('niveau').addEventListener('change', function () {
+        const selectedNiveau = this.value;
+        updateGroupOptions(allGroups, document.getElementById('langue').value, selectedNiveau);
+        applyFilters(); // Apply filters after updating options
+    });
     document.getElementById('professeur').addEventListener('change', function () {
         const selectedProfessor = this.value;
         if (selectedProfessor === "") {
@@ -648,11 +670,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function updateGroupOptions(groups, selectedLanguage) {
+    function updateGroupOptions(groups, selectedLanguage, selectedNiveau) {
         const groupSelect = document.getElementById('group_lv1');
         groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
         groups.forEach(group => {
-            if (!selectedLanguage || group.endsWith(selectedLanguage) || group.endsWith(`_${selectedLanguage}_D`)) {
+            if (
+                (!selectedLanguage || group.includes(selectedLanguage)) &&  // Adjusted to use includes
+                (!selectedNiveau || group.startsWith(selectedNiveau))
+            ) {
                 const option = document.createElement('option');
                 option.value = group;
                 option.textContent = group;
