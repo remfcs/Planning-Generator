@@ -128,8 +128,8 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
         query += " AND LOWER(s.NAME) LIKE ?"
         params.append(f"%{name}%")
     if niveau:
-        query += " AND s.SCHOOL_YEAR = ?"
-        params.append(niveau)
+        query += " AND s.SCHOOL_YEAR LIKE ?"
+        params.append(f"{niveau}%")
     if professeur:
         query += " AND (t.NAME || ' ' || t.SURNAME) = ?"
         params.append(professeur)
@@ -156,10 +156,6 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
             "TeacherSurname": row[7]
         }
         students.append(student)
-
-    conn.close()
-    logging.debug(f"Retrieved students: {students}")
-    return students
 
     conn.close()
     logging.debug(f"Retrieved students: {students}")
@@ -591,8 +587,36 @@ def export_all_groups():
 
     for group_id in groups:
         students = get_student_details(group_lv1=group_id)
+        teacher_info = get_teacher_by_group(group_id)
+
+        if not teacher_info:
+            teacher_name = "Unknown"
+        else:
+            teacher_name = f"{teacher_info['name']} {teacher_info['surname']}"
+
+        # Fetch the day and time from the Courses and Availabilities tables
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT A.Day, A.Hour
+            FROM Courses C
+            JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+            WHERE C.ID_COURSE = ?
+        """, (group_id,))
+        availability = cursor.fetchone()
+        conn.close()
+
+        if availability:
+            day = availability[0]
+            time = availability[1]
+        else:
+            day = 'Unknown'
+            time = 'Unknown'
+
         html_content += f"""
         <h2>Group {group_id}</h2>
+        <h3>Teacher: {teacher_name}</h3>
+        <h3>Schedule: {day} {time}</h3>
         <table>
             <thead>
                 <tr>
@@ -662,15 +686,35 @@ def generate_professors_pdf():
             </thead>
             <tbody>
     """
+
     for professor in professors:
         name, surname, email, subject, availability, groups = professor
         availability = "<br>".join(set(availability.split(','))) if availability else ""
-        if groups:
-            groups_list = groups.split(',')
-            unique_groups = list(dict.fromkeys(groups_list))
+
+        # Fetch groups and schedules for the professor
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT C.ID_COURSE, A.Day, A.Hour
+            FROM Courses C
+            JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+            WHERE C.ID_Teacher = (SELECT ID_Teacher FROM Teachers WHERE name = ? AND surname = ?)
+        """, (name, surname))
+        group_schedules = cursor.fetchall()
+        conn.close()
+
+        if group_schedules:
+            formatted_groups = []
+            for group_id, day, time in group_schedules:
+                formatted_group = f"{group_id} ({day} {time})"
+                formatted_groups.append(formatted_group)
+
+            # Remove duplicates while preserving order
+            unique_groups = list(dict.fromkeys(formatted_groups))
             groups_html = "<br>".join(unique_groups)
         else:
             groups_html = ""
+
         html_content += f"""
             <tr>
                 <td>{name}</td>
@@ -681,18 +725,19 @@ def generate_professors_pdf():
                 <td>{groups_html}</td>
             </tr>
         """
+
     html_content += """
             </tbody>
         </table>
     </body>
     </html>
     """
+
     pdf = pdfkit.from_string(html_content, False, configuration=config)
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'attachment; filename=professors_list.pdf'
     return response
-
 
 def get_professors_with_groups():
     conn = sqlite3.connect(DATABASE_PATH)
@@ -716,16 +761,39 @@ def generate_professors_csv():
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
+
     for professor in professors:
         name, surname, email, subject, availability, groups = professor
+
+        # Process availability
         availability = availability.replace(",", ", ") if availability else ""
-        if groups:
-            groups_list = groups.split(',')
-            unique_groups = list(dict.fromkeys(groups_list))
+
+        # Fetch groups and schedules for the professor
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT C.ID_COURSE, A.Day, A.Hour
+            FROM Courses C
+            JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+            WHERE C.ID_Teacher = (SELECT ID_Teacher FROM Teachers WHERE name = ? AND surname = ?)
+        """, (name, surname))
+        group_schedules = cursor.fetchall()
+        conn.close()
+
+        if group_schedules:
+            formatted_groups = []
+            for group_id, day, time in group_schedules:
+                formatted_group = f"{group_id} ({day} {time})"
+                formatted_groups.append(formatted_group)
+
+            # Remove duplicates while preserving order
+            unique_groups = list(dict.fromkeys(formatted_groups))
             groups = ', '.join(unique_groups)
         else:
             groups = ""
+
         writer.writerow([name, surname, email, subject, availability, groups])
+
     output.seek(0)
     response = make_response(output.getvalue())
     response.headers['Content-Disposition'] = 'attachment; filename=professors_list.csv'
@@ -766,8 +834,26 @@ def export_all_groups_csv():
         for student in students:
             teacher_name = student.get('TeacherName', 'Unknown')
             teacher_surname = student.get('TeacherSurname', 'Unknown')
-            day = student.get('Day', 'Unknown')  # Modify this if 'Day' is not included in student details
-            time = student.get('Hour', 'Unknown')  # Modify this if 'Hour' is not included in student details
+
+            # Fetch the day and time from the Courses and Availabilities tables
+            conn = sqlite3.connect(DATABASE_PATH)
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT A.Day, A.Hour
+                FROM Courses C
+                JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+                WHERE C.ID_COURSE = ?
+            """, (student['GROUP_LV1'],))
+            availability = cursor.fetchone()
+            conn.close()
+
+            if availability:
+                day = availability[0]
+                time = availability[1]
+            else:
+                day = 'Unknown'
+                time = 'Unknown'
+
             writer.writerow([group, student['Surname'], student['Name'], student['Email'], student['Class'], student['GROUP_LV1'], student['Language'], teacher_name, teacher_surname, day, time])
 
     output.seek(0)
@@ -813,21 +899,49 @@ def export_all_groups_excel():
     response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     return response
 
+import io
+import csv
+from flask import make_response
+
 def generate_professor_csv(professor_name):
-    professor_details = get_professor_details(professor_name=professor_name)
+    professor_details = get_professor_details(professor_name)
     if not professor_details:
         return "No professor details found", 404
-    
-    groups = get_professor_groups(professor_name)
+
+    print(f"Professor details for {professor_name}: {professor_details}")  # Debug print
+
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
-    
-    for detail in professor_details:
-        name, surname, email, subject, availability = detail
-        group_details = "; ".join([f"{group[0]} ({group[1]} {group[2]})" for group in groups])
-        writer.writerow([name, surname, email, subject, availability, group_details])
-    
+
+    # Since professor_details is a dictionary, we directly extract the fields
+    name = professor_details.get('name')
+    surname = professor_details.get('surname')
+    email = professor_details.get('email')
+    subject = professor_details.get('subject')
+    availability = professor_details.get('availability', '')
+
+    # Process availability
+    availability = availability.replace(",", ", ") if availability else ""
+
+    # Fetch and process groups
+    groups = get_professor_groups(professor_name)
+    print(f"Groups for {professor_name}: {groups}")  # Debug print
+
+    # Create a dictionary to store each group and its unique time slot
+    group_dict = {}
+    for group in groups:
+        group_name = group[0]
+        group_time = f"{group[1]} {group[2]}"
+        group_dict[group_name] = group_time
+
+    # Convert the dictionary to a list of unique groups with their times
+    unique_groups = [f"{group} ({time})" for group, time in group_dict.items()]
+
+    groups_str = ', '.join(unique_groups)
+
+    writer.writerow([name, surname, email, subject, availability, groups_str])
+
     output.seek(0)
     response = make_response(output.getvalue())
     response.headers['Content-Disposition'] = f'attachment; filename=professor_{professor_name}.csv'
@@ -861,48 +975,77 @@ def export_all_professors_excel():
 
 def generate_group_pdf(group_id):
     students = get_student_details(group_lv1=group_id)
-    html_content = """
+    teacher_info = get_teacher_by_group(group_id)  # Assuming you have a function to fetch the teacher by group
+
+    if not teacher_info:
+        return "No teacher found for this group", 404
+
+    teacher_name = f"{teacher_info['name']} {teacher_info['surname']}"
+
+    # Fetch the day and time from the Courses and Availabilities tables
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT A.Day, A.Hour
+        FROM Courses C
+        JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+        WHERE C.ID_COURSE = ?
+    """, (group_id,))
+    availability = cursor.fetchone()
+    conn.close()
+
+    if availability:
+        day = availability[0]
+        time = availability[1]
+    else:
+        day = 'Unknown'
+        time = 'Unknown'
+
+    html_content = f"""
     <html>
     <head>
         <style>
-        body {
+        body {{
             font-family: Arial, sans-serif;
             margin: 20px;
             line-height: 1.6;
             color: #333;
-        }
-        h1, h2 {
+        }}
+        h1, h2 {{
             color: #2c3e50;
             border-bottom: 2px solid #2c3e50;
             padding-bottom: 10px;
-        }
-        table {
+        }}
+        table {{
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
             font-size: 0.9em;
             background-color: #f2f2f2;
-        }
-        th, td {
+        }}
+        th, td {{
             border: 1px solid #ddd;
             padding: 12px 15px;
             text-align: left;
-        }
-        th {
+        }}
+        th {{
             background-color: #2980b9;
             color: white;
             text-transform: uppercase;
-        }
-        tr:nth-child(even) {
+        }}
+        tr:nth-child(even) {{
             background-color: #f9f9f9;
-        }
-        tr:hover {
+        }}
+        tr:hover {{
             background-color: #f1f1f1;
-        }
+        }}
         </style>
     </head>
     <body>
         <h1>Group {group_id}</h1>
+        <h2>Teacher: {teacher_name}</h2>
+        <h2>Schedule: {day} {time}</h2>
+        <h2>Students</h2>
         <table>
             <thead>
                 <tr>
@@ -914,6 +1057,7 @@ def generate_group_pdf(group_id):
             </thead>
             <tbody>
     """
+
     for student in students:
         html_content += f"""
                 <tr>
@@ -938,7 +1082,22 @@ def generate_group_pdf(group_id):
     if not os.path.exists(absolute_output_path):
         return "Failed to create PDF file", 500
 
-    return send_file(absolute_output_path, as_attachment=True, download_name=f'group_{group_id}.pdf')   
+    return send_file(absolute_output_path, as_attachment=True, download_name=f'group_{group_id}.pdf')
+
+def get_teacher_by_group(group_id):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT t.name, t.surname
+        FROM Teachers t
+        JOIN Courses c ON t.ID_Teacher = c.ID_Teacher
+        WHERE c.ID_COURSE = ?
+    """, (group_id,))
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return {'name': row[0], 'surname': row[1]}
+    return None
 
 def generate_professor_pdf(professor_name):
     professor_details = get_professor_details(professor_name=professor_name)
@@ -1021,12 +1180,21 @@ def generate_professor_pdf(professor_name):
     """
 
     groups = get_professor_groups(professor_name)
+
+    # Create a dictionary to store each group and its unique time slot
+    group_dict = {}
     for group in groups:
+        group_name = group[0]
+        group_time = f"{group[1]} {group[2]}"
+        group_dict[group_name] = group_time
+
+    # Convert the dictionary to a list of unique groups with their times
+    for group_name, group_time in group_dict.items():
         html_content += f"""
         <tr>
-            <td>{group[0]}</td>
-            <td>{group[1]}</td>
-            <td>{group[2]}</td>
+            <td>{group_name}</td>
+            <td>{group_time.split()[0]}</td>
+            <td>{group_time.split()[1]}</td>
         </tr>
         """
 
@@ -1091,9 +1259,8 @@ def get_professor_groups(professor_name):
     cursor.execute("""
         SELECT C.ID_COURSE, A.Day, A.Hour
         FROM Courses C
-        JOIN Availability_Teachers AT ON C.ID_Teacher = AT.ID_Teacher
-        JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
-        WHERE C.ID_Teacher IN (
+        JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+        WHERE C.ID_Teacher = (
             SELECT ID_Teacher
             FROM Teachers
             WHERE name = ? AND surname = ?
