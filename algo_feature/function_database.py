@@ -20,7 +20,6 @@ def insert_df_into_db(conn, students_info, table):
     students_info.to_sql(table, conn, if_exists='append', index=False)
     conn.close()
     
-    
 def find_list_SCHOOL_YEAR(Data):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
@@ -58,6 +57,22 @@ def find_list_LV1(Data, promo_pair):
     conn.close()
     return list_lv1
 
+def find_list_lv(Data):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    list_lv = []
+    cursor.execute("SELECT DISTINCT(LV1) FROM Student ;")
+    lv_results = cursor.fetchall()
+    for lv_row in lv_results:
+        if lv_row[0] is not None:  # Vérifier si l'élément est non nul
+            list_lv.append(lv_row[0])
+    cursor.execute("SELECT DISTINCT(LV2) FROM Student ;")
+    lv_results = cursor.fetchall()
+    for lv_row in lv_results:
+        if lv_row[0] is not None:  # Vérifier si l'élément est non nul
+            list_lv.append(lv_row[0])
+    conn.close()
+    return list_lv
 
 def get_all_students_from_a_pair_and_lv(Data, promo_pair, lv):
     conn = sqlite3.connect(Data)
@@ -114,7 +129,7 @@ def get_students_count(Data, promo):
     cursor.execute("SELECT count(*) FROM Student WHERE SCHOOL_YEAR='" + promo + "';")
     return cursor.fetchone()[0]
 
-def get_lv_slot_count(Data, promo_pair):
+def get_lv_slot(Data, promo_pair):
     """_summary_
     this function return all availabilties for a propmo
     Args:
@@ -134,7 +149,6 @@ def get_lv_slot_count(Data, promo_pair):
         #print(slot_list)
     return list(set(slot_list))
 
-
 def get_available_teacher(Data, slot, lv):
     conn = sqlite3.connect(Data)
     cursor = conn.cursor()
@@ -142,19 +156,39 @@ def get_available_teacher(Data, slot, lv):
     if '-débutant' in lv:
         lv = lv.split(' -débutant')[0]
     for slo in slot:
-        cursor.execute(
-            """
-            SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
-            FROM Availability_Teachers
-            JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
-            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?;
-            """,
-            (slo[0], lv)
-        )
-        teacher_availabilities.extend(cursor.fetchall())
+        cursor.execute("""
+                    SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability 
+                    FROM Availability_Teachers 
+                    JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher 
+                    WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 1;
+                    """
+                    , (slo[0], lv))
+        results = cursor.fetchall()
+        #print(results)
+        teacher_availabilities.extend(results)
         #print(teacher_availabilities)
     return teacher_availabilities
 
+def get_nb_available_teacher(Data, slot, lv):
+    conn = sqlite3.connect(Data)
+    cursor = conn.cursor()
+    nb_availabilities = 0
+    if '-débutant' in lv:
+        lv = lv.split(' -débutant')[0]
+    for slo in slot:
+        cursor.execute(
+            """
+            SELECT count(Availability_Teachers.ID_Teacher)
+            FROM Availability_Teachers
+            JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
+            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 0;
+            """,
+            (slo[0], lv)
+        )
+        nb = cursor.fetchall()
+        nb_availabilities += nb[0][0]
+    #print(nb_availabilities)
+    return nb_availabilities
 
 def get_available_teacher2(Data, slots, lv):
     conn = sqlite3.connect(Data)
@@ -166,14 +200,14 @@ def get_available_teacher2(Data, slots, lv):
             SELECT Availability_Teachers.ID_Teacher, Availability_Teachers.ID_Availability
             FROM Availability_Teachers
             JOIN Teachers ON Availability_Teachers.ID_Teacher = Teachers.ID_teacher
-            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ?
+            WHERE Availability_Teachers.ID_Availability = ? AND Teachers.subject = ? AND Availability_Teachers.ACTIVE = 0
             ORDER BY Availability_Teachers.ID_Teacher AND Availability_Teachers.ID_Availability DESC;
             """,
             (slot[0], lv)
         )
         teacher_availabilities.extend(cursor.fetchall())
     teacher_availabilities.sort(key=lambda x: (x[0], x[1]))
-    #print(teacher_availabilities)
+    #print("aaaahhahahaa", teacher_availabilities)
     return teacher_availabilities
 
 def get_available_room(Data, slots):

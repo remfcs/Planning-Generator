@@ -1,11 +1,9 @@
-import algo_feature.function_database as function_database
+import algo_feature.function_database as function_database 
 import sqlite3
 
-""" 
-Refaire 'nomber_class' en calculant le nb de prof dispo.
-"""
 
-def nomber_class(nomber_student, nomber_by_class):
+
+def nomber_class_bis(nomber_student, nomber_by_class):
     nomber_class = 0
     # à expliquer 
     if (nomber_student % nomber_by_class) > ((nomber_student //nomber_by_class)*(2/3)) :
@@ -16,7 +14,6 @@ def nomber_class(nomber_student, nomber_by_class):
     if  nomber_class == 0:
         nomber_class = 1
     return nomber_class
-
 
 def make_group(list_student, number_class):
     total_students = len(list_student)  # Calculate the total number of students
@@ -38,116 +35,206 @@ def make_group(list_student, number_class):
 
         return groups  # Return the list of groups
 
-def make_groups(Data, promo_pair, nb_by_class):
-    conn = sqlite3.connect(Data)  # Connect to the SQLite database
-    for promo_list in promo_pair:
-        list_lv2 = function_database.find_list_LV2(Data, promo_list)  # Get list of LV2 languages for the promo list
-        list_lv1 = function_database.find_list_LV1(Data, promo_list)  # Get list of LV1 languages for the promo list
-        list_lv = list_lv1 + list_lv2  # Combine both lists of languages
+def nomber_class(sum, nb_students,  Data, students, promo_association,  max_by_class):
+    lv = next(iter(students.keys()))
+    list_slots = function_database.get_lv_slot(Data, promo_association)
+    nb_slots = function_database.get_nb_available_teacher(Data, list_slots, lv)
+    #print(nb_slots)
+    nb_slots = round(nb_slots * nb_students / (sum + nb_students))
+    #print(nb_slots)
 
-        for lv in list_lv:
-            students = []
-            for promo in promo_list:
-                if "-débutant (jamais étudié)" in lv:
-                    cursor = conn.cursor()
-                    # Get the list of beginner students for the specific language and promo
-                    cursor.execute("SELECT EMAIL FROM Student WHERE (LV1 = ? OR LV2 = ?) AND SCHOOL_YEAR = ?;", (lv, lv, promo))
-                    student = cursor.fetchall()
-                    student = [pos[0] for pos in student]  # Extract student emails
-                else:
-                    cursor = conn.cursor()
-                    query = """
-                    SELECT EMAIL, 
-                        CASE 
-                            WHEN LV1 = ? THEN GRADE_LV1 
-                            WHEN LV2 = ? THEN GRADE_LV2 
-                        END AS GRADE 
-                    FROM Student 
-                    WHERE (LV1 = ? OR LV2 = ?) AND SCHOOL_YEAR = ?
-                    ORDER BY GRADE DESC;
-                    """
-                    # Get the list of non-beginner students sorted by their grades for the specific language and promo
-                    cursor.execute(query, (lv, lv, lv, lv, promo))
-                    student = cursor.fetchall()
-                    student = [pos[0] for pos in student]  # Extract student emails
+    number_class = {}
+    nb_students =0 
+    for key, value in students.items():
+        number_class[key] = 0
+        nb_students += len(value)
+    if len(number_class.keys()) == 1 :
+        key = next(iter(number_class.keys()))
+        number_class[key] = nb_slots
+    else :
+        for key, value in students.items():
+            number_class[key] = round(nb_slots * (len(value) / nb_students))
+    # print(number_class)
+    # def contains_only_3A(lst):
+    #     return lst == ['3A']
+    # if (contains_only_3A(promo_association)) & ((nomber_student / nomber_class) >= max_by_class):
+    #     while (nomber_student / (nomber_class)) >= max_by_class:
+    #         #nomber_class += 1
+    return number_class
 
-                students += student  # Add the students to the list
+def make_groups(Data, promo_pair, max_by_class):
+    conn = sqlite3.connect(Data)
+    list_lv = function_database.find_list_lv(Data)
+    while list_lv:
+        #print(list_lv)
+        lv = list_lv.pop(0)
+        deb = 0
+        if '-débutant' in lv:
+            lv = lv.split(' -débutant')[0]
+            deb = 1
+        promo_list = promo_pair[lv]
+        if lv + " -débutant (jamais étudié)" in list_lv:
+            list_lv.remove(lv + " -débutant (jamais étudié)")
+            deb = 2
+        promo_list = promo_pair[lv]
+        
+        slots = {}
+        for promo_association in promo_list :
+            list_slots = function_database.get_lv_slot(Data, promo_association)
+            name = ', '.join(f"'{item}'" for item in promo_association)
+            slots[name] = list_slots
+        #print(slots)
 
-            nb_class = nomber_class(len(students), nb_by_class)  # Calculate the number of classes needed
-            groups = make_group(students, nb_class)  # Create groups based on the number of classes
+        inverse_slots = {}
+        # Parcourir les éléments de slots
+        for key, value in slots.items():
+            # Convertir la liste en tuple pour l'utiliser comme clé dans inverse_slots (car les listes ne sont pas hashables)
+            value_tuple = tuple(value)
+            if value_tuple not in inverse_slots:
+                inverse_slots[value_tuple] = []
+            inverse_slots[value_tuple].append(key)
+        #print(inverse_slots)
 
-            language = "_" + lv[:3]  # Extract language abbreviation
-            name = ""
-            if "-débutant (jamais étudié)" in lv:
-                name = "_D"  # Append '_D' for beginner groups
+        def get_students_and_nb_students(lv, promo_association):
+            students = { }
+            if deb ==0 :
+                students[lv ] = []
+            elif deb == 1 :
+                students[lv + " -débutant (jamais étudié)"] = []
+            elif deb == 2 :
+                students[lv ] = []
+                students[lv + " -débutant (jamais étudié)"] = []
+            for promo in promo_association:
+                for i in students :
+                    if "-débutant (jamais étudié)" in i:
+                        cursor = conn.cursor()
+                        # Get the list of beginner students for the specific language and promo
+                        cursor.execute("SELECT EMAIL FROM Student WHERE (LV1 = ? OR LV2 = ?) AND SCHOOL_YEAR = ?;",(i, i, promo))
+                        student = cursor.fetchall()
+                        student = [pos[0] for pos in student]  # Extract student emails
+                    else:
+                        cursor = conn.cursor()
+                        query = """
+                        SELECT EMAIL, 
+                            CASE 
+                                WHEN LV1 = ? THEN GRADE_LV1 
+                                WHEN LV2 = ? THEN GRADE_LV2 
+                            END AS GRADE 
+                        FROM Student 
+                        WHERE (LV1 = ? OR LV2 = ?) AND SCHOOL_YEAR = ?
+                        ORDER BY GRADE DESC;
+                        """
+                        # Get the list of non-beginner students sorted by their grades for the specific language and promo
+                        cursor.execute(query, (i, i, i, i, promo))
+                        student = cursor.fetchall()
+                        student = [pos[0] for pos in student]  # Extract student emails
 
-            i = 1
-            result_str = ', '.join(promo_list)  # Create a string representation of the promo list
+                    students[i] += student  # Add the students to the list
+            nb_students =0 
+            for key, value in students.items():
+                nb_students += len(value)
+                #print(lv, promo_association,f"Clé : {key}, Nombre d'éléments : {len(value)}")
+            #print(promo_association, next(iter(students.keys())))
+            return students, nb_students
 
-            for group in groups:  # type: ignore
-                group_name = 'G' + str(i) + "_{" + result_str + "}" + language + name  # Create a unique group name
-                for student in group:
-                    cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?, ?);", (group_name, student))
-                    conn.commit()  # Insert each student into the group and commit the changes
-                i += 1  # Increment the group counter
+
+        for promo_association in promo_list :
+            sum = 0
+            a = ', '.join(f"'{item}'" for item in promo_association)
+            # Afficher les clés des éléments identiques
+            #print(promo_association, sum)
+            for value_tuple, keys in inverse_slots.items():
+                if  (len(keys) > 1) & (a in keys): 
+                    #print(a, keys, len(keys))
+                    for i in keys:
+                        association = [item.strip("'") for item in i.split(', ')]
+                        #print(association, promo_association)
+                        if association != promo_association:  
+                            st, nb = get_students_and_nb_students(lv, association)
+                            sum += nb
+            #print(lv, promo_association, sum)
+
+            students, nb_students = get_students_and_nb_students(lv, promo_association)
+            #print(sum, nb_students)
+            nb_class = nomber_class(sum,nb_students, Data, students, promo_association,  max_by_class)  # Calculate the number of classes needed
+            #print(nb_class)
+
+            for key, value in nb_class.items():
+                students2 = students[key]
+                groups = make_group(students2, value)  # Create groups based on the number of classes
+                language = "_" + key[:3]  # Extract language abbreviation
+                name = ""
+                if "-débutant (jamais étudié)" in key:
+                    name = "_D"  # Append '_D' for beginner groups
+                i = 1
+                result_str = ', '.join(promo_association)  # Create a string representation of the promo list
+                #print(groups)
+                for group in groups:  # type: ignore
+                    group_name = 'G' + str(i) + "_{" + result_str + "}" + language + name  # Create a unique group name
+                    for student in group:
+                        cursor = conn.cursor()
+                        cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?, ?);", (group_name, student))
+                        conn.commit()  # Insert each student into the group and commit the changes
+                    i += 1  # Increment the group counter
 
     conn.close()  # Close the database connection
     return
-
+   
 def make_association(Data, promo_pair):
     conn = sqlite3.connect(Data)  # Connect to the SQLite database
-    for promo_list in promo_pair:
-        list_slots = function_database.get_lv_slot_count(Data, promo_list)  # Get the list of slots for the promo list
-        list_lv2 = function_database.find_list_LV2(Data, promo_list)  # Get list of LV2 languages for the promo list
-        list_lv1 = function_database.find_list_LV1(Data, promo_list)  # Get list of LV1 languages for the promo list
-        list_lv = list_lv1 + list_lv2  # Combine both lists of languages
-        list_lv_check = []  # Initialize a list to keep track of checked languages
-        insertions = []  # Initialize a list to store insertions
-        final_insertions = []  # Initialize a list to store final insertions
+    for lv in promo_pair:
+        promo_list = promo_pair[lv]
+        slots = {}
+        for promo_association in promo_list :
+            insertions = []  # Initialize a list to store insertions
 
-        for lv in list_lv:
-            lv_bis = lv
-            if '-débutant' in lv_bis:
-                lv_bis = lv_bis.split(' -débutant')[0]  # Remove '-débutant' suffix for comparison
-
-            if lv_bis not in list_lv_check:
-                teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv_bis)  # Get available teachers for the language
-                list_lv_check.append(lv_bis)  # Mark the language as checked
-
+            list_slots = function_database.get_lv_slot(Data, promo_association)
+            name = ', '.join(f"'{item}'" for item in promo_association)
+            slots[name] = list_slots
+            #print("\n" ,name,  lv, list_slots)
+            teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv)  # Get available teachers for the language
+            #print(teacher_availabilities)            
+            cursor = conn.cursor()
+            pattern = '%{'+ ', '.join(promo_association) + "}_"+ lv[:3] + '%'  # Create a pattern to match courses for the language
+            #print(pattern)
+            cursor.execute("""
+                           SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students 
+                           WHERE ID_COURSE LIKE ? ORDER BY LENGTH(ID_COURSE), ID_COURSE;""",
+                            (pattern,))
+            list_groups = cursor.fetchall()
+            list_groups = [pos[0] for pos in list_groups]  # Extract course IDs
+            #print(list_groups)
+            for i in range(len(list_groups)):
+                insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
+                insertions.append(insertion)  # Prepare insertions of teacher and group associations
                 cursor = conn.cursor()
-                pattern = '%' + lv_bis[:3] + '%'  # Create a pattern to match courses for the language
-                cursor.execute("SELECT DISTINCT(ID_COURSE) FROM List_Groups_Students WHERE ID_COURSE LIKE ? ORDER BY LENGTH(ID_COURSE), ID_COURSE;", (pattern,))
-                list_groups = cursor.fetchall()
-                list_groups = [pos[0] for pos in list_groups]  # Extract course IDs
+                #print(teacher_availabilities[i][0],teacher_availabilities[i][1])
+                cursor.execute("""
+                                UPDATE Availability_Teachers SET ACTIVE = 1
+                                WHERE ID_Availability LIKE ? AND ID_Teacher LIKE ?;
+                               """, (teacher_availabilities[i][1],teacher_availabilities[i][0]))
+                conn.commit()
+            #print(insertions)
+            final_insertions = insertions
+            # final_insertions = []
+            # for slot in list_slots:
+            #     rooms_available = function_database.get_available_room(Data, slot)  # Get available rooms for the slot
 
-                if len(teacher_availabilities) > len(list_groups):
-                    print("teacher_availabilities > list_groups")
-                elif len(teacher_availabilities) < len(list_groups):
-                    print("teacher_availabilities < list_groups")
-                else:
-                    for i in range(len(teacher_availabilities)):
-                        insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
-                        insertions.append(insertion)  # Prepare insertions of teacher and group associations
+            #     for i in range(len(insertions)):
+            #         if insertions[i][2] == slot[0]:  # Match insertions with the current slot
+            #             if rooms_available:
+            #                 room = rooms_available.pop(0)  # Get the first available room and remove it from the list
+            #             else:
+            #                 room = ('No more available',)
+            #             final_insertion = insertions[i] + room  # Add room information to the insertion
+            #             final_insertions.append(final_insertion)  # Add to the final insertions list
+            for value in final_insertions:
+                result_str = ', '.join(promo_association)  # Create a string representation of the promo list
+                cursor.execute("INSERT INTO Courses(LANGUAGE, ID_COURSE, ID_TEACHER, ID_AVAILABILITY, ID_ROOM, PROMO) VALUES(?, ?, ?, ?, ?, ?);", 
+                            (value[3], value[1], value[0], value[2], "R pour le moment ", result_str))
+                conn.commit()  # Insert the final insertion into the Courses table and commit the changes
+    conn.close()    # Close the database connection
 
-        for slot in list_slots:
-            rooms_available = function_database.get_available_room(Data, slot)  # Get available rooms for the slot
-
-            for i in range(len(insertions)):
-                if insertions[i][2] == slot[0]:  # Match insertions with the current slot
-                    if rooms_available:
-                        room = rooms_available.pop(0)  # Get the first available room and remove it from the list
-                    else:
-                        room = ('No more available',)
-                    final_insertion = insertions[i] + room  # Add room information to the insertion
-                    final_insertions.append(final_insertion)  # Add to the final insertions list
-
-        for value in final_insertions:
-            result_str = ', '.join(promo_list)  # Create a string representation of the promo list
-            cursor.execute("INSERT INTO Courses(LANGUAGE, ID_COURSE, ID_TEACHER, ID_AVAILABILITY, ID_ROOM, PROMO) VALUES(?, ?, ?, ?, ?, ?);", 
-                           (value[3], value[1], value[0], value[2], value[4], result_str))
-            conn.commit()  # Insert the final insertion into the Courses table and commit the changes
-
-    conn.close()  # Close the database connection
 
 
 """
@@ -177,7 +264,7 @@ def make_groups2(list_student, students_distribution):
 def make_groups_lv(Data, promo_pair):
     conn = sqlite3.connect(Data)
     for promo_list in promo_pair:
-        slot_count = function_database.get_lv_slot_count(Data, promo_list)
+        slot_count = function_database.get_lv_slot(Data, promo_list)
         # slot_count correspond a tous les slots de cours disponible pour les langues (condition: meme slot dispo pour les 2 promos)
         list_lv = function_database.find_list_LV2(Data, promo_list)
         # list_lv2: liste de toutes les lv2 de la promo_list 

@@ -131,6 +131,11 @@ def get_average(data_path):
     return results
 
 
+#print(get_average(data_path))
+
+
+
+
 
 
 
@@ -169,4 +174,5 @@ conflict = function_conflict.get_number_conflict_per_group(Data)
 print(conflict)
         
 
+get_number_of_students_per_group(Data)
 get_number_of_students_per_group(Data)
