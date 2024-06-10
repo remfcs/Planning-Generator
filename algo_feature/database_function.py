@@ -28,10 +28,10 @@
 #   - Retrieves a list of all distinct LV (language) from the database.
 #
 # 7. get_all_students_from_a_pair_and_lv:
-#   - 
+#   - Retrieves a list of all students from the database for a given language and school years.
 #
 # 8. get_all_students_from_a_pair_studying_this_lv:
-#   - 
+#   - Retrieves the list of studient for a specified school years and language.
 #
 # 9. assigns_groups_to_students:
 #   - Inserts a combinaison of id group and id student into a specified table in the database.
