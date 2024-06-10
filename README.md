@@ -16,22 +16,39 @@ The genesis of the project came directly from the identified need by Mary Stephe
 6. [Contributor](#contributing)
 
 ## Installation
-To install this project, follow these steps:
+To install this project & the dependencies, follow these steps:
 
 1. Clone the repository:
    ```bash
     git clone https://github.com/yourusername/your-repo-name.git
     ```
-2.  Start the application:
+2.  Install dependencies:
+    ```bash
+    ```
+
+## Usage 
+
+1.  Start the application:
     ```bash
     python planning-generator/Graphical_Interfaces/server.py
     ```
-## Usage 
-
-
+2. Open your browser and navigate to `http://localhost:5000` or `http://127.0.0.1:5000`
 
 ## Features
 
+- Dans input_info:
+Nom	Prénom	Mail	Programme
+Un fichier avec ses noms de colonnes doit être mis dans input_info
+Le nom de ce fichier doit être Student_Info.xlsx
+
+- Mail Langues
+Un deuxième fichier Doit être mis dans input_info: Student_Sondage_LV2
+Langues correspond à la LV2
+
+- Dans input_notes:
+les fichiers doivent s'appeler : Espagnol.xlsx Anglais.xlsx Allemand.xlsx Espagnol_TT.xlsx Anglais_TT.xlsx Allemand_TT.xlsx 
+Nom	Prénom	Mail	État	Note/10,00
+Ces 4 colonnes apparaissent
 
 
 ## File Structure
@@ -42,30 +59,4 @@ To install this project, follow these steps:
 
 
 
-
 ## Contributor
-
-
-
-
-
-
-
-
-
-
-Dans input_info:
-Nom	Prénom	Mail	Programme
-Un fichier avec ses noms de colonnes doit être mis dans input_info
-Le nom de ce fichier doit être Student_Info.xlsx
-
-mail Langues
-Un deuxième fichier Doit être mis dans input_info: Student_Sondage_LV2
-Langues correspond à la LV2
-
-Dans input_notes:
-les fichiers doivent s'appeler : Espagnol.xlsx Anglais.xlsx Allemand.xlsx Espagnol_TT.xlsx Anglais_TT.xlsx Allemand_TT.xlsx 
-Nom	Prénom	Mail	État	Note/10,00
-Ces 4 colonnes apparaissent
-
-
