@@ -10,7 +10,6 @@ import os
     À faire :
     # TODO Documenter toutes les fonctions
     # TODO faire le doc de la maintenance
-    # ? BALEK => BEE et FT trop faible pas de LV2 (note<5= faible)
     - améliorer la balance des conflits NORMALEMENT FINI
 """
 

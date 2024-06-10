@@ -196,9 +196,9 @@ def make_association(Data, promo_pair):
             list_slots = function_database.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
-            print("\n" ,name,  lv, list_slots)
+            #print("\n" ,name,  lv, list_slots)
             teacher_availabilities = function_database.get_available_teacher2(Data, list_slots, lv)  # Get available teachers for the language
-            print(teacher_availabilities)            
+            #print(teacher_availabilities)            
             cursor = conn.cursor()
             pattern = '%{'+ ', '.join(promo_association) + "}_"+ lv[:3] + '%'  # Create a pattern to match courses for the language
             #print(pattern)
@@ -208,7 +208,7 @@ def make_association(Data, promo_pair):
                             (pattern,))
             list_groups = cursor.fetchall()
             list_groups = [pos[0] for pos in list_groups]  # Extract course IDs
-            print(list_groups)
+            #print(list_groups)
             for i in range(len(list_groups)):
                 insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
                 insertions.append(insertion)  # Prepare insertions of teacher and group associations
