@@ -53,8 +53,11 @@
 #
 # 15. get_available_room:
 #   - Retrieves the list of available rooms for given slots.
+#
+# 16. set_group_name:
+#   - Sets the group name column of the database 
 # --------------------------------------------------------------------------------
-
+#
 # --------------------------------------------------------------------------------
 # Dependencies:
 # --------------------------------------------------------------------------------
@@ -62,8 +65,6 @@
 # --------------------------------------------------------------------------------
 
 import sqlite3
-
-from langcodes import Language
 
 def delete_table_data(filename, table):
     # Connexion à la base de données
