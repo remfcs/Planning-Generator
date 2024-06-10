@@ -1,0 +1,23 @@
+{
+    "bee": {
+        "lv1": [
+            "Monday Afternoon"
+        ],
+        "lv2": []
+    },
+    "ft": {
+        "lv1": [],
+        "lv2": [
+            "Monday Afternoon"
+        ]
+    },
+    "fg": {
+        "lv1": [
+            "Thursday Morning",
+            "Friday Afternoon"
+        ],
+        "lv2": [
+            "Tuesday Morning"
+        ]
+    }
+}

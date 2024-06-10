@@ -78,11 +78,14 @@ function uploadAllFiles(event) {
     event.preventDefault();
 
     // **Ajout des autres champs de formulaire à formData**
-    const estimateNumberStudent = document.getElementById('estimate_number_student').value;
+    //const estimateNumberStudent = document.getElementById('estimate_number_student').value;
     const halfdaySlot = document.getElementById('halfday_slot').value;
-    formData.append('estimate_number_student', estimateNumberStudent);
+    //formData.append('estimate_number_student', estimateNumberStudent);
     formData.append('halfday_slot', halfdaySlot);
     formData.append('teachers', JSON.stringify(teachers));
+    const availabilityJSON = getPromoAvailibilities();
+    formData.append('availabilityPromo', availabilityJSON);
+    console.log(availabilityJSON)
 
     console.log('FormData avant l\'envoi:');
     formData.forEach((value, key) => {
@@ -192,6 +195,29 @@ function resetTeacherForm() {
 
 function modifyTeacher() {
     // Implémentez ici la logique de modification de l'enseignant
+}
+
+
+function getPromoAvailibilities() {
+    event.preventDefault();
+
+    // Récupérer les valeurs des cases à cocher sélectionnées pour chaque promotion et niveau
+    const beeLv1 = Array.from(document.querySelectorAll('.day-time-BEE-LV1:checked')).map(checkbox => checkbox.value);
+    const beeLv2 = Array.from(document.querySelectorAll('.day-time-BEE-LV2:checked')).map(checkbox => checkbox.value);
+    const ftLv1 = Array.from(document.querySelectorAll('.day-time-FT-LV1:checked')).map(checkbox => checkbox.value);
+    const ftLv2 = Array.from(document.querySelectorAll('.day-time-FT-LV2:checked')).map(checkbox => checkbox.value);
+    const fgLv1 = Array.from(document.querySelectorAll('.day-time-FG-LV1:checked')).map(checkbox => checkbox.value);
+    const fgLv2 = Array.from(document.querySelectorAll('.day-time-FG-LV2:checked')).map(checkbox => checkbox.value);
+
+    // Créer un objet pour stocker les valeurs
+    const availabilityData = {
+        bee: { lv1: beeLv1, lv2: beeLv2 },
+        ft: { lv1: ftLv1, lv2: ftLv2 },
+        fg: { lv1: fgLv1, lv2: fgLv2 }
+    };
+
+    // Convertir l'objet en JSON
+    return JSON.stringify(availabilityData);
 }
 
 // function createPlanning() {

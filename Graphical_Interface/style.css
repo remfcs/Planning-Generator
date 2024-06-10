@@ -52,7 +52,7 @@ select:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
 }
 
-button {
+.button {
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
@@ -66,11 +66,14 @@ button:hover {
     background-color: #0056b3;
 }
 
-button[type="reset"] {
+
+button[type="reset"],
+button#resetFilters {
     background-color: #6c757d;
 }
 
-button[type="reset"]:hover {
+button[type="reset"]:hover,
+button#resetFilters:hover {
     background-color: #5a6268;
 }
 

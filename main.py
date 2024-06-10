@@ -17,9 +17,18 @@ import os
     - améliorer la balance des conflits
     # ? BALEK => BEE et FT trop faible pas de LV2 (note<5= faible)
     - 
+    - refaire numberclass FAIT
+    - si pas assez de place pour les 3as le mardi en espagnol les mettre dans un groupe a part le jeudi   FAT
+    - mapper les colonnes dans function_read_folder FAIT    
+    # ? Documenter toutes les fonctions
+    # ? faire le doc de la maintenance
+    - faire les cours d'allemands et chinois séparé pour les 3a et 1a et 2a
+    - 1A, 2A et 3A peuvent avoir cours en même temps d'Allemand et Chinois !
+    - améliorer la balance des conflits NORMALEMENT FINI
+    - BEE et FT trop faible pas de LV2 (note<5= faible)
 """
 
-Data = 'data/database.sqlite3'
+Data = 'data/database_test.sqlite3'
 
 #depot_info_folder = './data/uploads/input_info'
 #depot_note_folder ='./data/uploads/input_level'
@@ -30,6 +39,8 @@ depot_info_folder = './data/input_info'
 depot_note_folder ='./data/input_notes'
 depot_info_folder = './data/input_info'
 depot_note_folder ='./data/input_notes'
+depot_info_folder = './data/xlsx/input_info'
+depot_note_folder ='./data/xlsx/input_notes'
 
 max_by_class = 19
 
@@ -79,6 +90,9 @@ function_database.delete_table_data(Data, "Student")
 
 #charge les données des étudiants dans la table student
 conn = sqlite3.connect(Data)
+students_info.rename(columns={'FIRSTNAME': 'SURNAME'}, inplace=True)
+students_info = students_info.drop_duplicates(subset='EMAIL', keep="first")
+
 function_database.insert_df_into_db(conn, students_info, "Student")
 
 
@@ -119,6 +133,9 @@ function_create_groups.make_association(Data, promo_pair)
 
 
 
+function_conflict.resolve_conflict(Data)
+
+#function_conflict.get_students_with_schedule_conflicts(Data)
 
 # def boucle(m,l):
 #     n=0
@@ -127,6 +144,7 @@ function_create_groups.make_association(Data, promo_pair)
 #         for i in range (0,m):
 #             function_conflict.resolution_conflict(Data)
 #             function_conflict.balance_groups(Data, max_by_class)
+
 #         #changement pour eviter les boucles infinies
 #         for i in range (0,l):   
 #             function_conflict.resolution_conflict_inverse(Data)

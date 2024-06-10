@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <div id="sidebar-container"></div>
+    <div class="text-left" style="position: relative; margin: 50px;">
+        <a href="/" class="btn cancel-btn">Back</a>
+    </div>
     <div class="container">
         <h1>Student and Teacher Management</h1>
 
@@ -16,15 +20,15 @@
             <div class="section">
                 <div class="upload-header">
                     <h2>
-                        Upload .csv file with the students and their promotion
+                        Upload files with students, promotion and LV2 (.xlsx accepted)
                         <button type='button' class="info-btn"
-                            data-info="Upload a CSV file with the students and their promotion information. The file should contain columns for student names and their respective promotions."
+                            data-info="Upload a file with the students and their promotion information. The file should contain columns for student names and their respective promotions."
                             onclick="showInfo(event)">i</button>
                     </h2>
                 </div>
                 <div class="upload-area" id="students-upload-area" data-input="students-file"
                     data-list="students-uploaded-files">
-                    <input type="file" id="students-file" name="students_files[]" accept=".csv" multiple>
+                    <input type="file" id="students-file" name="students_files[]" accept=".xlsx" multiple>
                     <div class="uploaded-files" id="students-uploaded-files"></div>
                     <button type='button' class="upload-btn" onclick="triggerFileInput('students-file')">Upload
                         Files</button>
@@ -34,7 +38,7 @@
             <div class="section">
                 <div class="upload-header">
                     <h2>
-                        Upload .csv file for the level
+                        Upload files of the students marks in LV1 and LV2 (.xlsx accepted)
                         <button type='button' class="info-btn"
                             data-info="Upload a CSV file with the level information. The file should contain columns for the level details."
                             onclick="showInfo(event)">i</button>
@@ -42,31 +46,29 @@
                 </div>
                 <div class="upload-area" id="level-upload-area" data-input="level-file"
                     data-list="level-uploaded-files">
-                    <input type="file" id="level-file" name="level_files[]" accept=".csv" multiple>
+                    <input type="file" id="level-file" name="level_files[]" accept=".xlsx" multiple>
                     <div class="uploaded-files" id="level-uploaded-files"></div>
                     <button type='button' class="upload-btn" onclick="triggerFileInput('level-file')">Upload
                         Files</button>
                 </div>
-            </div>
+            </div> <br>
 
-            <div class="section">
+            <!-- <div class="section">
                 <h2>Number of student maximum by class</h2>
                 <div class="form-group">
                     <label for="estimate-number">Number:</label>
                     <input type="number" id="estimate_number_student" name="estimate_number_student"
                         placeholder="Number" value="16" min=1>
-                    <button type='button' class="btn" onclick="submitEstimate()">Submit</button>
                 </div>
-            </div>
+            </div> -->
 
             <div class="section">
                 <h2>Number of slots in a day</h2>
                 <div class="form-group">
                     <label for="estimate-number">Number:</label>
-                    <input type="number" id="halfday_slot" name="halfday_slot" placeholder="Number" value="3" min=1>
-                    <button type='button' class="btn" onclick="submitEstimate()">Submit</button>
+                    <input type="number" id="halfday_slot" name="halfday_slot" placeholder="Number" value="6" min=1>
                 </div>
-            </div>
+            </div> 
 
             <div class="section">
                 <h2>Manage Teachers</h2>
@@ -140,8 +142,277 @@
                         <!-- Liste des professeurs sera générée ici -->
                     </ul>
                 </div>
+            </div> <br>
+
+            <div class="section">
+                <h2>Promotions and Levels Availabilities</h2>
+                <!-- Promotion BEE -->
+                <div class="promo-section">
+                    <h3>Promotion BEE :</h3>
+                    <!-- Checkbox for availabilities LV1 -->
+                    <div class="availability">
+                        <h4>- LV1</h4>
+                        <div id="availability-section" class="availability-section">
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Monday Morning"> Monday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Monday Afternoon"> Monday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Tuesday Morning"> Tuesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Tuesday Afternoon"> Tuesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Wednesday Morning"> Wednesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Wednesday Afternoon"> Wednesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Thursday Morning"> Thursday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Thursday Afternoon"> Thursday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Friday Morning"> Friday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Friday Afternoon"> Friday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-BEE-LV1" value="Saturday Morning"> Saturday
+                                    Morning</label>
+                            </div>
+                        </div>
+                    </div> <br>
+        
+                <!-- Promotion FT -->
+                <div class="promo-section">
+                    <h3>Promotion FT</h3>
+                    <!-- Checkbox for availabilities LV1 -->
+                    <div class="availability">
+                        <h4>- LV1</h4>
+                        <div id="availability-section" class="availability-section">
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Monday Morning"> Monday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Monday Afternoon"> Monday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Tuesday Morning"> Tuesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Tuesday Afternoon"> Tuesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Wednesday Morning"> Wednesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Wednesday Afternoon"> Wednesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Thursday Morning"> Thursday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Thursday Afternoon"> Thursday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Friday Morning"> Friday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Friday Afternoon"> Friday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV1" value="Saturday Morning"> Saturday
+                                    Morning</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Checkbox for availabilities LV2 -->
+                    <div class="availability">
+                        <h4>- LV2</h4>
+                        <div id="availability-section" class="availability-section">
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Monday Morning"> Monday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Monday Afternoon"> Monday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Tuesday Morning"> Tuesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Tuesday Afternoon"> Tuesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Wednesday Morning"> Wednesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Wednesday Afternoon"> Wednesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Thursday Morning"> Thursday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Thursday Afternoon"> Thursday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Friday Morning"> Friday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Friday Afternoon"> Friday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FT-LV2" value="Saturday Morning"> Saturday
+                                    Morning</label>
+                            </div>
+                        </div>
+                    </div>
+                </div> <br>
+
+                <!-- Promotion FG -->
+                <div class="promo-section">
+                    <h3>Promotion FG</h3>
+                    <!-- Checkbox for availabilities LV1 -->
+                    <div class="availability">
+                        <h4>- LV1</h4>
+                        <div id="availability-section" class="availability-section">
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Monday Morning"> Monday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Monday Afternoon"> Monday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Tuesday Morning"> Tuesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Tuesday Afternoon"> Tuesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Wednesday Morning"> Wednesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Wednesday Afternoon"> Wednesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Thursday Morning"> Thursday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Thursday Afternoon"> Thursday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Friday Morning"> Friday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Friday Afternoon"> Friday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV1" value="Saturday Morning"> Saturday
+                                    Morning</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Checkbox for availabilities LV2 -->
+                    <div class="availability">
+                        <h4>- LV2</h4>
+                        <div id="availability-section" class="availability-section">
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Monday Morning"> Monday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Monday Afternoon"> Monday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Tuesday Morning"> Tuesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Tuesday Afternoon"> Tuesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Wednesday Morning"> Wednesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Wednesday Afternoon"> Wednesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Thursday Morning"> Thursday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Thursday Afternoon"> Thursday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Friday Morning"> Friday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Friday Afternoon"> Friday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time-FG-LV2" value="Saturday Morning"> Saturday
+                                    Morning</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <br>
+    
             <div class="section">
                 <button class="btn" id="create-planning-btn" onclick="createPlanning()">Create the Planning</button>
                 <button type='button' class="btn cancel-btn" onclick="cancelPlanning()">Cancel</button>
@@ -157,6 +428,7 @@
     </div>
 
     <script src="start.js"></script>
+    <script src="../sidebar/script2.js"></script>
 </body>
 
 </html>

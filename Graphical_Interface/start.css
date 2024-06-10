@@ -163,6 +163,7 @@ h1, h2 {
 }
 
 .popup-content {
+    position: relative;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
