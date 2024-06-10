@@ -10,7 +10,12 @@ import sqlite3
 import csv
 import io
 import pandas as pd  # Ajout de pandas pour l'export en Excel
-from Export.export import generate_group_pdf, generate_professors_pdf, generate_professor_pdf, generate_group_csv, export_all_groups_csv, generate_professors_csv, generate_professor_csv, generate_group_excel, export_all_groups_excel, generate_professor_excel, export_all_professors_excel, get_student_details, export_all_groups
+from Export.export import (
+    generate_group_pdf, generate_professors_pdf, generate_professor_pdf, generate_group_csv, export_all_groups_csv,
+    generate_professors_csv, generate_professor_csv, generate_group_excel, export_all_groups_excel, generate_professor_excel,
+    export_all_professors_excel, get_student_details, export_all_groups
+)
+from Modify_student.modify_student import add_student, add_list, add_list2, delete_student
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -195,85 +200,25 @@ def export_professor():
 
     return "Invalid file type", 400
 
-# Autres routes et fonctions...
 @app.route('/add', methods=['POST'])
-def add_student():
+def add_student_route():
     data = request.get_json()
-    new_student = (
-        data['email'],
-        data['name'],
-        data['surname'],
-        data['school_year'],
-        data['lv1'],
-        data['lv2'],
-        1 if data['reducedExam'] else 0
-    )
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT CASE WHEN EXISTS (
-        SELECT 1
-        FROM Student
-        WHERE EMAIL = ?
-        ) THEN 'true' ELSE 'false' END
-        """, (data['email'],))
-    exists = cursor.fetchone()[0]
-    if exists == 'true':
-        return jsonify({'status': 'error', 'message': 'Student already exists'})
-    else:
-        cursor.execute("""
-            INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, new_student)
-        conn.commit()
-        conn.close()
-        return jsonify({'status': 'success'})
+    return add_student(data)
 
 @app.route('/add2', methods=['POST'])
-def add_list():
+def add_list_route():
     data_english = request.get_json()
-    new_english_course = (
-        data_english['english'],
-        data_english['email']
-    )
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
-        VALUES (?, ?)
-        """, new_english_course)
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'success'})
+    return add_list(data_english)
 
 @app.route('/add3', methods=['POST'])
-def add_list2():
+def add_list2_route():
     data_lv2 = request.get_json()
-    new_lv2_course = (
-        data_lv2['lv2'],
-        data_lv2['email']
-    )
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
-        VALUES (?, ?)
-        """, new_lv2_course)
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'success'})
+    return add_list2(data_lv2)
 
 @app.route('/deleteStudent', methods=['POST'])
-def delete_student():
+def delete_student_route():
     data = request.get_json()
-    email = data['email']
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM Student WHERE EMAIL = ?", (email,))
-    cursor.execute("DELETE FROM List_Groups_Students WHERE ID_STUDENT = ?", (email,))
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'success'})
+    return delete_student(data)
 
 @app.route('/timeslot')
 def get_timeslot():
@@ -308,7 +253,7 @@ def serve_home_html():
 
 @app.route('/modifications')
 def modifications():
-    return send_from_directory('.', 'Modify student/add-student.html')
+    return send_from_directory('.', 'Modify_student/add-student.html')
 
 @app.route('/export')
 def export_page():
@@ -355,7 +300,6 @@ def api_professors():
             "availability": professor[4]
         })
     return jsonify(professor_list)
-
 
 if __name__ == '__main__':
     def open_browser():
