@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Taylor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include jQuery before Bootstrap's JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div id="sidebar-container"></div>
+    <div class="container">
+        <div class="d-flex justify-content-between mt-4">
+            <!-- Ajouter le lien vers la page des professeurs -->
+            <div class="text-left">
+                <a href="/professors" class="btn btn-primary">Teachers List</a>
+            </div>
+            <div class="text-right">
+                <a href="/modifications" class="btn btn-secondary">Modifications</a>
+            </div>
+            <div class="text-middle">
+                <a href="/start" class="btn btn-warning">Create a New Planning</a>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <h1>Students List</h1>
+        </div>
+        <form id="filterForm" class="form-inline">
+            <label for="studentName" class="sr-only">Student name :</label>
+            <input type="text" id="studentName" name="studentName" class="form-control mb-2 mr-sm-2">
+
+            <label for="niveau" class="sr-only">Class Level :</label>
+            <select id="niveau" name="niveau" class="form-control mb-2 mr-sm-2">
+                <option value="">Select a class level</option>
+                <option value="1A">1A</option>
+                <option value="2A">2A</option>
+                <option value="3A">3A</option>
+            </select>
+
+            <label for="professeur" class="sr-only">Teachers :</label>
+            <select id="professeur" name="professeur" class="form-control mb-2 mr-sm-2">
+                <option value="">Select a Teacher</option>
+            </select>
+
+            <label for="langue" class="sr-only">Language :</label>
+            <select id="langue" name="langue" class="form-control mb-2 mr-sm-2">
+                <option value="">Select a Language</option>
+            </select>
+
+            <label for="group_lv1" class="sr-only">LV1 Group :</label>
+            <select id="group_lv1" name="group_lv1" class="form-control mb-2 mr-sm-2">
+                <option value="">Select an LV1 Group</option>
+            </select>
+
+            <button type="button" id="resetFilters" class="btn btn-secondary mb-2">Reset Filters</button>
+        </form>
+        <div id="studentDetails"></div>
+        <div id="studentList" class="table-responsive"></div>
+
+    </div>
+    <script src="script.js"></script>
+    <script src="../sidebar/script2.js"></script>
+</body>
+
+</html>
