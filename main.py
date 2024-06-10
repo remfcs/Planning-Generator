@@ -23,7 +23,11 @@ Data = 'data/database.sqlite3'
 
 #depot_info_folder = './data/uploads/input_info'
 #depot_note_folder ='./data/uploads/input_level'
+#depot_info_folder = './data/uploads/input_info'
+#depot_note_folder ='./data/uploads/input_level'
 
+depot_info_folder = './data/input_info'
+depot_note_folder ='./data/input_notes'
 depot_info_folder = './data/input_info'
 depot_note_folder ='./data/input_notes'
 
@@ -54,9 +58,9 @@ list_availibity_class = [('1A', 'Thu_1'), ('1A', 'Thu_2'), ('1A', 'Thu_3'),('2A'
 
 
 # Example usage
-#json_path = 'data/uploads/teachers.json'
-#list_teacher, list_availability_teachers = function_read_folder.load_teachers(json_path)
-#print(list_teacher)
+##json_path = 'data/uploads/teachers.json'
+##list_teacher, list_availability_teachers = function_read_folder.load_teachers(json_path)
+##print(list_teacher)
 
 
 #charge une df avec les infos des étudiants depuis le fichier info_student
