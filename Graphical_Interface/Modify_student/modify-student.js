@@ -145,8 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Fetch Error:', error));
     });
-    
-
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
         event.preventDefault();
@@ -241,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
       
     const searchStudent = document.getElementById('student-search-input');
-    const studentSelect = document.getElementById('mySelect');
+    const studentSelect = document.getElementById('mySelectDelete');
     var buttonDelete = document.getElementById('delete-student-button');
 
     searchStudent.addEventListener('change', (event) => {
@@ -252,31 +250,36 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(students => {
                 // Clear the select options
                 studentSelect.innerHTML = '';
+                let defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.text = "Select a Student";
+                studentSelect.add(defaultOption);
                 let addedEmails = {};
                 students.forEach(student => {
+                    console.log(student);
                     nameStudent = student.Surname.toLowerCase()
-                    if(nameStudent.startsWith(studentSearched)) {
-                        if (!addedEmails[student.Email]) {
+                    if(nameStudent.startsWith(studentSearched) && !addedEmails[student.Email]) {
                             let option = document.createElement('option');
                             option.value = student.Email;
                             option.text = student.Name + ' ' + student.Surname;
                             studentSelect.add(option);
                             addedEmails[student.Email] = true;
-                        }
+                        
                     }
                 });
             });
     });
 
-    const selectedStudent = document.getElementById('mySelect');
     const studentDetails = document.getElementById('student-details');
 
-    selectedStudent.addEventListener('change', (event) => {
+    studentSelect.addEventListener('change', (event) => {
         let studentEmail = event.target.value;
+        console.log(studentEmail);
         fetch(`/students`)
             .then(response => response.json())
             .then(students => {
                 let student = students.find(s => s.Email === studentEmail);
+                console.log(student);
                 if (student) {
                     studentDetails.style.display = 'block';
                     document.getElementById('student-name-delete').textContent = student.Surname;
@@ -285,11 +288,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('student-email-delete').textContent = student.Email;
                     buttonDelete.removeAttribute('disabled');
                 }
+                if (!student) {
+                    studentDetails.style.display = 'none';
+                    buttonDelete.setAttribute('disabled', 'disabled');
+                }
             });
     });
 
     buttonDelete.addEventListener('click', function() {
-        const emailToDelete = selectedStudent.value;
+        const emailToDelete = studentSelect.value;
         fetch('/deleteStudent', {
             method: 'POST',
             headers: {
