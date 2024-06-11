@@ -240,6 +240,7 @@ def file_data_Student(depot_info_folder):
                 update_lv2_from_xlsx(df, file_path)
             else:
                 print(f"Format de fichier non pris en charge: {file}")
+    df = df[df['SCHOOL_YEAR'] != 'PMBEE3']
     map_school_year(df)
     return df
 
