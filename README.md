@@ -28,9 +28,8 @@ To install this project & the dependencies, follow these steps:
     ```
 
 3.  Install dependencies:
-    ```bash
-    
-    ```
+
+    Need to install Pyhton : [https://www.python.org/downloads/](Python)
 
 ## Usage 
 
@@ -61,7 +60,7 @@ Ces 4 colonnes apparaissent
     ``` 
         Planning-Generator/
         ├── algo_feature/
-        │   ├── conflict_function.py
+        │   ├── conflict_function.py 
         │   ├── create_groups_function.py
         │   ├── database_function.py
         │   ├── db_file_function.py
