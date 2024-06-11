@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedNiveau = document.getElementById('niveau').value;
         const groupSelect = document.getElementById('group_lv1');
         const selectedTeacher = document.getElementById('professeur').value;
-        groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
+        groupSelect.innerHTML = '<option value="">Select a Group</option>';
 
         let query = '/groups?';
         if (selectedLanguage) query += `language=${selectedLanguage}&`;
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         const groupSelect = document.getElementById('group_lv1');
-        groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
+        groupSelect.innerHTML = '<option value="">Select a Group</option>';
         allGroups.forEach(group => {
             const option = document.createElement('option');
             option.value = group;

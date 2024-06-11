@@ -49,4 +49,20 @@ $(document).ready(function () {
         var url = `/export_lv1?fileType=${fileType}`;
         window.location.href = url;
     });
+
+    // Populate dynamically the options for promotions
+    $.getJSON('/promotions', function (data) {
+        var promotionSelect = $('#promotionSelect');
+        promotionSelect.append($('<option>', { value: 'all', text: 'All Promotions' }));
+        $.each(data, function (index, value) {
+            promotionSelect.append($('<option>', { value: value, text: value }));
+        });
+    });
+
+    $('#exportLV2Button').click(function () {
+        var promotion = $('#promotionSelect').val();
+        var exportAll = (promotion === 'all');
+        var url = exportAll ? `/export_lv2?export_all=true` : `/export_lv2?niveau=${promotion}`;
+        window.location.href = url;
+    });
 });

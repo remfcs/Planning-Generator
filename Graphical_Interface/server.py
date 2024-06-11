@@ -24,12 +24,16 @@ path_wkhtmltopdf = os.path.join(project_dir, 'Export', 'wkhtmltopdf', 'bin', 'wk
 logging.debug(f"Using wkhtmltopdf path: {path_wkhtmltopdf}")
 config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
-UPLOAD_FOLDER = './data/uploads'
-UPLOAD_FOLDER_LEVEL = './data/uploads/input_level'
-UPLOAD_FOLDER_INFO = './data/uploads/input_info'
+# Définition des chemins relatifs
+parent_folder = os.path.join(os.getcwd(), '.')
+
+UPLOAD_FOLDER = os.path.join(parent_folder, 'data', 'uploads')
+UPLOAD_FOLDER_LEVEL = os.path.join(UPLOAD_FOLDER, 'input_level')
+UPLOAD_FOLDER_INFO = os.path.join(UPLOAD_FOLDER, 'input_info')
 TEACHERS_JSON_PATH = os.path.join(UPLOAD_FOLDER, 'teachers.json')
-PROMO_AVAILABILITIES_PATH= os.path.join(UPLOAD_FOLDER, 'promo_availabilities.json')
-DATABASE_PATH = './data/database.sqlite3'
+PROMO_AVAILABILITIES_PATH = os.path.join(UPLOAD_FOLDER, 'promo_availabilities.json')
+DATABASE_PATH = os.path.join(parent_folder, 'data', 'database.sqlite3')
+EXPORT_FOLDER = os.path.join(parent_folder, 'Student_Groups')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_INFO'] = UPLOAD_FOLDER_INFO
@@ -605,6 +609,7 @@ def export_all_groups():
     html_content = """
     <html>
     <head>
+        <meta charset="UTF-8">
         <style>
         body {
             font-family: Arial, sans-serif;
@@ -707,7 +712,7 @@ def export_all_groups():
     </html>
     """
 
-    output_path = "./all_groups.pdf"
+    output_path = os.path.join(EXPORT_FOLDER, 'all_groups.pdf')
     absolute_output_path = os.path.abspath(output_path)
 
     pdfkit.from_string(html_content, output_path, configuration=config)
@@ -1071,7 +1076,7 @@ def generate_group_pdf(group_id):
     </html>
     """
 
-    output_path = f"./group_{group_id}.pdf"
+    output_path = os.path.join(EXPORT_FOLDER, f'group_{group_id}.pdf')
     absolute_output_path = os.path.abspath(output_path)
 
     pdfkit.from_string(html_content, output_path, configuration=config)
@@ -1299,7 +1304,7 @@ def export_lv1():
     df = pd.DataFrame(students_data, columns=['Year', 'Student name', 'Student firstname', 'Promotion', 'LV1_GROUP'])
 
     # Obtenez l'année en cours et l'année suivante
-    current_year = int(df['Year'][1])
+    current_year = int(df['Year'][0])
     next_year = current_year + 1
     
     # Tronquez l'année pour n'afficher que les deux derniers chiffres
@@ -1322,14 +1327,121 @@ def export_lv1():
     
     # Créez le nom du fichier
     filename = f"MMANGLLA01_{current_year}_{next_year}.xlsx"
+    file_path = os.path.join(EXPORT_FOLDER, filename)
+    
+    # Enregistrez le fichier sur le disque
+    with open(file_path, 'wb') as f:
+        f.write(output.getbuffer())
     
     # Envoyez le fichier Excel en réponse
     return send_file(
-        output, 
+        file_path, 
         download_name=filename, 
         as_attachment=True, 
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
+
+@app.route('/promotions', methods=['GET'])
+def get_promotions():
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT DISTINCT SCHOOL_YEAR FROM Student")
+    promotions = [row[0] for row in cursor.fetchall()]
+
+    conn.close()
+    return jsonify(promotions)
+
+def create_lv2_excel(niveau):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    query = """
+    SELECT 
+        s.NAME, 
+        s.SURNAME, 
+        s.SCHOOL_YEAR, 
+        c.LANGUAGE,
+        c.ID_GROUP
+    FROM 
+        Student s
+    JOIN 
+        List_groups_students lgs ON s.email = lgs.ID_Student
+    JOIN 
+        Courses c ON lgs.ID_COURSE = c.ID_COURSE
+    WHERE 
+        s.SCHOOL_YEAR = ?
+    """
+    df = pd.read_sql_query(query, conn, params=(niveau,))
+
+    conn.close()
+
+    # Pivot the data to get one column per LV2
+    df_pivot = df.pivot_table(index=['NAME', 'SURNAME', 'SCHOOL_YEAR'], 
+                              columns='LANGUAGE', values='ID_GROUP', aggfunc='first').reset_index()
+
+    # Rename columns
+    df_pivot.columns.name = None
+    new_columns = ['Student name', 'Student firstname', 'Promotion'] + list(df_pivot.columns[3:])
+    df_pivot.columns = new_columns
+
+    # Filter out 'ANG' language
+    if 'ANG' in df_pivot.columns:
+        df_pivot.drop(columns=['ANG'], inplace=True)
+
+    # Create an Excel file in memory
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df_pivot.to_excel(writer, index=False, sheet_name='LV2')
+        
+        # Get the worksheet object
+        worksheet = writer.sheets['LV2']
+        
+        # Adjust column widths
+        for i, col in enumerate(df_pivot.columns):
+            max_length = max(df_pivot[col].astype(str).map(len).max(), len(col))
+            worksheet.set_column(i, i, int(max_length) + 2)
+
+    output.seek(0)
+    return output
+
+@app.route('/export_lv2', methods=['GET'])
+def export_lv2():
+    niveau = request.args.get('niveau')
+    export_all = request.args.get('export_all', 'false').lower() == 'true'
+
+    if export_all:
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT DISTINCT SCHOOL_YEAR FROM Student")
+        promotions = [row[0] for row in cursor.fetchall()]
+        conn.close()
+
+        for promo in promotions:
+            output = create_lv2_excel(promo)
+            file_name = f"LV2_{promo}.xlsx"
+            file_path = os.path.join(EXPORT_FOLDER, file_name)
+            with open(file_path, 'wb') as f:
+                f.write(output.getbuffer())
+
+        return jsonify({"message": f"All LV2 files have been exported to {EXPORT_FOLDER}"})
+    else:
+        if not niveau:
+            return "Niveau is required", 400
+
+        output = create_lv2_excel(niveau)
+        file_name = f"LV2_{niveau}.xlsx"
+        file_path = os.path.join(EXPORT_FOLDER, file_name)
+        with open(file_path, 'wb') as f:
+            f.write(output.getbuffer())
+        return send_file(
+            file_path, 
+            download_name=file_name, 
+            as_attachment=True, 
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+    
 
 if __name__ == '__main__':
     def open_browser():
