@@ -163,13 +163,22 @@ def exchange_students(conflicts_data, db_path):
         conflicts_data (list): List of tuples containing course IDs and their number of conflicts.
         db_path (str): Path to the SQLite database.
     """
-    for i in range(len(conflicts_data)):
-        current_course_id, current_conflicts = conflicts_data[i]
-        students_in_conflict = get_students_in_conflict(current_course_id, db_path)
+    conflicts_data_dict = {conflict[0]: conflict[1] for conflict in conflicts_data}
 
+    for i in range(len(conflicts_data)):
+        
+        promo_in_conflict = conflicts_data[i][0].split("_")[1]
+        language = conflicts_data[i][0].split("_")[2]
+        group_in_conflict = conflicts_data[i][0].split("_")[0]
+        number_group = int(group_in_conflict[1])
+        current_course_id, current_conflicts = conflicts_data[i]
+        current_conflicts = len(get_students_in_conflict(current_course_id, db_path))
+        students_in_conflict = get_students_in_conflict(current_course_id, db_path)
+        prev_course_id = "G"+str(number_group-1)+"_"+promo_in_conflict+"_"+language
+        next_course_id = "G"+str(number_group+1)+"_"+promo_in_conflict+"_"+language
         # Try to resolve conflicts with the previous group if possible
-        if i > 0:
-            prev_course_id, prev_conflicts = conflicts_data[i - 1]
+        if prev_course_id in conflicts_data_dict:
+            prev_conflicts = conflicts_data_dict[prev_course_id]
             prev_students_in_conflict = get_students_in_conflict(prev_course_id, db_path)
             for student_id in students_in_conflict[:]:
                 if len(prev_students_in_conflict) != 0 and current_conflicts != 0:
@@ -180,13 +189,11 @@ def exchange_students(conflicts_data, db_path):
                     prev_conflicts -= 1
                     prev_students_in_conflict.remove(prev_student_id)
                     students_in_conflict.remove(student_id)
-            conflicts_data[i - 1] = (prev_course_id, prev_conflicts)
-
         conflicts_data[i] = (current_course_id, current_conflicts)
 
         # Try to resolve conflicts with the next group if possible
-        if i < len(conflicts_data) - 2:
-            next_course_id, next_conflicts = conflicts_data[i + 1]
+        if next_course_id in conflicts_data_dict:
+            next_conflicts = conflicts_data_dict[next_course_id]
             next_students_in_conflict = get_students_in_conflict(next_course_id, db_path)
             for student_id in students_in_conflict[:]:
                 if len(next_students_in_conflict) != 0 and current_conflicts != 0:
@@ -197,8 +204,6 @@ def exchange_students(conflicts_data, db_path):
                     next_conflicts -= 1
                     next_students_in_conflict.remove(next_student_id)
                     students_in_conflict.remove(student_id)
-            conflicts_data[i + 1] = (next_course_id, next_conflicts)
-
         conflicts_data[i] = (current_course_id, current_conflicts)
 
 def get_available_students(course_id, slot_current_course, db_path):
@@ -267,42 +272,47 @@ def exchange_students_with_different_schedule(conflicts_data, db_path):
         conflicts_data (list): List of tuples containing course IDs and their number of conflicts.
         db_path (str): Path to the SQLite database.
     """
+    conflicts_data_dict = {conflict[0]: conflict[1] for conflict in conflicts_data}
     for i in range(len(conflicts_data)):
+        promo_in_conflict = conflicts_data[i][0].split("_")[1]
+        language = conflicts_data[i][0].split("_")[2]
+        group_in_conflict = conflicts_data[i][0].split("_")[0]
+        number_group = int(group_in_conflict[1])
         current_course_id, current_conflicts = conflicts_data[i]
-        students_in_conflict = get_students_in_conflict(current_course_id, db_path)
         slot_current_course = get_slot_course(db_path, current_course_id)
-        
-        # Try to resolve conflicts with the previous group if possible
-        if i > 2:
-            prev_course_id, prev_conflicts = conflicts_data[i - 1]
-            available_students = get_available_students(prev_course_id, slot_current_course, db_path)
-            for student_id in students_in_conflict[:]:
-                if len(available_students) != 0 and current_conflicts != 0:
-                    available_student_id = random.choice(available_students)
-                    update_student_group(available_student_id, current_course_id, db_path)
-                    update_student_group(student_id, prev_course_id, db_path)
-                    current_conflicts -= 1
-                    available_students.remove(available_student_id)
-                    students_in_conflict.remove(student_id)
-            conflicts_data[i - 1] = (prev_course_id, prev_conflicts)
+        j=1
+        while len(get_students_in_conflict(current_course_id, db_path)) != 0 and j < 5:
+            prev_course_id = "G"+str(number_group-j)+"_"+promo_in_conflict+"_"+language
+            next_course_id = "G"+str(number_group+j)+"_"+promo_in_conflict+"_"+language
+            students_in_conflict = get_students_in_conflict(current_course_id, db_path)
+            #print(prev_course_id , current_course_id, next_course_id)
+            # Try to resolve conflicts with the previous group if possible
+            if prev_course_id in conflicts_data_dict:
+                available_students = get_available_students(prev_course_id, slot_current_course, db_path)
+                for student_id in students_in_conflict[:]:
+                    if len(available_students) != 0 and current_conflicts != 0:
+                        available_student_id = random.choice(available_students)
+                        update_student_group(available_student_id, current_course_id, db_path)
+                        update_student_group(student_id, prev_course_id, db_path)
+                        current_conflicts -= 1
+                        available_students.remove(available_student_id)
+                        students_in_conflict.remove(student_id)
+            conflicts_data[i] = (current_course_id, current_conflicts)
 
-        conflicts_data[i] = (current_course_id, current_conflicts)
-
-        # Try to resolve conflicts with the next group if possible
-        if i < len(conflicts_data) - 2:
-            next_course_id, next_conflicts = conflicts_data[i + 1]
-            available_students = get_available_students(next_course_id, slot_current_course, db_path)
-            for student_id in students_in_conflict[:]:
-                if len(available_students) != 0 and current_conflicts != 0:
-                    available_student_id = random.choice(available_students)
-                    update_student_group(available_student_id, current_course_id, db_path)
-                    update_student_group(student_id, next_course_id, db_path)
-                    current_conflicts -= 1
-                    available_students.remove(available_student_id)
-                    students_in_conflict.remove(student_id)
-            conflicts_data[i + 1] = (next_course_id, next_conflicts)
-
-        conflicts_data[i] = (current_course_id, current_conflicts)
+            # Try to resolve conflicts with the next group if possible
+            if next_course_id in conflicts_data_dict:
+                available_students = get_available_students(next_course_id, slot_current_course, db_path)
+                for student_id in students_in_conflict[:]:
+                    if len(available_students) != 0 and current_conflicts != 0:
+                        available_student_id = random.choice(available_students)
+                        update_student_group(available_student_id, current_course_id, db_path)
+                        update_student_group(student_id, next_course_id, db_path)
+                        current_conflicts -= 1
+                        available_students.remove(available_student_id)
+                        students_in_conflict.remove(student_id)
+            conflicts_data[i] = (current_course_id, current_conflicts)
+            j+=1
+            
 
 def resolve_conflict(Data):
     """

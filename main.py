@@ -93,6 +93,6 @@ create_groups_function.make_groups(Data, promo_pair, max_by_class)
 
 create_groups_function.make_association(Data, promo_pair)
 
-#conflict_function.resolve_conflict(Data)
+conflict_function.resolve_conflict(Data)
 
 database_function.set_group_name(Data)
