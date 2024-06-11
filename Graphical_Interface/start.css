@@ -172,6 +172,21 @@ h1, h2 {
     text-align: center;
 }
 
+.loading-overlay {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 9999; /* Ensure it sits on top */
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5em;
+}
+
 .close-btn {
     position: absolute;
     top: 10px;

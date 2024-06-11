@@ -1,6 +1,6 @@
 import pdfkit # type: ignore
 import logging
-from flask import Flask, jsonify, request, send_from_directory, send_file, make_response
+from flask import Flask, jsonify, request, send_from_directory, send_file, make_response, redirect, url_for
 import os
 import webbrowser
 import threading
@@ -44,16 +44,20 @@ os.makedirs(UPLOAD_FOLDER_INFO, exist_ok=True)
 def restore_backup():
     try:
         # Exécuter le script restore_backup.py
-        result = subprocess.run(['python', '../back_up/restore_backup.py'], capture_output=True, text=True)
+        result = subprocess.run(['python', './back_up/restore_backup.py'], capture_output=True, text=True)
 
         if result.returncode == 0:
+            redirect(url_for('/'))
             return jsonify({'message': 'Backup restored successfully!'})
         else:
-            return jsonify({'message': 'Failed to restore backup.', 'error': result.stderr}), 500
+            # Retourner le message d'erreur en cas d'échec
+            return jsonify({'message': 'Failed to restore backup.', 'error': result.stderr.strip()}), 500
 
     except Exception as e:
+        # Retourner l'exception en cas d'erreur inattendue
         return jsonify({'message': 'An error occurred.', 'error': str(e)}), 500
-    
+
+
 @app.route('/backup')
 def backup():
     return send_from_directory('.', 'last_backup/last_backup.html')

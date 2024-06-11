@@ -87,6 +87,13 @@ function uploadAllFiles(event) {
     formData.append('availabilityPromo', availabilityJSON);
     console.log(availabilityJSON)
 
+    document.getElementById('loading-overlay').style.display = 'flex';
+
+    setTimeout(function() {
+        document.getElementById('loading-overlay').style.display = 'none';
+        window.location.href = '/';  // Redirect to the desired route after 5 seconds
+    }, 20000);
+
     console.log('FormData avant l\'envoi:');
     formData.forEach((value, key) => {
         console.log(key, value.name);
