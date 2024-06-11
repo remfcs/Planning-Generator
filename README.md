@@ -52,7 +52,7 @@ Ces 4 colonnes apparaissent
 
 
 ## File Structure
-    ```css
+    ```
         Planning-Generator/
         ├── algo_feature/
         │   ├── conflict_function.py
@@ -79,7 +79,6 @@ Ces 4 colonnes apparaissent
         ├── start_app.bat
         ├── README.md
         └── [Other folders]
-
     ```
 
 ## Testing
