@@ -56,7 +56,6 @@
                     <option value="2AFT">2AFT</option>
                     <option value="2ABEE">2ABEE</option>
                     <option value="3AFG">3AFG</option>
-                    <option value="3ABEE">3ABEE</option>
                 </select>
                 <input type="email" id="student-email" class="form-control" placeholder="Email" required>
                 <select id="english-course" class="form-control" required>
@@ -106,17 +105,30 @@
         <!-- Change Student Class Form -->
         <div class="content" id="change-student-class-form" style="display:none;">
             <h2>Change a student of class</h2>
-            <form id="change-student-class-form-inner">
-                <input type="text" id="change-student-name" class="form-control" placeholder="Name" required>
-                <select id="current-class" class="form-control" required>
-                    <option value="">Current Class</option>
-                </select>
-                <select id="new-class" class="form-control" required>
-                    <option value="">New Class</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Change class</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
-            </form>
+            <div>
+                <input type="text" id="student-change-search" placeholder="Type the name of the student you want to change the class...">
+            </div>
+            <select id="mySelect">
+            </select>
+            <div id="student-details-change" style="display:none;">
+                <h3>You want to change the class of this student:</h3>
+                <p>Name: <span id="student-name-change">None</span></p>
+                <p>First name: <span id="student-firstname-change">None</span></p>
+                <p>Promo: <span id="student-promo-change">None</span></p>
+                <p>Email: <span id="student-email-change">None</span></p>
+                <p>English course: <span id="student-english-change">None</span></p>
+                <p>LV2 course: <span id="student-lv2-change">None</span></p>
+            </div>
+            <div id="student-class-change" style="display:none;">
+                <h3>Quelle classe voulez-vous changer ?</h3>
+                <input type="radio" id="english-course-student" name="English course">
+                <label for="english-course">English course</label><br>
+                <input type="radio" id="lv2-course-student" name="LV2 course">
+                <label for="lv2-course">LV2 course</label>
+            </div> 
+            <select id="mySelect-class" style="display:none;">
+            </select>
+            <div><button id="change-student-button" disabled>Change the class</button></div>
         </div>
 
         <!-- Change Teacher Time Slot Form -->
@@ -135,7 +147,7 @@
             </form>
         </div>
     </div>
-    <script src="/Modify student/modify-student.js"></script>
+    <script src="/Modify_student/modify-student.js"></script>
     <script src="../sidebar/script2.js"></script>
 </body>
 

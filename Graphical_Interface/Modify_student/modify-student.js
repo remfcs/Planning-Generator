@@ -50,18 +50,19 @@ document.addEventListener('DOMContentLoaded', function () {
         if (promo) {
             fetch(`/groups/${promo}/ANG`)
                 .then(response => response.json())
-                .then(courses => {
+                .then(groups => {
                     // Clear existing options
                     englishCourseSelect.innerHTML = '<option value="">Select English Course</option>';
                     
                     // Add new options
-                    courses.forEach(course => {
-                        const className = course.course_id;
-                        const studentCount = course.student_count;
+                    groups.forEach(group => {
+                        const groupName = group.ID_GROUP;
+                        const studentCount = group.student_count;
+                        const courseName = group.ID_COURSE;
                         // Create and append option element
                         const option = document.createElement('option');
-                        option.value = className;
-                        option.textContent = `${className} (${studentCount} students)`;
+                        option.value = courseName;
+                        option.textContent = `${groupName} (${studentCount} students)`;
                         englishCourseSelect.appendChild(option);
                     });
                 })
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 studentLv2.style.display = 'block';
                 lv2Course.style.display = 'block';
                 addSecondLanguage.style.display = 'none';
-            } else if (promoValue === '1ABEE' || promoValue === '2ABEE' || promoValue === '3ABEE') {
+            } else if (promoValue === '1ABEE' || promoValue === '2ABEE') {
                 secondLanguageSection.style.display = 'none';
                 studentLv2.value = "";
                 lv2Course.value = "";
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (lv2 === 'Spanish') { lv2 = 'ESP'; }
         if (lv2 === 'German') { lv2 = 'ALL'; }
         if (lv2 === 'Chinese') { lv2 = 'CHI'; }
-        let promo = document.getElementById('student-promo').value.substring(0, 2);
+        let promo = document.getElementById('student-promo').value;
         const english_course = document.getElementById('english-course').value;
     
         fetch(`/timeslot?course=${english_course}`)
@@ -116,30 +117,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Error:', data.error);
                     return;
                 }
-                const timeslot_last = data.timeslot[data.timeslot.length - 1];
+                const timeslot = data.timeslot;
     
                 if (lv2 && promo) {
                     fetch(`/groups/${promo}/${lv2}`)
                         .then(response => response.json())
-                        .then(courses => {
+                        .then(groupsLV2 => {
                             lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
-                            courses.forEach(course => {
-                                const className = course.course_id;
-                                const studentCount = course.student_count;
-    
-                                fetch(`/timeslot?course=${className}`)
-                                    .then(response => response.json())
-                                    .then(timeslot2Data => {
-                                        const timeslot2_last = timeslot2Data.timeslot[timeslot2Data.timeslot.length - 1];
-                                        const option = document.createElement('option');
-                                        option.value = className;
-                                        option.textContent = `${className} (${studentCount} students)`;
-                                        if (timeslot_last === timeslot2_last) {
-                                            option.disabled = true;
-                                        }
-                                        lv2CourseSelect.appendChild(option);
-                                    });
-                            });
+                            groupsLV2.forEach(groupLV2 => {
+                                const groupName = groupLV2.ID_GROUP;
+                                const studentCount = groupLV2.student_count;
+                                const timeslot2 = groupLV2.ID_AVAILABILITY;
+                                const courseName = groupLV2.ID_COURSE;
+                                const option = document.createElement('option');
+                                option.value = courseName;
+                                option.textContent = `${groupName} (${studentCount} students)`;
+                                if (timeslot === timeslot2) {
+                                    option.disabled = true;
+                                }
+                                lv2CourseSelect.appendChild(option);
+                                });
                         });
                 } else {
                     lv2CourseSelect.innerHTML = '<option value="">Select LV2 Course</option>';
@@ -182,9 +179,13 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(data),
         })
-        .then(response => response.json())
+        .then(response =>{
+            console.log("Response status: ", response.status);
+            return response.json();
+        })
         .then(data => {
-            if (data.status === "success") {
+            console.log(data);
+            if (data.status === 'success') {
                 const data_english = {
                     english: document.getElementById('english-course').value,
                     email: document.getElementById('student-email').value

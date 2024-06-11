@@ -1,4 +1,4 @@
-# Planning Taylor
+# Planning Tailor
 
 ## Description
 In this case, we are examining a project initiated to enhance the efficiency of language section planning, specifically designed for Mary Stephenson, the responsible party for the language section. This initiative roots from the critical need to address the significant time and effort expended in the creation and updating of LV1/LV2 planning, which Mary found unsatisfactory due to its reliance on manual processes such as the use of post-it notes or Excel spreadsheets. These methods, while traditional, are prone to errors, time-consuming, and lack the flexibility required for efficient schedule management.
@@ -31,13 +31,25 @@ To install this project & the dependencies, follow these steps:
 
     Need to install Pyhton : [Python](https://www.python.org/downloads/)
 
+4. Create the launch button:
+    - Locate the file:
+        Open File Explorer and navigate to the file "Planning_Taylor.bat" to create a shortcut.
+    
+    - Create the shortcut:
+        Right-click on the file.
+        In the context menu, select Send to and then Desktop (create shortcut).
+    
+    This will create a shortcut on the desktop pointing to the selected file.
+
+
 ## Usage 
 
-1.  Start the application:
-    ```bash
-    python planning-generator/Graphical_Interfaces/server.py
-    ```
-2. Open your browser and navigate to `http://localhost:5000` or `http://127.0.0.1:5000`
+1.  Start the application : click on 'Planning_Taylor'
+
+2. Open your browser and navigate to `http://localhost:5000` or `http://127.0.0.1:5000` if it does not open itself .
+
+3. To close the application : Close the web page and the powershell.
+
 
 ## Features
 
@@ -88,8 +100,32 @@ Ces 4 colonnes apparaissent
 
 ## Testing
 
-- 
-- 
-- 
-- 
-
+- Input Validation Tests
+    * Empty Input Test: Verify that the algorithm handles cases where the list of students is empty.
+    * Invalid Student Data Test: Check how the algorithm manages entries with missing or incorrect student data (e.g., missing names, non-numeric values where numbers are expected).
+    * Invalid Class Number Test: Ensure the algorithm correctly handles invalid numbers of classes (e.g., zero or negative numbers).
+- Basic Functionality Tests
+    * Even Distribution Test: Provide a list of students and a number of classes that divides evenly. Verify that students are distributed evenly among classes.
+    * Uneven Distribution Test: Provide a list of students and a number of classes that do not divide evenly. Ensure the algorithm handles the remainder correctly, distributing students as evenly as possible.
+    * Single Class Test: Test the scenario where there is only one class available. Verify all students are assigned to that one class.
+- Edge Cases Tests
+    * More Classes Than Students Test: Ensure the algorithm handles scenarios where there are more classes than students, potentially resulting in some empty classes.
+    * Exact Match Test: Provide a number of students that is an exact multiple of the number of classes. Verify that each class has the exact same number of students.
+- Performance Tests
+    * Large Input Test: Assess the algorithm's performance and correctness with a large list of students and a reasonable number of classes.
+    * Scalability Test: Test how the algorithm performs as the number of students and classes increases. Verify that it scales efficiently and maintains performance.
+- Functional Behavior Tests
+    * Group Size Consistency Test: Ensure that the difference in size between the largest and smallest groups is no more than one student.
+    * Class Capacity Limit Test: If classes have a maximum capacity, verify that no class exceeds this limit.
+- Integration Tests
+    * Database Integration Test: If the algorithm integrates with a database, verify that data is correctly retrieved from and stored in the database.
+    * User Interface Test: Ensure that the algorithm correctly integrates with any user interface, providing expected outputs based on user inputs.
+- Boundary Condition Tests
+    * Minimum Input Test: Verify behavior with the minimum possible number of students and classes (e.g., 1 student and 1 class).
+    * Maximum Input Test: Test the algorithm with the maximum expected input size to ensure it handles boundary conditions appropriately.
+- Randomization and Fairness Tests
+    * Random Distribution Test: If the algorithm includes a random element in distributing students, verify that repeated runs produce different yet fair distributions.
+    * Fairness Test: Ensure no systemic bias is introduced in group formation if certain attributes of students (e.g., skill level, gender) are considered.
+- Error Handling Tests
+    * Error Message Test: Verify that appropriate and informative error messages are returned for invalid inputs or exceptional situations.
+    * Recovery Test: Test the algorithm’s ability to recover from errors or unexpected situations without crashing.

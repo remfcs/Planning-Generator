@@ -293,14 +293,26 @@ def csv_into_dataframe(file_path, db_column_mapping):
     and maps the columns according to the provided mapping.
     Args:
         file_path: The path of the Student_info.csv file.
-        db_column_mapping: The names of the columns matching the database.
+        db_column_mapping: A dictionary mapping the CSV column names to database column names.
     Returns:
-        dataframe: A DataFrame containing the data from the CSV.
-    """    
-    df = pd.read_csv(file_path, encoding='utf-8-sig')
+        dataframe: A DataFrame containing the data from the CSV file.
+    """
+    header_row_index=None
+    # Read the entire file
+    df = pd.read_csv(file_path, encoding='utf-8-sig', header=None)
+    
+    # Find the first row that contains all the columns we're interested in
+    for i, row in df.iterrows():
+        if set(db_column_mapping.keys()).issubset(set(row)):
+            header_row_index = i
+            break
+
+    # Read the file again, this time starting from the header row
+    df = pd.read_csv(file_path, encoding='utf-8-sig', header=header_row_index) # type: ignore
     df = df.applymap(clean_text)    # type: ignore
     df.rename(columns=db_column_mapping, inplace=True)
     df = df[list(db_column_mapping.values())]
+    
     return df
 
 def json_into_dataframe(file_path, db_column_mapping):
@@ -328,29 +340,58 @@ def xlsx_into_dataframe(file_path, db_column_mapping):
     and maps the columns according to the provided mapping.
     Args:
         file_path: The path of the Student_info.xlsx file.
-        db_column_mapping: The names of the columns matching the database.
+        db_column_mapping: A dictionary mapping the xlsx column names to database column names.
     Returns:
-        dataframe: A DataFrame containing the data from the JSon.
+        dataframe: A DataFrame containing the data from the Excel file.
     """
-    df = pd.read_excel(file_path)
+    # Read the entire file
+    df = pd.read_excel(file_path, header=None)
+    
+    header_row_index = 0 
+    
+    # Find the first row that contains all the columns we're interested in
+    for i, row in df.iterrows():
+        if set(db_column_mapping.keys()).issubset(set(row)):
+            header_row_index = i
+            break
+    
+    # Read the file again, this time starting from the header row
+    df = pd.read_excel(file_path, header=header_row_index) # type: ignore
+    
+    # Rename the columns according to the provided mapping
     df.rename(columns=db_column_mapping, inplace=True)
+    
+    # Keep only the columns specified in the mapping
     df = df[list(db_column_mapping.values())]
+    
     return df
 
 
 def update_lv2_from_csv(df, file_path):
     """
-    This function read the sondage file to update the second language of the students,
-    parse it and update the data of the student in the dataframe
+    This function reads the sondage file to update the second language of the students,
+    parses it and updates the data of the students in the dataframe.
     Args:
-        df that contains all the students data
-        file_path: path of the sondage file
-    """    
-    csv_reader = pd.read_csv(file_path, encoding='utf-8-sig')
-    df = df.applymap(clean_text)
+        df: DataFrame that contains all the students' data.
+        file_path: Path of the sondage file.
+    """
+    # Read the entire file
+    csv_reader = pd.read_csv(file_path, encoding='utf-8-sig', header=None)
+    
+    # Find the first row that contains the expected column names
+    header_row_index = None
+    expected_columns = {'Nom', 'Prénom', 'Langues'}
+    for i, row in csv_reader.iterrows():
+        if expected_columns.issubset(set(row)):
+            header_row_index = i
+            break
+        
+    # Read the file again, this time starting from the header row
+    csv_reader = pd.read_csv(file_path, encoding='utf-8-sig', header=header_row_index) # type: ignore
+    csv_reader = csv_reader.applymap(clean_text) # type: ignore
     for index, row in csv_reader.iterrows():
-        if ((df['NAME'] == row['Nom']) & (df['FIRSTNAME'] == row['Prénom'])).any():
-                df.loc[(df['NAME'] == row['Nom']) & (df['FIRSTNAME'] == row['Prénom']), 'LV2'] = row['Langues']
+        df.loc[(df['NAME'] == row['Nom']) & (df['FIRSTNAME'] == row['Prénom']), 'LV2'] = row['Langues']
+
                 
 def update_lv2_from_json(df, file_path):
     """
@@ -368,16 +409,29 @@ def update_lv2_from_json(df, file_path):
 
 def update_lv2_from_xlsx(df, file_path):
     """
-    This function read the sondage file to update the second language of the students,
-    parse it and update the data of the student in the dataframe
+    This function reads the sondage file to update the second language of the students,
+    parses it and updates the data of the students in the dataframe.
     Args:
-        df that contains all the students data
-        file_path: path of the sondage file
-    """    
-    xls_df = pd.read_excel(file_path)
+        df: DataFrame that contains all the students' data.
+        file_path: Path of the sondage file.
+    """
+    # Read the entire file
+    xls_df = pd.read_excel(file_path, header=None)
+    
+    # Find the first row that contains the expected column names
+    header_row_index = None
+    expected_columns = {'Nom', 'Prénom', 'Langues'}
+    for i, row in xls_df.iterrows():
+        if expected_columns.issubset(set(row)):
+            header_row_index = i
+            break
+    
+    # Read the file again, this time starting from the header row
+    xls_df = pd.read_excel(file_path, header=header_row_index) # type: ignore
     for index, row in xls_df.iterrows():
-        if ((df['NAME'] == row['Nom']) & (df['FIRSTNAME'] == row['Prénom'])).any():
-                df.loc[(df['NAME'] == row['Nom']) & (df['FIRSTNAME'] == row['Prénom']), 'LV2'] = row['Langues']
+        df.loc[(df['NAME'] == row['Nom']) & (df['FIRSTNAME'] == row['Prénom']), 'LV2'] = row['Langues']
+        
+        
                 
 def update_student_grade(grade_list, students_info, LV):
     """
