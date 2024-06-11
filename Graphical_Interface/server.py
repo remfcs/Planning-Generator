@@ -1209,6 +1209,67 @@ def get_professor_groups(professor_name):
 
     return groups
 
+@app.route('/export_lv1', methods=['GET'])
+def export_lv1():
+    # Connectez-vous à la base de données
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    
+    # Nouvelle requête SQL pour récupérer les données des étudiants et les groupes LV1
+    query = """
+    SELECT 
+        strftime('%Y', 'now') AS Year,
+        s.Name AS "Student name",
+        s.Surname AS "Student firstname",
+        s.School_year AS Promotion,
+        c.id_group AS LV1_GROUP
+    FROM Student s
+    JOIN list_groups_students lgs ON s.email = lgs.id_student
+    JOIN courses c ON lgs.id_course = c.id_course
+    WHERE c.id_course LIKE '%ANG'
+    """
+    cursor.execute(query)
+    students_data = cursor.fetchall()
+    
+    # Fermez la connexion à la base de données
+    conn.close()
+    
+    # Créez un DataFrame à partir des données récupérées
+    df = pd.DataFrame(students_data, columns=['Year', 'Student name', 'Student firstname', 'Promotion', 'LV1_GROUP'])
+
+    # Obtenez l'année en cours et l'année suivante
+    current_year = int(df['Year'][1])
+    next_year = current_year + 1
+    
+    # Tronquez l'année pour n'afficher que les deux derniers chiffres
+    df['Year'] = df['Year'].apply(lambda x: x[-2:])
+    
+    # Créez un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='LV1')
+        
+        # Obtenez l'objet de la feuille de calcul
+        worksheet = writer.sheets['LV1']
+        
+        # Ajustez les largeurs des colonnes
+        for i, col in enumerate(df.columns):
+            max_length = max(df[col].astype(str).map(len).max(), len(col))
+            worksheet.set_column(i, i, int(max_length) + 2)
+
+    output.seek(0)
+    
+    # Créez le nom du fichier
+    filename = f"MMANGLLA01_{current_year}_{next_year}.xlsx"
+    
+    # Envoyez le fichier Excel en réponse
+    return send_file(
+        output, 
+        download_name=filename, 
+        as_attachment=True, 
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
 if __name__ == '__main__':
     def open_browser():
         webbrowser.open_new('http://127.0.0.1:5000')

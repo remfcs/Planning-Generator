@@ -45,7 +45,7 @@ $(document).ready(function () {
     });
 
     $('#exportLV1Button').click(function () {
-        var fileType = $('#fileTypeLV1').val();
+        var fileType = 'xlsx'; // Change to 'xlsx'
         var url = `/export_lv1?fileType=${fileType}`;
         window.location.href = url;
     });
