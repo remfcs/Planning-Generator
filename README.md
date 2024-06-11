@@ -88,5 +88,3 @@ Ces 4 colonnes apparaissent
 - 
 - 
 
-
-## Contributor
