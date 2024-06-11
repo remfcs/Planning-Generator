@@ -52,7 +52,7 @@ Ces 4 colonnes apparaissent
 
 
 ## File Structure
-    ```scss
+    ``` scss
         Planning-Generator/
         ├── [algo_feature/](algo_feature/)
         │   ├── conflict_function.py
