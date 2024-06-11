@@ -208,20 +208,23 @@ def make_groups(Data, promo_pair, max_by_class):
                 groups = make_group(students2, value)  # Create groups based on the number of classes
                 language = "_" + key[:3]  # Extract language abbreviation
                 name = ""
-                if "-débutant (jamais étudié)" in key:
-                    name = "_D"  # Append '_D' for beginner groups
-                if "COMPLEMENTAIRE" in key:
-                    name = "_C"  # Append '_C' for complementary groups
-                i = 1
-                result_str = ', '.join(promo_association)  # Create a string representation of the promo list
-                #print(groups)
-                for group in groups:  # type: ignore
-                    group_name = 'G' + str(i) + "_{" + result_str + "}" + language + name  # Create a unique group name
-                    for student in group:
-                        cursor = conn.cursor()
-                        cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?, ?);", (group_name, student))
-                        conn.commit()  # Insert each student into the group and commit the changes
-                    i += 1  # Increment the group counter
+                if "COMPLEMENTAIRE" in key or "DISPENSE" in key:
+                    pass
+                else :
+                    if "-débutant (jamais étudié)" in key:
+                        name = "_D"  # Append '_D' for beginner groups
+                    if "COMPLEMENTAIRE" in key:
+                        name = "_C"  # Append '_C' for complementary groups
+                    i = 1
+                    result_str = ', '.join(promo_association)  # Create a string representation of the promo list
+                    #print(groups)
+                    for group in groups:  # type: ignore
+                        group_name = 'G' + str(i) + "_{" + result_str + "}" + language + name  # Create a unique group name
+                        for student in group:
+                            cursor = conn.cursor()
+                            cursor.execute("INSERT INTO List_Groups_Students(ID_COURSE, ID_STUDENT) VALUES(?, ?);", (group_name, student))
+                            conn.commit()  # Insert each student into the group and commit the changes
+                        i += 1  # Increment the group counter
 
     conn.close()  # Close the database connection
     return
@@ -254,7 +257,7 @@ def make_association(Data, promo_pair):
                 insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
                 insertions.append(insertion)  # Prepare insertions of teacher and group associations
                 cursor = conn.cursor()
-                print(teacher_availabilities[i][0],teacher_availabilities[i][1])
+                #print(teacher_availabilities[i][0],teacher_availabilities[i][1])
                 cursor.execute("""
                                 UPDATE Availability_Teachers SET ACTIVE = 1
                                 WHERE ID_Availability LIKE ? AND ID_Teacher LIKE ?;
