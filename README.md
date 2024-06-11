@@ -13,7 +13,6 @@ The genesis of the project came directly from the identified need by Mary Stephe
 3. [Features](#features)
 4. [File Structure](#file-structure)
 5. [Testing](#testing)
-6. [Contributor](#contributing)
 
 ## Installation
 To install this project & the dependencies, follow these steps:

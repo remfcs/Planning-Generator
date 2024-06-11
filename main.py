@@ -8,7 +8,6 @@ import os
 
 """
     À faire :
-    # TODO Documenter toutes les fonctions
     # TODO faire le doc de la maintenance
 """
 
@@ -23,13 +22,12 @@ Data = 'data/database.sqlite3'
 #depot_note_folder ='./data/input_notes'
 #depot_info_folder = './data/input_info'
 #depot_note_folder ='./data/input_notes'
+
 depot_info_folder = './data/xlsx/input_info'
 depot_note_folder ='./data/xlsx/input_notes'
 
 max_by_class = 19
-
 DAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') 
-
 nb_slot = 6
 promo_pair = {
     'ANGLAIS': [['1AFT', '1AFG', '1ABEE'],['2AFT', '2AFG', '2ABEE'], ['3AFG']],
