@@ -224,6 +224,7 @@ def get_professors():
 def api_professors():
     language = request.args.get('language')
     group = request.args.get('group')
+    promo = request.args.get('promo')
 
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
@@ -243,6 +244,11 @@ def api_professors():
     if group:
         query += " AND T.ID_Teacher IN (SELECT ID_Teacher FROM Courses WHERE ID_COURSE = ?)"
         params.append(group)
+    if promo:
+        promo_parts = promo.split(',')
+        promo_conditions = " OR ".join(["PROMO LIKE ?"] * len(promo_parts))
+        query += f" AND T.ID_Teacher IN (SELECT ID_Teacher FROM Courses WHERE {promo_conditions})"
+        params.extend([f"%{part.strip()}%" for part in promo_parts])
 
     query += " GROUP BY T.name, T.surname, T.mail, T.Subject"
 
@@ -252,7 +258,7 @@ def api_professors():
 
     professor_list = []
     for professor in professors:
-                professor_list.append({
+        professor_list.append({
             "name": professor[0],
             "surname": professor[1],
             "email": professor[2],
