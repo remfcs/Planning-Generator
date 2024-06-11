@@ -169,7 +169,6 @@ def exchange_students(conflicts_data, db_path):
 
         # Try to resolve conflicts with the previous group if possible
         if i > 0:
-# TODO 
             prev_course_id, prev_conflicts = conflicts_data[i - 1]
             prev_students_in_conflict = get_students_in_conflict(prev_course_id, db_path)
             for student_id in students_in_conflict[:]:
@@ -187,7 +186,6 @@ def exchange_students(conflicts_data, db_path):
 
         # Try to resolve conflicts with the next group if possible
         if i < len(conflicts_data) - 2:
-# TODO 
             next_course_id, next_conflicts = conflicts_data[i + 1]
             next_students_in_conflict = get_students_in_conflict(next_course_id, db_path)
             for student_id in students_in_conflict[:]:
@@ -202,7 +200,6 @@ def exchange_students(conflicts_data, db_path):
             conflicts_data[i + 1] = (next_course_id, next_conflicts)
 
         conflicts_data[i] = (current_course_id, current_conflicts)
-
 
 def get_available_students(course_id, slot_current_course, db_path):
     """

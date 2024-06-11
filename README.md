@@ -77,23 +77,58 @@ Ces 4 colonnes apparaissent
         │   ├── database_function.py            Function to interact with the database
         │   ├── db_file_function.py             Function to insert value from the user in the database
         │   └── read_foolder_function.py        Function to create a dataframe with the file
+        │        
         ├── back_up/
-        │   ├── back_up.py
-        │   ├── Reset_db.py
-        │   └── restore_backup.py
-        ├── build/main
-        │   └── [Other files]
+        │   ├── back_up.py                      Function to create and manage the backup
+        │   ├── Reset_db.py                     Function to Reset the database (recreate the table)
+        │   └── restore_backup.py               Function to restore the backup database
+        │        
         ├── data/
+        │   ├── fake_data                       Folder for storing input files with information about the student
+        │   │   └── [Other files]
+        │   ├── PHX/                            Folder for storing output files with phx format
+        │   │   └── [Other files]        
+        │   ├── uploads/                        Folder for storing input files with information about the student from the user 
+        │   │   └── [Other files]        
+        │   ├── xlsx/                           Folder for storing test file
+        │   │   └── [Other files]        
+        │   ├── backup_database.sqlites3        Backup Database
+        │   └── database.sqlites3               Database
+        │        
+        ├── dist/                               Folder with all the dependency libraries 
+        │   └── [Other folders & files]         
+        │
+        ├── env/                                Folder with all the dependency libraries 
         │   └── [Other files]
-        ├── dist/
+        │
+        ├── Graphical_Interface/  
+        │   ├── Export/                         Folder with all the feature for the export part
+        │   │   ├── export.css
+        │   │   ├── Export.html
+        │   │   ├── export.js    
+        │   │   └── [Other files]        
+        │   ├── Home Page/                      Folder with all the feature for the home page part
+        │   │   └── [Other files]        
+        │   ├── Import/                         Folder with all the feature for the import part
+        │   │   └── [Other files]        
+        │   ├── last_backup/                    Folder with all the feature for the backup restoration part
+        │   │   └── [Other files]        
+        │   ├── Modify_student/                 Folder with all the feature for the student modification part
+        │   │   └── [Other files]        
+        │   ├── Restart schedule calculation/   Folder with all the feature for starting the schedule calculation part
+        │   │   └── [Other files]        
+        │   ├── sidebar/                        Folder with all the feature for the sidepart part
+        │   │   └── [Other files]        
+        │   ├── start/                          Folder with all the feature for the starting part
+        │   │   └── [Other files]           
+        │   │ 
+        │   ├── server.py                       File with all the command to start the server in local host automatically
+        │   ├── script.js                       File with all the command manage the home page 
         │   └── [Other files]
-        ├── env/
-        │   └── [Other files]
-        ├── Graphical_Interface/        
-        │   └── [Other files]
-        ├── main.py
-        ├── start_app.sh
-        ├── start_app.bat
+        │
+        ├── main.py                             File tor executing the script of creation of the groups
+        ├── start_app.sh                        File for starting the project on MacOs and Linux
+        ├── start_app.bat                       File for starting the project on Windows
         ├── README.md
         └── [Other folders]
     ```
@@ -114,9 +149,6 @@ Ces 4 colonnes apparaissent
 - Performance Tests
     * Large Input Test: Assess the algorithm's performance and correctness with a large list of students and a reasonable number of classes.
     * Scalability Test: Test how the algorithm performs as the number of students and classes increases. Verify that it scales efficiently and maintains performance.
-- Functional Behavior Tests
-    * Group Size Consistency Test: Ensure that the difference in size between the largest and smallest groups is no more than one student.
-    * Class Capacity Limit Test: If classes have a maximum capacity, verify that no class exceeds this limit.
 - Integration Tests
     * Database Integration Test: If the algorithm integrates with a database, verify that data is correctly retrieved from and stored in the database.
     * User Interface Test: Ensure that the algorithm correctly integrates with any user interface, providing expected outputs based on user inputs.
@@ -124,7 +156,7 @@ Ces 4 colonnes apparaissent
     * Minimum Input Test: Verify behavior with the minimum possible number of students and classes (e.g., 1 student and 1 class).
     * Maximum Input Test: Test the algorithm with the maximum expected input size to ensure it handles boundary conditions appropriately.
 - Randomization and Fairness Tests
-    * Random Distribution Test: If the algorithm includes a random element in distributing students, verify that repeated runs produce different yet fair distributions.
+    * Unrandom Distribution Test: If the algorithm includes a unrandom element in distributing students, verify that repeated runs produce exatly fair distributions.
     * Fairness Test: Ensure no systemic bias is introduced in group formation if certain attributes of students (e.g., skill level, gender) are considered.
 - Error Handling Tests
     * Error Message Test: Verify that appropriate and informative error messages are returned for invalid inputs or exceptional situations.
