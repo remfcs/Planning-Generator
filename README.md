@@ -72,11 +72,11 @@ Ces 4 colonnes apparaissent
     ``` 
         Planning-Generator/
         ├── algo_feature/
-        │   ├── conflict_function.py 
-        │   ├── create_groups_function.py
-        │   ├── database_function.py
-        │   ├── db_file_function.py
-        │   └── read_foolder_function.py                        
+        │   ├── conflict_function.py            Function to resolve conflict
+        │   ├── create_groups_function.py       Function to create the groups of student
+        │   ├── database_function.py            Function to interact with the database
+        │   ├── db_file_function.py             Function to insert value from the user in the database
+        │   └── read_foolder_function.py        Function to create a dataframe with the file
         ├── back_up/
         │   ├── back_up.py
         │   ├── Reset_db.py
