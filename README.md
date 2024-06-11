@@ -29,7 +29,7 @@ To install this project & the dependencies, follow these steps:
 
 3.  Install dependencies:
 
-    Need to install Pyhton : [https://www.python.org/downloads/](Python)
+    Need to install Pyhton : [Python](https://www.python.org/downloads/)
 
 ## Usage 
 
