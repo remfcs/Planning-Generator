@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-
     // Select all radio buttons and forms
     const radioButtons = document.querySelectorAll('input[name="action"]');
     const forms = {
@@ -45,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const lv2Course = document.getElementById('lv2-course');
 
     promoSelect.addEventListener('change', (event) => {
+        studentLv2.value = "";
+        lv2Course.value = "";
         let promo = event.target.value;
         promo = promo.substring(0, 2);
         if (promo) {
@@ -148,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     document.getElementById('add-student-form-inner').addEventListener('submit', (event) => {
+        event.preventDefault();
         let lv2_student = document.getElementById('student-lv2').value;
         if(lv2_student==='Spanish'){
             lv2_student = 'ESPAGNOL'
@@ -198,21 +200,36 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     body: JSON.stringify(data_english),
                 })
-                if(document.getElementById('lv2-course').value !== ''){
-                    const data_lv2 = {
-                        lv2: document.getElementById('lv2-course').value,
-                        email: document.getElementById('student-email').value
-                    };
+                .then(response =>{
+                    console.log("Response status: ", response.status);
+                    return response.json();
+                })
+                .then(data2 => {
+                    console.log(data2);
+                    if (data2.status === 'success') {
+                        if(document.getElementById('lv2-course').value !== ''){
+                            const data_lv2 = {
+                                lv2: document.getElementById('lv2-course').value,
+                                email: document.getElementById('student-email').value
+                            };
         
-                    fetch('/add3', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data_lv2),
-                    })
-                }
-                alert("Student added successfully!");
+                            fetch('/add3', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(data_lv2),
+                            })
+                            .then(response =>{
+                                console.log("Response status: ", response.status);
+                                return response.json();
+                            })
+                        }
+                        alert("Student added successfully!");
+                    } else {
+                        alert("Error: " + data2.message);
+                    }
+                })
             } else {
                 alert("Error: " + data.message);
             }
@@ -220,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch((error) => {
             console.error('Error:', error);
         });
+        
     });
       
     const searchStudent = document.getElementById('student-search-input');

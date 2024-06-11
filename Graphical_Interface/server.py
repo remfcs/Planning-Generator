@@ -397,13 +397,18 @@ def add_list():
     )
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
-        VALUES (?, ?)
-        """, new_english_course)
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'success'})
+    try:
+        cursor.execute("""
+            INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
+            VALUES (?, ?)
+            """, new_english_course)
+        conn.commit()
+        return jsonify({'status': 'success'})
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e.args[0]}")
+        return jsonify({'status': 'error', 'message': 'An error occurred while adding the english course.'})
+    finally:
+        conn.close()
 
 @app.route('/add3', methods=['POST'])
 def add_list2():
@@ -414,13 +419,18 @@ def add_list2():
     )
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
-        VALUES (?, ?)
+    try:
+        cursor.execute("""
+            INSERT INTO List_Groups_Students (ID_COURSE, ID_STUDENT)
+            VALUES (?, ?)
         """, new_lv2_course)
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'success'})
+        conn.commit()
+        return jsonify({'status': 'success'})
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e.args[0]}")
+        return jsonify({'status': 'error', 'message': 'An error occurred while adding the LV2 course.'})
+    finally:
+        conn.close()
 
 @app.route('/deleteStudent', methods=['POST'])
 def delete_student():
