@@ -1,5 +1,6 @@
 document.getElementById('yes-btn').addEventListener('click', function() {
     document.getElementById('popup').style.display = 'block';
+    document.getElementById('confirm-btn').addEventListener('click', confirmRecovery);
 });
 
 function closePopup() {

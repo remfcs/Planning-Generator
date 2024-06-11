@@ -39,6 +39,29 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(UPLOAD_FOLDER_LEVEL, exist_ok=True)
 os.makedirs(UPLOAD_FOLDER_INFO, exist_ok=True)
 
+
+@app.route('/restore_backup', methods=['POST'])
+def restore_backup():
+    try:
+        # Exécuter le script restore_backup.py
+        result = subprocess.run(['python', '../back_up/restore_backup.py'], capture_output=True, text=True)
+
+        if result.returncode == 0:
+            return jsonify({'message': 'Backup restored successfully!'})
+        else:
+            return jsonify({'message': 'Failed to restore backup.', 'error': result.stderr}), 500
+
+    except Exception as e:
+        return jsonify({'message': 'An error occurred.', 'error': str(e)}), 500
+    
+@app.route('/backup')
+def backup():
+    return send_from_directory('.', 'last_backup/last_backup.html')
+
+@app.route('/last_backup.js')
+def serve_last_backup_js():
+    return send_from_directory('.', 'last_backup/last_backup.js')
+
 @app.route('/start')
 def start():
     return send_from_directory('.', 'start/start.html')
