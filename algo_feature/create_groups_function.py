@@ -109,7 +109,7 @@ def make_groups(Data, promo_pair, max_by_class):
     conn = sqlite3.connect(Data)
     list_lv = database_function.find_list_lv(Data)
     while list_lv:
-        print(list_lv)
+        #print(list_lv)
         lv = list_lv.pop(0)
         deb = 0
         if '-débutant' in lv:
@@ -126,7 +126,7 @@ def make_groups(Data, promo_pair, max_by_class):
             list_slots = database_function.get_lv_slot(Data, promo_association)
             name = ', '.join(f"'{item}'" for item in promo_association)
             slots[name] = list_slots
-        print(slots)
+        #print(slots)
 
         inverse_slots = {}
         # Parcourir les éléments de slots
@@ -136,7 +136,7 @@ def make_groups(Data, promo_pair, max_by_class):
             if value_tuple not in inverse_slots:
                 inverse_slots[value_tuple] = []
             inverse_slots[value_tuple].append(key)
-        print(inverse_slots)
+        #print(inverse_slots)
 
         def get_students_and_nb_students(lv, promo_association):
             students = { }
@@ -185,27 +185,28 @@ def make_groups(Data, promo_pair, max_by_class):
             sum = 0
             a = ', '.join(f"'{item}'" for item in promo_association)
             # Afficher les clés des éléments identiques
-            print(promo_association, sum)
+            #print(promo_association, sum)
             for value_tuple, keys in inverse_slots.items():
                 if  (len(keys) > 1) & (a in keys): 
-                    print(a, keys, len(keys))
+                    #print(a, keys, len(keys))
                     for i in keys:
                         association = [item.strip("'") for item in i.split(', ')]
-                        print(association, promo_association)
+                        #print(association, promo_association)
                         if association != promo_association:  
                             st, nb = get_students_and_nb_students(lv, association)
                             sum += nb
-            print(lv, promo_association, sum)
+            #print(lv, promo_association, sum)
 
             students, nb_students = get_students_and_nb_students(lv, promo_association)
-            print(promo_association, sum, nb_students)
+            #print(promo_association, sum, nb_students)
             nb_class = nomber_class(sum,nb_students, Data, students, promo_association,  max_by_class)  # Calculate the number of classes needed
-            print(nb_class)
+            #print(nb_class)
 
             for key, value in nb_class.items():
                 #print(key, value)
                 students2 = students[key]
                 groups = make_group(students2, value)  # Create groups based on the number of classes
+                #print(groups)
                 language = "_" + key[:3]  # Extract language abbreviation
                 name = ""
                 if "COMPLEMENTAIRE" in key or "DISPENSE" in key:
