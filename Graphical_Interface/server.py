@@ -1,6 +1,6 @@
 import pdfkit # type: ignore
 import logging
-from flask import Flask, jsonify, request, send_from_directory, send_file, make_response
+from flask import Flask, jsonify, request, send_from_directory, send_file, make_response, redirect, url_for
 import os
 import webbrowser
 import threading
@@ -47,6 +47,7 @@ def restore_backup():
         result = subprocess.run(['python', './back_up/restore_backup.py'], capture_output=True, text=True)
 
         if result.returncode == 0:
+            redirect(url_for('/'))
             return jsonify({'message': 'Backup restored successfully!'})
         else:
             # Retourner le message d'erreur en cas d'échec
