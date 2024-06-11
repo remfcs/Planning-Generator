@@ -52,21 +52,21 @@ Ces 4 colonnes apparaissent
 
 
 ## File Structure
-    ``` scss
+    ``` 
         Planning-Generator/
-        ├── [algo_feature/](algo_feature/)
+        ├── algo_feature/
         │   ├── conflict_function.py
         │   ├── create_groups_function.py
         │   ├── database_function.py
         │   ├── db_file_function.py
         │   └── read_foolder_function.py                        
-        ├── [back_up/](back_up/)
+        ├── back_up/
         │   ├── back_up.py
         │   ├── Reset_db.py
         │   └── restore_backup.py
-        ├── [build/main](build/main)
+        ├── build/main
         │   └── [Other files]
-        ├── [data/](data/)
+        ├── data/
         │   └── [Other files]
         ├── dist/
         │   └── [Other files]
