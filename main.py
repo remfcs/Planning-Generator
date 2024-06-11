@@ -60,7 +60,7 @@ list_availibity_rooms = [('K03', 'Thu_2'), ('K03', 'Thu_1'), ('K03', 'Thu_3'), (
 json_path = 'data/uploads/teachers.json'
 list_teacher, list_availability_teachers = read_folder_function.load_teachers(json_path)
 #print(list_teacher, list_availability_teachers)
-json_path = '/data/uploads/promo_availabilities.json'
+json_path = 'data/uploads/promo_availabilities.json'
 list_class, list_availibity_class = read_folder_function.load_class(json_path)
 
 #charge une df avec les infos des étudiants depuis le fichier info_student

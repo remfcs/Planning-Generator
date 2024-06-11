@@ -213,7 +213,7 @@ def make_association(Data, promo_pair):
                 insertion = (teacher_availabilities[i][0], list_groups[i], teacher_availabilities[i][1], teacher_availabilities[i][0][4:])
                 insertions.append(insertion)  # Prepare insertions of teacher and group associations
                 cursor = conn.cursor()
-                #print(teacher_availabilities[i][0],teacher_availabilities[i][1])
+                print(teacher_availabilities[i][0],teacher_availabilities[i][1])
                 cursor.execute("""
                                 UPDATE Availability_Teachers SET ACTIVE = 1
                                 WHERE ID_Availability LIKE ? AND ID_Teacher LIKE ?;

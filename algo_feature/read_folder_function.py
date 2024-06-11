@@ -169,10 +169,20 @@ def load_class(file_path):
         'Friday Afternoon': ('Fri_4','Fri_5', 'Fri_6'),
         'Saturday Morning': ('Sat_1','Sat_2', 'Sat_3'),
     }
-
-
-
-
+    #print(data)
+    for i in data:
+        #print (i)
+        promo = data[i]
+        #print(promo)
+        for j in promo :
+            name = j + i
+            #print(name)
+            for availability in promo[j]:
+                #print(availability)
+                availability_code = day_slot_mapping.get(availability, availability)
+                #print(availability_code)
+                for i in availability_code:
+                    list_availability_class.append((name, i))
     return list_class, list_availability_class
 
 
