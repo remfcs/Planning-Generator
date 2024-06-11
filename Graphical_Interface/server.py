@@ -9,7 +9,7 @@ import subprocess
 import sqlite3
 import csv
 import io
-import pandas as pd  # Ajout de pandas pour l'export en Excel
+import pandas as pd
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -115,7 +115,7 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
     cursor = conn.cursor()
 
     query = """
-    SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, lg.ID_COURSE, c.Language, t.NAME AS TeacherName, t.SURNAME AS TeacherSurname
+    SELECT s.NAME, s.SURNAME, s.EMAIL, s.SCHOOL_YEAR, c.ID_GROUP, c.Language, t.NAME AS TeacherName, t.SURNAME AS TeacherSurname
     FROM Student s
     LEFT JOIN List_Groups_Students lg ON s.EMAIL = lg.ID_STUDENT
     LEFT JOIN Courses c ON lg.ID_COURSE = c.ID_COURSE
@@ -137,7 +137,7 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
         query += " AND c.Language = ?"
         params.append(langue)
     if group_lv1:
-        query += " AND lg.ID_COURSE = ?"
+        query += " AND c.ID_GROUP = ?"
         params.append(group_lv1)
 
     cursor.execute(query, params)
@@ -182,7 +182,7 @@ def get_professors():
     cursor.execute("""
         SELECT T.name, T.surname, T.mail, T.Subject, 
                GROUP_CONCAT(DISTINCT A.Day || ' ' || A.Hour) as availabilities,
-               GROUP_CONCAT(DISTINCT C.ID_COURSE || ' (' || A.Day || ' ' || A.Hour || ')') as groups
+               GROUP_CONCAT(DISTINCT C.ID_GROUP || ' (' || A.Day || ' ' || A.Hour || ')') as groups
         FROM Teachers T
         LEFT JOIN Availability_Teachers AT ON T.ID_Teacher = AT.ID_Teacher
         LEFT JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
@@ -282,7 +282,7 @@ def get_professor_details(professor_name):
     languages = [row[0] for row in cursor.fetchall()]
 
     cursor.execute("""
-        SELECT DISTINCT ID_COURSE
+        SELECT DISTINCT ID_GROUP
         FROM Courses
         WHERE ID_Teacher IN (
             SELECT ID_Teacher 
@@ -322,7 +322,7 @@ def get_groups():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     
-    query = "SELECT DISTINCT ID_COURSE FROM List_Groups_Students"
+    query = "SELECT DISTINCT ID_GROUP FROM Courses"
     cursor.execute(query)
     groups = [row[0] for row in cursor.fetchall()]
     
@@ -601,7 +601,7 @@ def export_all_groups():
             SELECT A.Day, A.Hour
             FROM Courses C
             JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
-            WHERE C.ID_COURSE = ?
+            WHERE C.ID_GROUP = ?
         """, (group_id,))
         availability = cursor.fetchone()
         conn.close()
@@ -661,6 +661,7 @@ def generate_professors_pdf():
     html_content = """
     <html>
     <head>
+        <meta charset="UTF-8">
         <style>
             body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; color: #333; }
             h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
@@ -695,7 +696,7 @@ def generate_professors_pdf():
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT C.ID_COURSE, A.Day, A.Hour
+            SELECT C.ID_GROUP, A.Day, A.Hour
             FROM Courses C
             JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
             WHERE C.ID_Teacher = (SELECT ID_Teacher FROM Teachers WHERE name = ? AND surname = ?)
@@ -745,7 +746,7 @@ def get_professors_with_groups():
     cursor.execute("""
         SELECT T.name, T.surname, T.mail, T.Subject, 
                GROUP_CONCAT(DISTINCT A.Day || ' ' || A.Hour) as availabilities,
-               GROUP_CONCAT(DISTINCT C.ID_COURSE || ' (' || A.Day || ' ' || A.Hour || ')') as groups
+               GROUP_CONCAT(DISTINCT C.ID_GROUP || ' (' || A.Day || ' ' || A.Hour || ')') as groups
         FROM Teachers T
         LEFT JOIN Availability_Teachers AT ON T.ID_Teacher = AT.ID_Teacher
         LEFT JOIN Availabilities A ON AT.ID_Availability = A.ID_Availability
@@ -772,7 +773,7 @@ def generate_professors_csv():
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT C.ID_COURSE, A.Day, A.Hour
+            SELECT C.ID_GROUP, A.Day, A.Hour
             FROM Courses C
             JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
             WHERE C.ID_Teacher = (SELECT ID_Teacher FROM Teachers WHERE name = ? AND surname = ?)
@@ -842,7 +843,7 @@ def export_all_groups_csv():
                 SELECT A.Day, A.Hour
                 FROM Courses C
                 JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
-                WHERE C.ID_COURSE = ?
+                WHERE C.ID_GROUP = ?
             """, (student['GROUP_LV1'],))
             availability = cursor.fetchone()
             conn.close()
@@ -861,47 +862,6 @@ def export_all_groups_csv():
     response.headers['Content-Disposition'] = 'attachment; filename=all_groups.csv'
     response.headers['Content-Type'] = 'text/csv'
     return response
-
-def generate_group_excel(group_id):
-    students = get_student_details(group_lv1=group_id)
-    df = pd.DataFrame(students)
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='Group Data')
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = f'attachment; filename=group_{group_id}.xlsx'
-    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    return response
-
-def export_all_groups_excel():
-    response = get_groups()
-    if response.status_code != 200:
-        logging.error(f"Failed to get groups: {response.status_code}")
-        return "Failed to get groups", 500
-
-    groups = response.get_json()
-    if not groups:
-        logging.error("No groups found")
-        return "No groups found", 400
-
-    all_data = []
-    for group in groups:
-        students = get_student_details(group_lv1=group)
-        for student in students:
-            all_data.append([group] + list(student.values()))
-
-    df = pd.DataFrame(all_data, columns=["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='All Groups Data')
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = 'attachment; filename=all_groups.xlsx'
-    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    return response
-
-import io
-import csv
-from flask import make_response
 
 def generate_professor_csv(professor_name):
     professor_details = get_professor_details(professor_name)
@@ -948,31 +908,6 @@ def generate_professor_csv(professor_name):
     response.headers['Content-Type'] = 'text/csv'
     return response
 
-def generate_professor_excel(professor_name):
-    professors = get_professor_details(professor_name=professor_name)
-    if not professors:
-        return "No professor details found", 404
-    
-    df = pd.DataFrame(professors)
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='Professor Data')
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = f'attachment; filename=professor_{professor_name}.xlsx'
-    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    return response
-
-def export_all_professors_excel():
-    professors = get_professors()
-    df = pd.DataFrame(professors, columns=["Name", "Surname", "Email", "Subject", "Availability"])
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='Professors Data')
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.xlsx'
-    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    return response
-
 def generate_group_pdf(group_id):
     students = get_student_details(group_lv1=group_id)
     teacher_info = get_teacher_by_group(group_id)  # Assuming you have a function to fetch the teacher by group
@@ -989,7 +924,7 @@ def generate_group_pdf(group_id):
         SELECT A.Day, A.Hour
         FROM Courses C
         JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
-        WHERE C.ID_COURSE = ?
+        WHERE C.ID_GROUP = ?
     """, (group_id,))
     availability = cursor.fetchone()
     conn.close()
@@ -1004,6 +939,7 @@ def generate_group_pdf(group_id):
     html_content = f"""
     <html>
     <head>
+        <meta charset="UTF-8">
         <style>
         body {{
             font-family: Arial, sans-serif;
@@ -1091,7 +1027,7 @@ def get_teacher_by_group(group_id):
         SELECT t.name, t.surname
         FROM Teachers t
         JOIN Courses c ON t.ID_Teacher = c.ID_Teacher
-        WHERE c.ID_COURSE = ?
+        WHERE c.ID_GROUP = ?
     """, (group_id,))
     row = cursor.fetchone()
     conn.close()
@@ -1106,7 +1042,8 @@ def generate_professor_pdf(professor_name):
 
     html_content = f"""
     <html>
-    <head>
+    <head>        
+        <meta charset="UTF-8">
         <style>
         body {{
             font-family: Arial, sans-serif;
@@ -1223,7 +1160,7 @@ def get_groups_by_professor(professor_name):
     last_name = name_parts[1]
 
     cursor.execute("""
-        SELECT DISTINCT lg.ID_COURSE, a.Day, a.Hour
+        SELECT DISTINCT c.ID_GROUP, a.Day, a.Hour
         FROM Teachers t
         JOIN Courses c ON t.ID_Teacher = c.ID_Teacher
         JOIN List_Groups_Students lg ON c.ID_COURSE = lg.ID_COURSE
@@ -1257,7 +1194,7 @@ def get_professor_groups(professor_name):
     last_name = name_parts[1]
 
     cursor.execute("""
-        SELECT C.ID_COURSE, A.Day, A.Hour
+        SELECT C.ID_GROUP, A.Day, A.Hour
         FROM Courses C
         JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
         WHERE C.ID_Teacher = (

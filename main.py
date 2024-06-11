@@ -12,7 +12,7 @@ import os
     # TODO faire le doc de la maintenance
 """
 
-Data = 'data/database_test.sqlite3'
+Data = 'data/database.sqlite3'
 
 #depot_info_folder = './data/uploads/input_info'
 #depot_note_folder ='./data/uploads/input_level'
@@ -110,3 +110,5 @@ create_groups_function.make_groups(Data, promo_pair, max_by_class)
 create_groups_function.make_association(Data, promo_pair)
 
 conflict_function.resolve_conflict(Data)
+
+database_function.set_group_name(Data)
