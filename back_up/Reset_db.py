@@ -1,3 +1,33 @@
+####################################################################################
+#                              Reset database Functions                            #
+####################################################################################
+# Provides functionalities to detect and resolve scheduling conflicts for students #
+# enrolled in 2 courses simultaneously. It includes detecting conflicts, updating  #
+# student groups, and resolving conflicts by exchanging students between groups.   #
+####################################################################################
+
+# --------------------------------------------------------------------------------
+# Modules:
+# --------------------------------------------------------------------------------
+# 1. Delete_one_table:
+#    - Drop one specific table from a databse.
+#
+# 2. list_tables:
+#    - Retrieves the list of table for database.
+#
+# 3. Delete_all_tables:
+#    - Drop all the table from a databse.
+#
+# 4. Create_tables:
+#    - Create all the table needed in a specifique database.
+# --------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------
+# Dependencies:
+# --------------------------------------------------------------------------------
+# - sqlite3
+# --------------------------------------------------------------------------------
+
 import sqlite3
 
 # Path to the SQLite database file
@@ -81,8 +111,6 @@ def Delete_all_tables(Data):
 # Delete all tables in the database
 Delete_all_tables(Data)
 
-
-
 def Create_tables(filename):
     conn = sqlite3.connect(filename)
     cursor = conn.cursor()
@@ -102,7 +130,7 @@ def Create_tables(filename):
 # create table 'Courses'
     cursor.execute("CREATE TABLE IF NOT EXISTS Courses(ID_COURSE Varchar (50),ID_GROUP Varchar (50) ,ID_TEACHER Varchar (50) ,LANGUAGE VARCHAR (50) ,ID_ROOM Varchar (50) ,ID_AVAILABILITY Varchar (50), PROMO VARCHAR(50) ,CONSTRAINT Courses_PK PRIMARY KEY (ID_COURSE));")
 
-## table de jointures
+## intersection table
 
 # create table 'List_Groups_Students'
     cursor.execute("CREATE TABLE IF NOT EXISTS List_Groups_Students (ID_COURSE Varchar (50) , ID_STUDENT Varchar(50) , FOREIGN KEY(ID_COURSE) REFERENCES Courses(ID_COURSE), FOREIGN KEY(ID_STUDENT) REFERENCES Student(EMAIL));")

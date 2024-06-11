@@ -55,24 +55,32 @@ Ces 4 colonnes apparaissent
     ```css
         Planning-Generator/
         ├── algo_feature/
-        │   ├── components/
-        │   │   └── Header.js
-        │   ├── styles/
-        │   │   └── main.css
-        │   ├── App.js
-        │   ├── index.js
+        │   ├── conflict_function.py
+        │   ├── create_groups_function.py
+        │   ├── database_function.py
+        │   ├── db_file_function.py
+        │   └── read_foolder_function.py                        
         ├── back_up/
-        │   ├── App.test.js
+        │   ├── back_up.py
+        │   ├── Reset_db.py
+        │   └── restore_backup.py
+        ├── build/main
         │   └── [Other files]
-        ├── .gitignore
+        ├── data/
+        │   └── [Other files]
+        ├── dist/
+        │   └── [Other files]
+        ├── env/
+        │   └── [Other files]
+        ├── Graphical_Interface/        
+        │   └── [Other files]
         ├── main.py
         ├── start_app.sh
         ├── start_app.bat
         ├── README.md
-        └── [Other files]
+        └── [Other folders]
 
     ```
-
 
 ## Testing
 

@@ -1,3 +1,44 @@
+####################################################################################
+#                             Create Groups Functions                              #
+####################################################################################
+# Provides functionalities to create the groups of students                        #
+####################################################################################
+
+# --------------------------------------------------------------------------------
+# Modules:
+# --------------------------------------------------------------------------------
+# 1. nomber_class_bis:
+#    - Calcul the number of class mandatory for a number of student and a number of student max by class.
+#
+# 2. make_group:
+#    - Create the balanced list of student for each groups fom a list a student and the number of group.
+#
+# 3. nomber_class:
+#    - Calcul the number of class mandatory for a number of student based on the number of student available at the same time.
+#
+# 4. make_groups:
+#    - Create the goups by calling the other function and fill them into the db.
+#
+# 5. make_association:
+#    - Create the association between the groups, the teacher and the room.
+#
+# 6. get_students_per_SCHOOL_YEAR:
+#    - basic function to balance the number of student in each group.
+#
+# 7. make_groups2:
+#    - Create the balanced list of student for each groups fom a list a student and the number of group. (but with more simple approach)
+#
+# 8. make_groups_lv:
+#    - Create the goups by calling the other function and fill them into the db.
+# --------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------
+# Dependencies:
+# --------------------------------------------------------------------------------
+# - sqlite3
+# - algo_feature.database_function
+# --------------------------------------------------------------------------------
+
 import algo_feature.database_function as database_function
 import sqlite3
 
@@ -240,12 +281,8 @@ def make_association(Data, promo_pair):
                 conn.commit()  # Insert the final insertion into the Courses table and commit the changes
     conn.close()    # Close the database connection
 
-
-
 """
-
 Anciennes fonctions 
-
 """
 def get_students_per_SCHOOL_YEAR(number_student, slot_nbr_for_lv):
     base_students_per_promo = number_student // slot_nbr_for_lv
