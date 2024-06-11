@@ -19,10 +19,17 @@ To install this project & the dependencies, follow these steps:
 
 1. Clone the repository:
    ```bash
-    git clone https://github.com/yourusername/your-repo-name.git
+    git clone https://github.com/yourusername/Planning-Generatore.git
     ```
-2.  Install dependencies:
+
+2. Navigate to the project directory:
     ```bash
+    cd Planning-Generator
+    ```
+
+3.  Install dependencies:
+    ```bash
+    
     ```
 
 ## Usage 
