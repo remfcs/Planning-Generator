@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup Recovery</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="container">
+        <h1>Do you want to recover the backup: last planning?</h1>
+        <h2 class="red-letters">WARNING: you will loose the current planning</h2><br>
+        <button class="button" id="yes-btn">Yes</button>
+    </div>
+    
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h3>Are you sure? You will recover the last version of the planning, the current planning will not be saved.</h3><br>
+            <button class="button confirm-btn" onclick="confirmRecovery()">Yes, I'm sure</button>
+            <button class="button cancel-btn" onclick="closePopup()">Cancel</button>
+        </div>
+    </div>
+    
+
+    <script src="last_backup.js"></script>
+    <script src="../sidebar/script2.js"></script>
+
+</body>
+</html>
