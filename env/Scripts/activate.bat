@@ -8,14 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-rem Définir le chemin relatif basé sur le répertoire du script
-set SCRIPT_DIR=%~dp0
-
-set VIRTUAL_ENV=%SCRIPT_DIR%..\..
-
-rem Afficher le chemin relatif
-echo Chemin du script: %SCRIPT_DIR%
-echo Chemin de l'environnement virtuel: %VIRTUAL_ENV%
+set VIRTUAL_ENV=~\env
 
 if not defined PROMPT set PROMPT=$P$G
 
