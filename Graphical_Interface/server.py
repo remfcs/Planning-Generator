@@ -47,7 +47,8 @@ def restore_backup():
         result = subprocess.run(['python', './back_up/restore_backup.py'], capture_output=True, text=True)
 
         if result.returncode == 0:
-            redirect(url_for('/'))
+            #flash('Backup restored successfully!', 'success')
+            #return redirect(url_for('index'))
             return jsonify({'message': 'Backup restored successfully!'})
         else:
             # Retourner le message d'erreur en cas d'échec
