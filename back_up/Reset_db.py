@@ -31,7 +31,7 @@
 import sqlite3
 
 # Path to the SQLite database file
-Data = './data/database_test.sqlite3'
+Data = './data/database.sqlite3'
 
 def Delete_one_table(Data, name_table):
     """
