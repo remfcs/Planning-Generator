@@ -158,7 +158,6 @@ def get_student_details(name=None, niveau=None, professeur=None, langue=None, gr
         students.append(student)
 
     conn.close()
-    logging.debug(f"Retrieved students: {students}")
     return students
 
 @app.route('/')
@@ -334,24 +333,25 @@ def get_courses_by_promo(promo, language):
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     query = """
-    SELECT ID_COURSE, COUNT(*) AS student_count 
-    FROM List_Groups_Students 
-    WHERE ID_COURSE LIKE ? 
-    GROUP BY ID_COURSE
+    SELECT c.ID_GROUP, c.ID_AVAILABILITY, c.PROMO, c.ID_COURSE, COUNT(lgs.ID_STUDENT) AS student_count
+    FROM Courses c
+    LEFT JOIN List_Groups_Students lgs ON c.ID_COURSE = lgs.ID_COURSE
+    WHERE c.LANGUAGE LIKE ? AND c.PROMO LIKE ?
+    GROUP BY c.ID_GROUP, c.ID_AVAILABILITY, c.PROMO, c.ID_COURSE
     """
-    cursor.execute(query, ('%' + language,))
-    courses_with_count = cursor.fetchall()
-    filtered_courses = []
-    for course in courses_with_count:
-        course_id = course[0]
-        start = course_id.find('{') + 1
-        end = course_id.find('}')
-        if start > 0 and end > start:
-            promos = course_id[start:end].split(', ')
-            if promo in promos:
-                filtered_courses.append({'course_id': course_id, 'student_count': course[1]})
+    cursor.execute(query, ('%' + language + '%', '%' + promo + '%'))
+    groups = cursor.fetchall()
     conn.close()
-    return jsonify(filtered_courses)
+    result = []
+    for group in groups:
+        result.append({
+            'ID_GROUP': group[0],
+            'ID_AVAILABILITY': group[1],
+            'PROMO': group[2],
+            'ID_COURSE': group[3],
+            'student_count': group[4]
+        })
+    return jsonify(result)
 
 @app.route('/add', methods=['POST'])
 def add_student():
@@ -367,24 +367,26 @@ def add_student():
     )
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    cursor.execute("""
-        SELECT CASE WHEN EXISTS (
-        SELECT 1
-        FROM Student
-        WHERE EMAIL = ?
-        ) THEN 'true' ELSE 'false' END
-        """, (data['email'],))
-    exists = cursor.fetchone()[0]
-    if exists == 'true':
-        return jsonify({'status': 'error', 'message': 'Student already exists'})
-    else:
+    try:
         cursor.execute("""
-            INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, new_student)
-        conn.commit()
+            SELECT CASE WHEN EXISTS (
+            SELECT 1
+            FROM Student
+            WHERE EMAIL = ?
+            ) THEN 'true' ELSE 'false' END
+            """, (data['email'],))
+        exists = cursor.fetchone()[0]
+        if exists == 'true':
+            return jsonify({'status': 'error', 'message': 'Student already exists'})
+        else:
+            cursor.execute("""
+                INSERT INTO Student (EMAIL, NAME, SURNAME, SCHOOL_YEAR, LV1, LV2, REDUCED_EXAM)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, new_student)
+            conn.commit()
+            return jsonify({'status': 'success'})
+    finally:
         conn.close()
-        return jsonify({'status': 'success'})
 
 @app.route('/add2', methods=['POST'])
 def add_list():
