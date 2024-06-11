@@ -350,13 +350,23 @@ def get_languages():
     conn.close()
     return jsonify(languages)
 
-@app.route('/groups')
+@app.route('/groups', methods=['GET'])
 def get_groups():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
+    niveau = request.args.get('niveau')
+    language = request.args.get('language')
     
     query = "SELECT DISTINCT ID_GROUP FROM Courses"
-    cursor.execute(query)
+    params = []
+    if niveau:
+        query += " WHERE PROMO LIKE ?"
+        params.append(f"{niveau}%")
+    if language:
+        query += " WHERE LANGUAGE LIKE ?"
+        params.append(f"{language}")
+    
+    cursor.execute(query, params)
     groups = [row[0] for row in cursor.fetchall()]
     
     conn.close()
