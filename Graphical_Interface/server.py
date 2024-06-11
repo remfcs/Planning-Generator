@@ -358,13 +358,18 @@ def get_groups():
     language = request.args.get('language')
     
     query = "SELECT DISTINCT ID_GROUP FROM Courses"
+    conditions = []
     params = []
+    
     if niveau:
-        query += " WHERE PROMO LIKE ?"
+        conditions.append("PROMO LIKE ?")
         params.append(f"{niveau}%")
     if language:
-        query += " WHERE LANGUAGE LIKE ?"
-        params.append(f"{language}")
+        conditions.append("LANGUAGE LIKE ?")
+        params.append(language)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
     
     cursor.execute(query, params)
     groups = [row[0] for row in cursor.fetchall()]

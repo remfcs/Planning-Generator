@@ -56,11 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedLanguage = document.getElementById('langue').value;
         const selectedNiveau = document.getElementById('niveau').value;
         const groupSelect = document.getElementById('group_lv1');
+        const selectedTeacher = document.getElementById('professeur').value;
         groupSelect.innerHTML = '<option value="">Select an LV1 Group</option>';
 
         let query = '/groups?';
         if (selectedLanguage) query += `language=${selectedLanguage}&`;
         if (selectedNiveau) query += `niveau=${selectedNiveau}&`;
+        if (selectedTeacher) query += `professeur=${encodeURIComponent(selectedTeacher)}&`;
 
         fetchData(query.slice(0, -1))
             .then(groups => {
