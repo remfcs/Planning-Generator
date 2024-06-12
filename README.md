@@ -151,11 +151,11 @@ To install this project & the dependencies, follow these steps:
     ```
 
 ## Responsibility report
-- Law:
+- Law: The application have to respect the General Data Protection Regulation (GDPR) because of the confidentiality of the data.
 
-- Ethic:
+- Ethic: The application does not take into account the gender or ethnicity of any student or teacher.
 
-- Environnemental impact:
+- Environnemental impact: The application has an energetic impact only when used.
 
 
 ## Testing
@@ -194,6 +194,7 @@ To install this project & the dependencies, follow these steps:
     - Create a visual planning for the User interface instead of a table with all the data inside.
     - Add some other features for the selection table and resolve the few last bug.
     - Upgrade the import of data for the teachers.
+    - Verify that all the data are fill to be able to create a new planning.
 
 - Algorithm part:   
     - Associate the rooms with groups and teachers.
