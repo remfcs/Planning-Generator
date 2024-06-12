@@ -533,7 +533,7 @@ def get_groups_students():
 def change_group():
     dataToChange = request.get_json()
     emailStudentchange = dataToChange['email']
-    newGroup = dataToChange['newGroup']
+    newGroup = dataToChange['group']
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     try:
@@ -544,20 +544,15 @@ def change_group():
         """, (emailStudentchange,))
         courses = cursor.fetchall()
 
-        cursor.execute("""
-            SELECT ID_COURSE 
-            FROM Courses 
-            WHERE ID_GROUP = ?
-        """, (newGroup,))
-        newCourseId = cursor.fetchone()
-
         for course in courses:
-            if course[0][-3:] == newCourseId[0][-3:]:
+            print(course[0][-3:])
+            print(newGroup[-3:])
+            if course[0][-3:] == newGroup[-3:]:
                 cursor.execute("""
                     UPDATE List_Groups_Students
                     SET ID_COURSE = ?
                     WHERE ID_COURSE = ? AND ID_STUDENT = ?
-                """, (newCourseId[0], course[0], emailStudentchange))
+                """, (newGroup, course[0], emailStudentchange))
                 
         conn.commit()
         return jsonify({'status': 'success'})
