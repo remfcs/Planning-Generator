@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "delete-student": document.getElementById('delete-student-form'),
         "change-student-class": document.getElementById('change-student-class-form'),
         "add-teacher": document.getElementById('add-teacher-form'),
-        "switch-timeslot": document.getElementById('switch-teacher-timeslot-form')
+        "switch-teacher-timeslot": document.getElementById('switch-teacher-timeslot-form')
     };
 
     // Function to hide all forms
@@ -620,7 +620,112 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch((error) => {
             console.error('Error:', error);
         });
-
     })
 
+    const timeslotSwitch = document.getElementById('timeslot-select');
+    const languageSwitch = document.getElementById('language-select');
+    const firstTeacherSelect = document.getElementById('first-teacher-select');
+    const firstTeacherDetails = document.getElementById('first-teacher-info');
+    const secondTeacherSelect = document.getElementById('second-teacher-select');
+    const secondTeacherDetails = document.getElementById('second-teacher-info');
+    const resetButtonSwitch = document.getElementById('reset-button-switch');
+    const submitButtonSwitch = document.getElementById('switch-button');
+
+    function loadTeachers(selectElement) {
+        const language = languageSwitch.value;
+        fetch(`/returnTeachers?language=${language}`)
+            .then(response => response.json())
+            .then(teachers => {
+                selectElement.innerHTML = '<option value="">Select a Teacher to switch</option>';
+                teachers.forEach(teacher => {
+                    fetch(`/returnTeachers?id_teacher=${teacher[0]}`)
+                        .then(response => response.json())
+                        .then(availabilities => {
+                            const option = document.createElement('option');
+                            option.value = teacher[0];
+                            option.textContent = `${teacher[2]} ${teacher[1]}`;
+                            selectElement.appendChild(option);
+                            availabilities.forEach(availability => {
+                                let cpt = 0;
+                                if (availability !== timeslotSwitch.value) {
+                                    cpt = cpt + 1;
+                                }
+                                if (cpt === availabilities.length) {
+                                    option.disabled = true;
+                                }
+                            });
+                        });
+                });
+            })
+            .catch(error => console.error('Error fetching teachers:', error));
+    }
+
+    languageSwitch.addEventListener('change', () => {
+        loadTeachers(firstTeacherSelect);
+        loadTeachers(secondTeacherSelect);
+    });
+    if (languageSwitch.value) {
+        loadTeachers(firstTeacherSelect);
+        loadTeachers(secondTeacherSelect);
+    }
+
+    function updateTeacherDetails(selectElement, detailsElement, nameElementId, emailElementId, courseElementId) {
+        if (selectElement.value) {
+            detailsElement.style.display = 'block';
+            const selectedTeacher = selectElement.selectedOptions[0].textContent.split(' ');
+            document.getElementById(nameElementId).textContent = `${selectedTeacher[0]} ${selectedTeacher[1]}`;
+            const timeslot = timeslotSwitch.value;
+            const teacherId = selectElement.value;
+            fetch(`/returnGroup?timeslot=${timeslot}&id_teacher=${teacherId}`)
+                .then(response => response.json())
+                .then(course => {
+                    document.getElementById(courseElementId).textContent = course[1];
+                });
+        } else {
+            detailsElement.style.display = 'none';
+        }
+    }
+
+    firstTeacherSelect.addEventListener('change', () => {
+        updateTeacherDetails(firstTeacherSelect, firstTeacherDetails, 'first-teacher-name', 'first-teacher-email', 'first-teacher-course');
+        loadTeachers(secondTeacherSelect); // Reload second teacher options
+    });
+
+    secondTeacherSelect.addEventListener('change', () => {
+        updateTeacherDetails(secondTeacherSelect, secondTeacherDetails, 'second-teacher-name', 'second-teacher-email', 'second-teacher-course');
+    });
+
+    resetButtonSwitch.addEventListener('click', () => {
+        firstTeacherDetails.style.display = 'none';
+        secondTeacherDetails.style.display = 'none';
+        firstTeacherSelect.innerHTML = '<option value="">Select the first Teacher to switch</option>';
+        secondTeacherSelect.innerHTML = '<option value="">Select the second Teacher to switch</option>';
+    });
+
+    submitButtonSwitch.addEventListener('click', () => {
+        const firstTeacherId = firstTeacherSelect.value;
+        const secondTeacherId = secondTeacherSelect.value;
+        const timeslot = timeslotSwitch.value;
+        fetch('/switchTeachers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                timeslot: timeslot,
+                firstTeacherId: firstTeacherId,
+                secondTeacherId: secondTeacherId
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Teachers switched successfully!');
+                resetButtonSwitch.click();
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
 });
