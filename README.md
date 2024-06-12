@@ -180,7 +180,7 @@ To install this project & the dependencies, follow these steps:
 - Boundary Condition Tests
     * Minimum Input Test: Verify behavior with the minimum possible number of students and classes (e.g., 1 student and 1 class).
     * Maximum Input Test: Test the algorithm with the maximum expected input size to ensure it handles boundary conditions appropriately.
-- Randomization and Fairness Tests
+- Unrandomization and Fairness Tests
     * Unrandom Distribution Test: If the algorithm includes a unrandom element in distributing students, verify that repeated runs produce exatly fair distributions.
     * Fairness Test: Ensure no systemic bias is introduced in group formation if certain attributes of students (e.g., skill level, gender) are considered.
 - Error Handling Tests
