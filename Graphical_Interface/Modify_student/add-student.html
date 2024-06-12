@@ -37,7 +37,10 @@
                 <input type="radio" name="action" value="change-student-class"> Change a student of class
             </label>
             <label>
-                <input type="radio" name="action" value="change-teacher-timeslot"> Change a teacher of time slot
+                <input type="radio" name="action" value="add-teacher">Add a new teacher
+            </label>
+            <label>
+                <input type="radio" name="action" value="switch-teacher-timeslot">Switch timeslot's teachers
             </label>
         </div>
 
@@ -106,9 +109,10 @@
         <div class="content" id="change-student-class-form" style="display:none;">
             <h2>Change a student of class</h2>
             <div>
-                <input type="text" id="student-change-search" placeholder="Type the name of the student you want to change the class...">
+                <input type="text" id="student-search-change" placeholder="Type the name of the student you want to change the class...">
             </div>
             <select id="mySelectChange">
+                <option value="">Select a Student</option>
             </select>
             <div id="student-details-change" style="display:none;">
                 <h3>You want to change the class of this student:</h3>
@@ -120,19 +124,86 @@
                 <p>LV2 course: <span id="student-lv2-change">None</span></p>
             </div>
             <div id="student-class-change" style="display:none;">
-                <h3>Quelle classe voulez-vous changer ?</h3>
-                <input type="radio" id="english-course-student" name="English course">
-                <label for="english-course">English course</label><br>
-                <input type="radio" id="lv2-course-student" name="LV2 course">
-                <label for="lv2-course">LV2 course</label>
+                <h3>Which class do you want to modify?</h3>
+                <input type="radio" id="english-course-student" name="course" value="english">
+                <label for="english-course">English course</label>
+                <input type="radio" id="lv2-course-student" name="course" value="lv2">
+                <label for="lv2-course">LV2 Course</label>
             </div> 
-            <select id="mySelect-class" style="display:none;">
-            </select>
+            <div><select id="mySelect-class" style="display:none;"></select></div>
             <div><button id="change-student-button" disabled>Change the class</button></div>
         </div>
 
+        <!-- Add Teacher Form -->
+        <div class="content" id="add-teacher-form" style="display:block;">
+            <h2>Add a new teacher</h2>
+            <form id="add-teacher-form-inner">
+                <input type="text" id="teacher-name" class="form-control" placeholder="NAME" required>
+                <input type="text" id="teacher-firstname" class="form-control" placeholder="First name" required>
+                <input type="email" id="teacher-email" class="form-control" placeholder="Email" required>
+                <select id="teacher-language" class="form-control" required>
+                    <option value="Language">Language</option>
+                    <option value="ANGLAIS">English</option>
+                    <option value="ESPAGNOL">Spanish</option>
+                    <option value="ALLEMAND">German</option>
+                    <option value="CHINOIS">Chinese</option>
+                </select>
+                
+                <h4>Availabilities</h4> <br>
+                        <div id="availability-section" class="availability-section">
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Monday Morning"> Monday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Monday Afternoon"> Monday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Tuesday Morning"> Tuesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Tuesday Afternoon"> Tuesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Wednesday Morning"> Wednesday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Wednesday Afternoon"> Wednesday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Thursday Morning"> Thursday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Thursday Afternoon"> Thursday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Friday Morning"> Friday
+                                    Morning</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Friday Afternoon"> Friday
+                                    Afternoon</label>
+                            </div>
+                            <div class="availability-slot">
+                                <label><input type="checkbox" class="day-time" value="Saturday Morning"> Saturday
+                                    Morning</label>
+                            </div>
+                        </div>
+                    
+                        <div><button id="create-teacher" disabled>Add a new teacher</button></div>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </form>
+        </div>
+
         <!-- Change Teacher Time Slot Form -->
-        <div class="content" id="change-teacher-timeslot-form" style="display:none;">
+        <div class="content" id="switch-teacher-timeslot-form" style="display:none;">
             <h2>Change a teacher of time slot</h2>
             <form id="change-teacher-timeslot-form-inner">
                 <input type="text" id="change-teacher-name" class="form-control" placeholder="Teacher Name" required>

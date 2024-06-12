@@ -513,6 +513,60 @@ def get_timeslot():
         cursor.close()
         conn.close()
 
+@app.route('/students_groups')
+def get_groups_students():
+    student_id = request.args.get('student_id')
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    query = """
+    SELECT List_Groups_Students.ID_COURSE, Courses.ID_GROUP
+    FROM List_Groups_Students
+    JOIN Courses ON List_Groups_Students.ID_COURSE = Courses.ID_COURSE
+    WHERE List_Groups_Students.ID_STUDENT = ?;
+    """
+    cursor.execute(query, (student_id, ))
+    groups = cursor.fetchall()
+    conn.close()
+    return jsonify(groups)
+
+@app.route('/changeGroup', methods=['POST'])
+def change_group():
+    dataToChange = request.get_json()
+    emailStudentchange = dataToChange['email']
+    newGroup = dataToChange['newGroup']
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            SELECT ID_COURSE 
+        FROM List_Groups_Students 
+        WHERE ID_STUDENT = ?
+        """, (emailStudentchange,))
+        courses = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT ID_COURSE 
+            FROM Courses 
+            WHERE ID_GROUP = ?
+        """, (newGroup,))
+        newCourseId = cursor.fetchone()
+
+        for course in courses:
+            if course[0][-3:] == newCourseId[0][-3:]:
+                cursor.execute("""
+                    UPDATE List_Groups_Students
+                    SET ID_COURSE = ?
+                    WHERE ID_COURSE = ? AND ID_STUDENT = ?
+                """, (newCourseId[0], course[0], emailStudentchange))
+                
+        conn.commit()
+        return jsonify({'status': 'success'})
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e.args[0]}")
+        return jsonify({'status': 'error', 'message': 'An error occurred while changing the course.'})
+    finally:
+        conn.close()
+
 @app.route('/professors')
 def serve_professors_html():
     return send_from_directory('.', 'professors.html')
