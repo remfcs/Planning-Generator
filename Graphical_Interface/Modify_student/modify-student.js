@@ -489,11 +489,30 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const buttonCreate = document.getElementById('create-teacher');
-    const languageTeacher = document.getElementById('teacher-language').value;
+    const languageTeacher = document.getElementById('teacher-language');
+    const inputs = document.querySelectorAll('#add-teacher-form-inner input[type="text"], #add-teacher-form-inner input[type="email"], #add-teacher-form-inner select');
+    const checkboxes = document.querySelectorAll('.day-time');
+
+    function updateButtonState() {
+        let inputsFilled = true;
+        inputs.forEach(function(input) {
+            if (!input.value) {
+                inputsFilled = false;
+            }
+        });
+
+        let languageSelected = document.getElementById('teacher-language').value !== 'Language';
+        let checkboxChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        buttonCreate.disabled = !(inputsFilled && languageSelected && checkboxChecked);
+    }
+
+    inputs.forEach(input => input.addEventListener('keyup', updateButtonState));
+    inputs.forEach(input => input.addEventListener('change', updateButtonState));
+    checkboxes.forEach(checkbox => checkbox.addEventListener('change', updateButtonState));
 
     buttonCreate.addEventListener('click', function(event) {
         event.preventDefault();
-        const checkboxes = document.querySelectorAll('.day-time');
         const checkedAvailabilities = [];
         checkboxes.forEach(function(checkbox) {
             if (checkbox.checked) {
@@ -501,15 +520,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
         const teacherAvailabilities = {
-            id_teacher: `${document.getElementById('teacher-name').value.substring(0, 3)}_${languageTeacher.substring(0, 3)}`,
+            id_teacher: `${document.getElementById('teacher-name').value.substring(0, 3)}_${languageTeacher.value.substring(0, 3)}`,
             id_availability: checkedAvailabilities
         }
         const data = {
-            id_teacher: `${student_lv2_class.substring(0, 3)}_${languageTeacher.substring(0, 3)}`,
+            id_teacher: `${document.getElementById('teacher-name').value.substring(0, 3)}_${languageTeacher.value.substring(0, 3)}`,
             name: document.getElementById('teacher-name').value,
             surname: document.getElementById('teacher-firstname').value,
             email: document.getElementById('teacher-email').value,
-            subject: languageTeacher
+            subject: languageTeacher.value
         };
 
         fetch('/addTeacher', {

@@ -596,7 +596,10 @@ def add_teacher():
                 VALUES (?, ?, ?, ?, ?)
                 """, new_teacher)
             conn.commit()
-            return jsonify({'status': 'success'})
+        return jsonify({'status': 'success'})
+    except sqlite3.DatabaseError as e:
+        conn.rollback()
+        return jsonify({'status': 'error', 'message': str(e)})
     finally:
         conn.close()
 
@@ -620,12 +623,13 @@ def add_teacher_availability():
                 teacher_availability = (id_teacher, full_id, 1)
                 cursor.execute("""
                     INSERT INTO Availability_Teachers (ID_Teacher, ID_Availability, ACTIVE)
-                    VALUES (?, ?, ?, ?, ?)
-                    """, teacher_availability)
+                VALUES (?, ?, ?)
+                """, teacher_availability)
         conn.commit()
         return jsonify({'status': 'success'})
     except Exception as e:
         conn.rollback()
+        print("Error:", e)  # Print the error
         return jsonify({'status': 'error', 'message': str(e)})
     finally:
         conn.close()
