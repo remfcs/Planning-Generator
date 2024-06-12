@@ -1482,7 +1482,7 @@ def export_lv2():
         return jsonify({"message": f"All LV2 files have been exported to {EXPORT_FOLDER}"})
     else:
         if not niveau:
-            return "Niveau is required", 400
+            return jsonify({"error": "Niveau is required"}), 400
 
         output = create_lv2_excel(niveau)
         file_name = f"LV2_{niveau}.xlsx"

@@ -17,6 +17,9 @@
 </head>
 
 <body>
+    <div id="logo-container">
+        <img src="./data/Logo_Planning_Taylor.png" alt="Logo" id="logo">
+    </div>
     <div id="sidebar-container"></div>
 
     <div class="text-left" style="position: relative; margin: 70px;">
@@ -90,7 +93,8 @@
         <div class="content" id="delete-student-form" style="display:none;">
             <h2>Delete a student</h2>
             <div>
-                <input type="text" id="student-search-input" placeholder="Type the name of the student you want to delete...">
+                <input type="text" id="student-search-input"
+                    placeholder="Type the name of the student you want to delete...">
             </div>
             <select id="mySelectDelete">
                 <option value="">Select a Student</option>
@@ -109,7 +113,8 @@
         <div class="content" id="change-student-class-form" style="display:none;">
             <h2>Change a student of class</h2>
             <div>
-                <input type="text" id="student-search-change" placeholder="Type the name of the student you want to change the class...">
+                <input type="text" id="student-search-change"
+                    placeholder="Type the name of the student you want to change the class...">
             </div>
             <select id="mySelectChange">
                 <option value="">Select a Student</option>
@@ -129,7 +134,7 @@
                 <label for="english-course">English course</label>
                 <input type="radio" id="lv2-course-student" name="course" value="lv2">
                 <label for="lv2-course">LV2 Course</label>
-            </div> 
+            </div>
             <div><select id="mySelect-class" style="display:none;"></select></div>
             <div><button id="change-student-button" disabled>Change the class</button></div>
         </div>
@@ -148,56 +153,56 @@
                     <option value="ALLEMAND">German</option>
                     <option value="CHINOIS">Chinese</option>
                 </select>
-                
+
                 <h4>Availabilities</h4> <br>
-                        <div id="availability-section" class="availability-section">
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Monday Morning"> Monday
-                                    Morning</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Monday Afternoon"> Monday
-                                    Afternoon</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Tuesday Morning"> Tuesday
-                                    Morning</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Tuesday Afternoon"> Tuesday
-                                    Afternoon</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Wednesday Morning"> Wednesday
-                                    Morning</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Wednesday Afternoon"> Wednesday
-                                    Afternoon</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Thursday Morning"> Thursday
-                                    Morning</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Thursday Afternoon"> Thursday
-                                    Afternoon</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Friday Morning"> Friday
-                                    Morning</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Friday Afternoon"> Friday
-                                    Afternoon</label>
-                            </div>
-                            <div class="availability-slot">
-                                <label><input type="checkbox" class="day-time" value="Saturday Morning"> Saturday
-                                    Morning</label>
-                            </div>
-                        </div>
-                    
-                        <div><button id="create-teacher" disabled>Add a new teacher</button></div>
+                <div id="availability-section" class="availability-section">
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Monday Morning"> Monday
+                            Morning</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Monday Afternoon"> Monday
+                            Afternoon</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Tuesday Morning"> Tuesday
+                            Morning</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Tuesday Afternoon"> Tuesday
+                            Afternoon</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Wednesday Morning"> Wednesday
+                            Morning</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Wednesday Afternoon"> Wednesday
+                            Afternoon</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Thursday Morning"> Thursday
+                            Morning</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Thursday Afternoon"> Thursday
+                            Afternoon</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Friday Morning"> Friday
+                            Morning</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Friday Afternoon"> Friday
+                            Afternoon</label>
+                    </div>
+                    <div class="availability-slot">
+                        <label><input type="checkbox" class="day-time" value="Saturday Morning"> Saturday
+                            Morning</label>
+                    </div>
+                </div>
+
+                <div><button id="create-teacher" disabled>Add a new teacher</button></div>
                 <button type="reset" class="btn btn-secondary">Reset</button>
             </form>
         </div>

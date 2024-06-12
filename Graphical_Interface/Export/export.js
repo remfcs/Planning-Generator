@@ -63,6 +63,22 @@ $(document).ready(function () {
         var promotion = $('#promotionSelect').val();
         var exportAll = (promotion === 'all');
         var url = exportAll ? `/export_lv2?export_all=true` : `/export_lv2?niveau=${promotion}`;
-        window.location.href = url;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                alert(response.message);
+                if (response.file_path) {
+                    const link = document.createElement('a');
+                    link.href = response.file_path;
+                    link.download = response.file_path.split('/').pop();
+                    link.click();
+                }
+            },
+            error: function (xhr, status, error) {
+                var err = JSON.parse(xhr.responseText);
+                alert(err.error || 'An error occurred while exporting.');
+            }
+        });
     });
 });

@@ -40,3 +40,23 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #f1f1f1;
 }
+
+.margin-top-large {
+    margin-top: 200px;
+    /* Adjust the value as needed */
+    margin-left: 80px;
+}
+
+#logo-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    /* S'assurer qu'il reste au-dessus des autres éléments */
+}
+
+#logo {
+    max-width: 100px;
+    /* Ajustez la taille du logo selon vos besoins */
+    height: auto;
+}
