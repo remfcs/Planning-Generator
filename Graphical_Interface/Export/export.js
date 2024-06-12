@@ -26,7 +26,23 @@ $(document).ready(function () {
             url += `&exportAll=true`;
         }
 
-        window.location.href = url;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                alert(response.message);
+                if (response.file_path) {
+                    const link = document.createElement('a');
+                    link.href = response.file_path;
+                    link.download = response.file_path.split('/').pop();
+                    link.click();
+                }
+            },
+            error: function (xhr, status, error) {
+                var err = JSON.parse(xhr.responseText);
+                alert(err.error || 'An error occurred while exporting.');
+            }
+        });
     });
 
     $('#exportProfessorButton').click(function () {
@@ -41,13 +57,45 @@ $(document).ready(function () {
             url += `&exportAll=true`;
         }
 
-        window.location.href = url;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                alert(response.message);
+                if (response.file_path) {
+                    const link = document.createElement('a');
+                    link.href = response.file_path;
+                    link.download = response.file_path.split('/').pop();
+                    link.click();
+                }
+            },
+            error: function (xhr, status, error) {
+                var err = JSON.parse(xhr.responseText);
+                alert(err.error || 'An error occurred while exporting.');
+            }
+        });
     });
 
     $('#exportLV1Button').click(function () {
         var fileType = 'xlsx'; // Change to 'xlsx'
         var url = `/export_lv1?fileType=${fileType}`;
-        window.location.href = url;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                alert(response.message);
+                if (response.file_path) {
+                    const link = document.createElement('a');
+                    link.href = response.file_path;
+                    link.download = response.file_path.split('/').pop();
+                    link.click();
+                }
+            },
+            error: function (xhr, status, error) {
+                var err = JSON.parse(xhr.responseText);
+                alert(err.error || 'An error occurred while exporting.');
+            }
+        });
     });
 
     // Populate dynamically the options for promotions

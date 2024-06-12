@@ -879,61 +879,64 @@ def get_professors_with_groups():
 
 def generate_professors_csv():
     professors = get_professors()
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
+    file_path = os.path.join(EXPORT_FOLDER, 'professors_list.csv')
+    
+    with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
 
-    for professor in professors:
-        name, surname, email, subject, availability, groups = professor
+        for professor in professors:
+            name, surname, email, subject, availability, groups = professor
 
-        # Process availability
-        availability = availability.replace(",", ", ") if availability else ""
+            # Process availability
+            availability = availability.replace(",", ", ") if availability else ""
 
-        # Fetch groups and schedules for the professor
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT C.ID_GROUP, A.Day, A.Hour
-            FROM Courses C
-            JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
-            WHERE C.ID_Teacher = (SELECT ID_Teacher FROM Teachers WHERE name = ? AND surname = ?)
-        """, (name, surname))
-        group_schedules = cursor.fetchall()
-        conn.close()
+            # Fetch groups and schedules for the professor
+            conn = sqlite3.connect(DATABASE_PATH)
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT C.ID_GROUP, A.Day, A.Hour
+                FROM Courses C
+                JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+                WHERE C.ID_Teacher = (SELECT ID_Teacher FROM Teachers WHERE name = ? AND surname = ?)
+            """, (name, surname))
+            group_schedules = cursor.fetchall()
+            conn.close()
 
-        if group_schedules:
-            formatted_groups = []
-            for group_id, day, time in group_schedules:
-                formatted_group = f"{group_id} ({day} {time})"
-                formatted_groups.append(formatted_group)
+            if group_schedules:
+                formatted_groups = []
+                for group_id, day, time in group_schedules:
+                    formatted_group = f"{group_id} ({day} {time})"
+                    formatted_groups.append(formatted_group)
 
-            # Remove duplicates while preserving order
-            unique_groups = list(dict.fromkeys(formatted_groups))
-            groups = ', '.join(unique_groups)
-        else:
-            groups = ""
+                # Remove duplicates while preserving order
+                unique_groups = list(dict.fromkeys(formatted_groups))
+                groups = ', '.join(unique_groups)
+            else:
+                groups = ""
 
-        writer.writerow([name, surname, email, subject, availability, groups])
+            writer.writerow([name, surname, email, subject, availability, groups])
 
-    output.seek(0)
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = 'attachment; filename=professors_list.csv'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
+    logging.debug(f"File saved to {file_path}")
+    return f"CSV file saved at {file_path}", 200
 
 def generate_group_csv(group_id):
     students = get_student_details(group_lv1=group_id)
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
-    for student in students:
-        writer.writerow([student["Surname"], student["Name"], student["Email"], student["Class"], student["GROUP_LV1"], student["Language"], student["TeacherName"], student["TeacherSurname"]])
-    output.seek(0)
-    response = make_response(output.getvalue())
-    logging.debug(f"Setting Content-Disposition header for group {group_id}")
-    response.headers['Content-Disposition'] = f'attachment; filename="group_{group_id}.csv"'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
+    # Définir le chemin complet du fichier CSV
+    file_path = os.path.join(EXPORT_FOLDER, f'group_{group_id}.csv')
+    
+    # Ouvrir le fichier pour écriture
+    with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        
+        # Écriture des en-têtes de colonnes dans le CSV
+        writer.writerow(["Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname"])
+        
+        # Écriture des détails des étudiants dans le CSV
+        for student in students:
+            writer.writerow([student["Surname"], student["Name"], student["Email"], student["Class"], student["GROUP_LV1"], student["Language"], student["TeacherName"], student["TeacherSurname"]])
+    
+    return file_path
 
 def export_all_groups_csv():
     response = get_groups()
@@ -946,42 +949,41 @@ def export_all_groups_csv():
         logging.error("No groups found")
         return "No groups found", 400
 
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname", "Day", "Time"])
+    file_path = os.path.join(EXPORT_FOLDER, 'all_groups.csv')
+    
+    with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["GroupID", "Surname", "Name", "Email", "Class", "GROUP_LV1", "Language", "TeacherName", "TeacherSurname", "Day", "Time"])
 
-    for group in groups:
-        students = get_student_details(group_lv1=group)
-        for student in students:
-            teacher_name = student.get('TeacherName', 'Unknown')
-            teacher_surname = student.get('TeacherSurname', 'Unknown')
+        for group in groups:
+            students = get_student_details(group_lv1=group)
+            for student in students:
+                teacher_name = student.get('TeacherName', 'Unknown')
+                teacher_surname = student.get('TeacherSurname', 'Unknown')
 
-            # Fetch the day and time from the Courses and Availabilities tables
-            conn = sqlite3.connect(DATABASE_PATH)
-            cursor = conn.cursor()
-            cursor.execute("""
-                SELECT A.Day, A.Hour
-                FROM Courses C
-                JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
-                WHERE C.ID_GROUP = ?
-            """, (student['GROUP_LV1'],))
-            availability = cursor.fetchone()
-            conn.close()
+                # Fetch the day and time from the Courses and Availabilities tables
+                conn = sqlite3.connect(DATABASE_PATH)
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT A.Day, A.Hour
+                    FROM Courses C
+                    JOIN Availabilities A ON C.ID_Availability = A.ID_Availability
+                    WHERE C.ID_GROUP = ?
+                """, (student['GROUP_LV1'],))
+                availability = cursor.fetchone()
+                conn.close()
 
-            if availability:
-                day = availability[0]
-                time = availability[1]
-            else:
-                day = 'Unknown'
-                time = 'Unknown'
+                if availability:
+                    day = availability[0]
+                    time = availability[1]
+                else:
+                    day = 'Unknown'
+                    time = 'Unknown'
 
-            writer.writerow([group, student['Surname'], student['Name'], student['Email'], student['Class'], student['GROUP_LV1'], student['Language'], teacher_name, teacher_surname, day, time])
+                writer.writerow([group, student['Surname'], student['Name'], student['Email'], student['Class'], student['GROUP_LV1'], student['Language'], teacher_name, teacher_surname, day, time])
 
-    output.seek(0)
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = 'attachment; filename=all_groups.csv'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
+    logging.debug(f"File saved to {file_path}")
+    return f"CSV file saved at {file_path}", 200
 
 def generate_professor_csv(professor_name):
     professor_details = get_professor_details(professor_name)
@@ -990,43 +992,43 @@ def generate_professor_csv(professor_name):
 
     print(f"Professor details for {professor_name}: {professor_details}")  # Debug print
 
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
+    # Définir le chemin complet du fichier CSV
+    file_path = os.path.join(EXPORT_FOLDER, f'professor_{professor_name}.csv')
+    
+    with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Name", "Surname", "Email", "Subject", "Availability", "Groups"])
 
-    # Since professor_details is a dictionary, we directly extract the fields
-    name = professor_details.get('name')
-    surname = professor_details.get('surname')
-    email = professor_details.get('email')
-    subject = professor_details.get('subject')
-    availability = professor_details.get('availability', '')
+        # Since professor_details is a dictionary, we directly extract the fields
+        name = professor_details.get('name')
+        surname = professor_details.get('surname')
+        email = professor_details.get('email')
+        subject = professor_details.get('subject')
+        availability = professor_details.get('availability', '')
 
-    # Process availability
-    availability = availability.replace(",", ", ") if availability else ""
+        # Process availability
+        availability = availability.replace(",", ", ") if availability else ""
 
-    # Fetch and process groups
-    groups = get_professor_groups(professor_name)
-    print(f"Groups for {professor_name}: {groups}")  # Debug print
+        # Fetch and process groups
+        groups = get_professor_groups(professor_name)
+        print(f"Groups for {professor_name}: {groups}")  # Debug print
 
-    # Create a dictionary to store each group and its unique time slot
-    group_dict = {}
-    for group in groups:
-        group_name = group[0]
-        group_time = f"{group[1]} {group[2]}"
-        group_dict[group_name] = group_time
+        # Create a dictionary to store each group and its unique time slot
+        group_dict = {}
+        for group in groups:
+            group_name = group[0]
+            group_time = f"{group[1]} {group[2]}"
+            group_dict[group_name] = group_time
 
-    # Convert the dictionary to a list of unique groups with their times
-    unique_groups = [f"{group} ({time})" for group, time in group_dict.items()]
+        # Convert the dictionary to a list of unique groups with their times
+        unique_groups = [f"{group} ({time})" for group, time in group_dict.items()]
 
-    groups_str = ', '.join(unique_groups)
+        groups_str = ', '.join(unique_groups)
 
-    writer.writerow([name, surname, email, subject, availability, groups_str])
+        writer.writerow([name, surname, email, subject, availability, groups_str])
 
-    output.seek(0)
-    response = make_response(output.getvalue())
-    response.headers['Content-Disposition'] = f'attachment; filename=professor_{professor_name}.csv'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
+    logging.debug(f"File saved to {file_path}")
+    return f"CSV file saved at {file_path}", 200
 
 def generate_group_pdf(group_id):
     students = get_student_details(group_lv1=group_id)
@@ -1364,9 +1366,12 @@ def export_lv1():
     # Tronquez l'année pour n'afficher que les deux derniers chiffres
     df['Year'] = df['Year'].apply(lambda x: x[-2:])
     
-    # Créez un fichier Excel en mémoire
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+    # Créez le nom du fichier
+    filename = f"MMANGLLA01_{current_year}_{next_year}.xlsx"
+    file_path = os.path.join(EXPORT_FOLDER, filename)
+    
+    # Enregistrez le fichier Excel sur le disque
+    with pd.ExcelWriter(file_path, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='LV1')
         
         # Obtenez l'objet de la feuille de calcul
@@ -1376,16 +1381,6 @@ def export_lv1():
         for i, col in enumerate(df.columns):
             max_length = max(df[col].astype(str).map(len).max(), len(col))
             worksheet.set_column(i, i, int(max_length) + 2)
-
-    output.seek(0)
-    
-    # Créez le nom du fichier
-    filename = f"MMANGLLA01_{current_year}_{next_year}.xlsx"
-    file_path = os.path.join(EXPORT_FOLDER, filename)
-    
-    # Enregistrez le fichier sur le disque
-    with open(file_path, 'wb') as f:
-        f.write(output.getbuffer())
     
     # Envoyez le fichier Excel en réponse
     return send_file(
