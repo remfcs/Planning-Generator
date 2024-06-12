@@ -13,6 +13,7 @@ The genesis of the project came directly from the identified need by Mary Stephe
 3. [Features](#features)
 4. [File Structure](#file-structure)
 5. [Testing](#testing)
+6. [Improvement ideas](#improvement ideas)
 
 ## Installation
 To install this project & the dependencies, follow these steps:
@@ -53,19 +54,25 @@ To install this project & the dependencies, follow these steps:
 
 ## Features
 
-- Dans input_info:
-Nom	Prénom	Mail	Programme
-Un fichier avec ses noms de colonnes doit être mis dans input_info
-Le nom de ce fichier doit être Student_Info.xlsx
+* Format of the file 
+    ### Upload files with students, promotion and LV2
+    
+        | Name of the file       | Column name needed in the file     |            |              |                    |
+        |------------------------|------------------------------------|------------|--------------|--------------------|
+        | **Student_Info**       | Nom                                | Prénom     | Mail         | Programme          |
+        |                        | + format of the file               |            |              |                    |
+        | **Student_Sondage_LV2**| Nom                                | Prénom     | Mail         | Langues            |
+        |                        | + format of the file               |            |              |                    |
 
-- Mail Langues
-Un deuxième fichier Doit être mis dans input_info: Student_Sondage_LV2
-Langues correspond à la LV2
 
-- Dans input_notes:
-les fichiers doivent s'appeler : Espagnol.xlsx Anglais.xlsx Allemand.xlsx Espagnol_TT.xlsx Anglais_TT.xlsx Allemand_TT.xlsx 
-Nom	Prénom	Mail	État	Note/10,00
-Ces 4 colonnes apparaissent
+    ### Upload files of the students marks in LV1 and LV2
+
+        | Name of the file       | Column name needed in the file     |            |              |                    |
+        |------------------------|------------------------------------|------------|--------------|--------------------|
+        | **Espagnol or Anglais or Allemand** | Nom                  | Prénom     | Mail         | État               |
+        |                        | + "_TT" if it’s extra-time         |            |              | Note/10,00         |
+        |                        | + format of the file               |            |              |                    |
+
 
 
 ## File Structure
@@ -161,3 +168,7 @@ Ces 4 colonnes apparaissent
 - Error Handling Tests
     * Error Message Test: Verify that appropriate and informative error messages are returned for invalid inputs or exceptional situations.
     * Recovery Test: Test the algorithm’s ability to recover from errors or unexpected situations without crashing.
+
+
+## Improvement ideas
+
