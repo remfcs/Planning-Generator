@@ -12,9 +12,10 @@ The genesis of the project came directly from the identified need by Mary Stephe
 2. [Usage](#usage)
 3. [Features](#features)
 4. [File Structure](#file-structure)
-5. [Testing](#testing)
-6. [Improvement ideas](#Improvement-ideas)
-7. [Contributors](#Contributors)
+5. [Responsibility report](#Responsibility-report)
+6. [Testing](#testing)
+7. [Improvement ideas](#Improvement-ideas)
+8. [Contributors](#Contributors)
 
 ## Installation
 To install this project & the dependencies, follow these steps:
@@ -148,6 +149,11 @@ To install this project & the dependencies, follow these steps:
         ├── README.md
         └── [Other folders]
     ```
+
+## Responsibility report
+
+
+
 
 ## Testing
 
