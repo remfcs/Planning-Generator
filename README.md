@@ -57,24 +57,31 @@ To install this project & the dependencies, follow these steps:
 * Format of the file 
     ### Upload files with students, promotion and LV2
 
-    |-----------------------------------|-------------|-------------|--------------|--------------------|
-    | __Name of the file__              |       Student_Info        |     + format of the file          |
-    |-----------------------------------|-------------|-------------|--------------|--------------------|
-    |__Column name needed in the file__ |  Nom        |  Prénom     |  Mail        |  Programme         |
-    |-----------------------------------|-------------|-------------|--------------|--------------------|
-    |-----------------------------------|-------------|-------------|--------------|--------------------|
-    | __Name of the file__              |   Student_Sondage_LV2     |     + format of the file          |
-    |-----------------------------------|-------------|-------------|--------------|--------------------|
-    |__Column name needed in the file__ |  Nom        |  Prénom     |  Mail        |  Langues           |
-    |-----------------------------------|-------------|-------------|--------------|--------------------|
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Name of the file                  |       Student_Info        |     + format of the file          |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Column name needed in the file    |  Nom        |  Prénom     |  Mail        |  Programme         |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Name of the file                  |   Student_Sondage_LV2     |     + format of the file          |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Column name needed in the file    |  Nom        |  Prénom     |  Mail        |  Langues           |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
 
     ### Upload files of the students marks in LV1 and LV2
 
-    |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
-    | __Name of the file__              |   Espagnol or Anglais or Allemand  | + "_TT" if it’s extra-time | + format of the file   |
-    |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
-    |__Column name needed in the file__ |  Nom     |  Prénom   |  Mail       |   État                     |   Note/10,00           |
-    |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
+        |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
+        | Name of the file                  |   Espagnol or Anglais or Allemand  | + "_TT" if it’s extra-time | + format of the file   |
+        |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
+        | Column name needed in the file    |  Nom     |  Prénom   |  Mail       |   État                     |   Note/10,00           |
+        |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
+
+* Other input
+
+    - Number of slots in a day : It's the number of courses possible in a day, currently it is 6.
+    - Promotions and Levels Availabilities : Click on the half-days available.
+    - Manage Teachers : Import the teachers with their details and availabilities in half-days like the student. 
+
 
 ## File Structure
     ``` 
@@ -173,3 +180,12 @@ To install this project & the dependencies, follow these steps:
 
 ## Improvement ideas
 
+- User Interface part:
+    - Create a visual planning for the User interface instead of a table with all the data inside.
+    - Add some other features for the selection table and resolve the few last bug.
+
+- Algorithm part:   
+    - Associate the rooms with groups and teachers.
+    - Make the pop-up and local host open only once instead of two.
+    - Send the output automatically to the teachers concerned by mail.
+    - Add a button to turn off the server in local when we close the page.
