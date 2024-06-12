@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 studentDetails.style.display = 'none';
                 buttonDelete.setAttribute('disabled', 'disabled');
                 searchStudent.value = '';
-                selectedStudent.value = '';
+                studentSelect.value = '';
             }
         })
         .catch((error) => {
@@ -326,6 +326,92 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchStudentChange = document.getElementById('student-search-change');
     const studentSelectChange = document.getElementById('mySelectChange');
     const buttonChange = document.getElementById('change-student-button');
+    const studentClassChange = document.getElementById('student-class-change');
+    const groupChanged = document.getElementById('mySelect-class');
+    const englishCourseRadioButton = document.getElementById('english-course-student');
+    const lv2CourseRadioButton = document.getElementById('lv2-course-student');
+    const student_english_change = document.getElementById('student-english-change');
+    const student_lv2_change = document.getElementById('student-lv2-change');
+    const student_promo_change = document.getElementById('student-promo-change');
+    const buttonReset = document.getElementById('reset-change-student-form');
+
+    function toggleMySelectClassDisplay() {
+        let selectElement = document.getElementById('mySelect-class');
+        selectElement.innerHTML = ''; // Clear existing options
+    
+        if (englishCourseRadioButton.checked) {
+            selectElement.style.display = 'block';
+            let option = document.createElement('option');
+            option.value = student_english_change.textContent;
+            option.textContent = student_english_change.textContent;
+            selectElement.appendChild(option);
+    
+            fetch(`/groups/${student_promo_change.textContent}/ANG`)
+                .then(response => response.json())
+                .then(groups => {
+                    groups.forEach(group => {
+                        const groupName = group.ID_GROUP;
+                        if(student_english_change.textContent !== groupName){
+                            const studentCount = group.student_count;
+                            const courseName = group.ID_COURSE;
+                            // Create and append option element
+                            const option2 = document.createElement('option');
+                            option2.value = courseName;
+                            option2.textContent = `${groupName} (${studentCount} students)`;
+                            selectElement.appendChild(option2);
+                            const timeslot = student_lv2_change.textContent.slice(-3);
+                            const timeslot2 = groupName.slice(-3);
+                            if (timeslot === timeslot2) {
+                                option2.disabled = true;
+                            }
+                        }
+                    });
+                });
+        } else if (lv2CourseRadioButton.checked) {
+            selectElement.style.display = 'block';
+            let option = document.createElement('option');
+            option.value = student_lv2_change.textContent;
+            option.textContent = student_lv2_change.textContent;
+            selectElement.appendChild(option);
+    
+            let student_lv2_class2 = '';
+            if(student_lv2_change.textContent.substring(0, 2)==='ES'){
+                student_lv2_class2 = 'ESP'
+            }
+            if(student_lv2_change.textContent.substring(0, 2)==='AL'){
+                student_lv2_class2 = 'ALL'
+            }
+            if(student_lv2_change.textContent.substring(0, 2)==='CH'){
+                student_lv2_class2 = 'CHI'
+            }
+            fetch(`/groups/${student_promo_change.textContent}/${student_lv2_class2}`)
+                .then(response => response.json())
+                .then(groups => {
+                    groups.forEach(group => {
+                        const groupName = group.ID_GROUP;
+                        if(student_lv2_change.textContent !== groupName){
+                            const studentCount = group.student_count;
+                            const courseName = group.ID_COURSE;
+                            // Create and append option element
+                            const option2 = document.createElement('option');
+                            option2.value = courseName;
+                            option2.textContent = `${groupName} (${studentCount} students)`;
+                            selectElement.appendChild(option2);
+                            const timeslot = student_lv2_change.textContent.slice(-3);
+                            const timeslot2 = groupName.slice(-3);
+                            if (timeslot === timeslot2) {
+                                option2.disabled = true;
+                            }
+                        }
+                    });
+                });
+        } else {
+            selectElement.style.display = 'none';
+        }
+    }
+
+    englishCourseRadioButton.addEventListener('change', toggleMySelectClassDisplay);
+    lv2CourseRadioButton.addEventListener('change', toggleMySelectClassDisplay);
 
     searchStudentChange.addEventListener('change', (event) => {
         let studentSearchedChange = event.target.value;
@@ -341,7 +427,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 studentSelectChange.add(defaultOption);
                 let addedEmails = {};
                 students.forEach(student => {
-                    console.log(student);
                     nameStudent = student.Surname.toLowerCase()
                     if(nameStudent.startsWith(studentSearchedChange) && !addedEmails[student.Email]) {
                             let option = document.createElement('option');
@@ -375,76 +460,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById('student-email-change').textContent = student.Email;
                             document.getElementById('student-english-change').textContent = student_english_class;
                             document.getElementById('student-lv2-change').textContent = student_lv2_class;
-                            document.getElementById('student-class-change').style.display = 'block';
-                            let selectElement = document.getElementById('mySelect-class');
-                            selectElement.innerHTML = '';
-                            const englishCourseRadioButton = document.getElementById('english-course-student');
-                            const lv2CourseRadioButton = document.getElementById('lv2-course-student');
-                            console.log(document.getElementById('english-course-student').checked)
-                            if(englishCourseRadioButton.checked) {
-                                selectElement.style.display = 'block';
-                                let option = document.createElement('option');
-                                option.value = student_english_class;
-                                option.textContent = student_english_class;
-                                selectElement.appendChild(option);
-                                fetch(`/groups/${student.Class}/ANG`)
-                                    .then(response => response.json())
-                                    .then(groups => {
-                                        groups.forEach(group => {
-                                            const groupName = group.ID_GROUP;
-                                            const studentCount = group.student_count;
-                                            const courseName = group.ID_COURSE;
-                                            // Create and append option element
-                                            const option2 = document.createElement('option');
-                                            option2.value = courseName;
-                                            option2.textContent = `${groupName} (${studentCount} students)`;
-                                            selectElement.appendChild(option2);
-                                            const timeslot = student_lv2_class.slice(-3);
-                                            const timeslot2 = groupName.slice(-3);
-                                            if (timeslot === timeslot2) {
-                                                option.disabled = true;
-                                            }
-                                        });
-                                    })
-                            }
-                            if(document.getElementById('lv2-course-student').checked){
-                                selectElement.style.display = 'block';
-                                let option = document.createElement('option');
-                                option.value = student_lv2_class;
-                                option.textContent = student_lv2_class;
-                                selectElement.appendChild(option);
-                                if(student_lv2_class.substring(0, 2)==='ES'){
-                                    const student_lv2_class2 = 'ESP'
-                                }
-                                if(student_lv2_class.substring(0, 2)==='AL'){
-                                    const student_lv2_class2 = 'ALL'
-                                }
-                                if(student_lv2_class.substring(0, 2)==='CH'){
-                                    const student_lv2_class2 = 'CHI'
-                                }
-                                fetch(`/groups/${student.Class}/${student_lv2_class2}`)
-                                    .then(response => response.json())
-                                    .then(groups => {
-                                        groups.forEach(group => {
-                                            const groupName = group.ID_GROUP;
-                                            const studentCount = group.student_count;
-                                            const courseName = group.ID_COURSE;
-                                            // Create and append option element
-                                            const option2 = document.createElement('option');
-                                            option2.value = courseName;
-                                            option2.textContent = `${groupName} (${studentCount} students)`;
-                                            selectElement.appendChild(option2);
-                                            const timeslot = student_english_class.slice(-3);
-                                            const timeslot2 = groupName.slice(-3);
-                                            if (timeslot === timeslot2) {
-                                                option.disabled = true;
-                                            }
-                                        });
-                                    })
-                            }
+                            studentClassChange.style.display = 'block';
+                            toggleMySelectClassDisplay();
                             buttonChange.removeAttribute('disabled');
-                        }
-                        if (!student) {
+                        } else {
                             studentDetailsChange.style.display = 'none';
                             buttonDelete.setAttribute('disabled', 'disabled');
                         }
@@ -452,13 +471,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
-    const groupChanged = document.getElementById('mySelect-class');
-    const studentClassChange = document.getElementById('student-class-change');
-
     buttonChange.addEventListener('click', function() {
         const data_change = {
             group: groupChanged.value,
-            email: document.getElementById('student-promo-change').textContent
+            email: document.getElementById('student-email-change').textContent
         };
         fetch('/changeGroup', {
             method: 'POST',
@@ -480,12 +496,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 selectElement.innerHTML = '<option value="">Select a Student</option>';
                 buttonChange.setAttribute('disabled', 'disabled');
                 searchStudent.value = '';
-                selectedStudent.value = '';
+                studentSelectChange.value = '';
             }
         })
         .catch((error) => {
             console.error('Error:', error);
         });
+    });
+
+    buttonReset.addEventListener('click', function() {
+        // Clear all the fields
+        searchStudentChange.value = '';
+        studentSelectChange.innerHTML = '<option value="">Select a Student</option>';
+        studentDetailsChange.style.display = 'none';
+        studentClassChange.style.display = 'none';
+        groupChanged.innerHTML = '';
+        groupChanged.style.display = 'none';
+        englishCourseRadioButton.checked = false;
+        lv2CourseRadioButton.checked = false;
+        buttonChange.setAttribute('disabled', 'disabled');
     });
 
     const buttonCreate = document.getElementById('create-teacher');

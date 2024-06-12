@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     option.textContent = group;
                     groupSelect.appendChild(option);
                 });
+                applyFilters();
             })
             .catch(error => {
                 console.error('Error fetching groups:', error);
@@ -142,6 +143,11 @@ document.addEventListener('DOMContentLoaded', function () {
         applyFilters();
     });
 
+    function updateStudentCount(count) {
+        const studentCountDiv = document.getElementById('studentCount');
+        studentCountDiv.textContent = `Total Students: ${count}`;
+    }
+
     function populateStudentTable(data) {
         const studentList = document.getElementById('studentList');
         studentList.innerHTML = '';
@@ -198,6 +204,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         table.appendChild(tbody);
         studentList.appendChild(table);
+
+        // Update the student count
+        updateStudentCount(data.length);
     }
 
     function applyFilters() {
@@ -218,6 +227,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 console.log('Filtered student data:', data);
                 populateStudentTable(data);
+                // Update the student count
+                updateStudentCount(data.length);
             });
     }
 
