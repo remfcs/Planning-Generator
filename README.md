@@ -58,7 +58,7 @@ To install this project & the dependencies, follow these steps:
     ### Upload files with students, promotion and LV2
 
         |-----------------------------------|-------------|-------------|--------------|--------------------|
-        | __Name of the file__              |       Student_Info        |     + format of the file          |
+        | **Name of the file**              |       Student_Info        |     + format of the file          |
         |-----------------------------------|-------------|-------------|--------------|--------------------|
         | Column name needed in the file    |  Nom        |  Prénom     |  Mail        |  Programme         |
         |-----------------------------------|-------------|-------------|--------------|--------------------|
