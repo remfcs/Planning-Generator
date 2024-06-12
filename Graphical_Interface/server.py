@@ -629,6 +629,97 @@ def add_teacher_availability():
     finally:
         conn.close()
 
+@app.route('/returnTeachers')
+def get_teachers_to_switch():
+    language = request.args.get('language')
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    query = """
+    SELECT ID_TEACHER, NAME, SURNAME, MAIL
+    FROM Teachers 
+    WHERE SUBJECT = ?
+    """
+    cursor.execute(query, (language,))
+    teachers = cursor.fetchall()
+    conn.close()
+    return jsonify(teachers)
+
+@app.route('/returnGroup')
+def get_group_by_timeslot():
+    timeslot = request.args.get('timeslot')
+    id_teacher = request.args.get('id_teacher')
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    query = """
+    SELECT ID_COURSE, ID_GROUP
+    FROM Courses
+    WHERE ID_AVAILABILITY = ? AND ID_TEACHER = ?
+    """
+    cursor.execute(query, (timeslot, id_teacher))
+    course = cursor.fetchone()
+    conn.close()
+    return jsonify(course)
+
+@app.route('/returnAvailabilities')
+def get_availabilities():
+    id_teacher = request.args.get('id_teacher')
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    query = """
+    SELECT ID_Availability
+    FROM Availability_Teachers
+    WHERE ID_Teacher = ?
+    """
+    cursor.execute(query, (id_teacher,))
+    availabilities = cursor.fetchall()
+    print(availabilities)
+    conn.close()
+    return jsonify([availability[0] for availability in availabilities])
+
+@app.route('/switchTeachers', methods=['POST'])
+def switch_teachers():
+    data = request.get_json()
+    timeslot = data.get('timeslot')
+    first_teacher_id = data.get('firstTeacherId')
+    second_teacher_id = data.get('secondTeacherId')
+
+    try:
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+
+        # Fetch courses for both teachers at the given timeslot
+        cursor.execute("""
+        SELECT ID_COURSE FROM Courses WHERE ID_TEACHER = ? AND ID_AVAILABILITY = ?
+        """, (first_teacher_id, timeslot))
+        first_teacher_course = cursor.fetchone()
+
+        cursor.execute("""
+        SELECT ID_COURSE FROM Courses WHERE ID_TEACHER = ? AND ID_AVAILABILITY = ?
+        """, (second_teacher_id, timeslot))
+        second_teacher_course = cursor.fetchone()
+
+        # Update the courses to switch the teachers
+        if first_teacher_course and second_teacher_course:
+            cursor.execute("""
+            UPDATE Courses SET ID_TEACHER = ? WHERE ID_COURSE = ?
+            """, (second_teacher_id, first_teacher_course[0]))
+
+            cursor.execute("""
+            UPDATE Courses SET ID_TEACHER = ? WHERE ID_COURSE = ?
+            """, (first_teacher_id, second_teacher_course[0]))
+
+            conn.commit()
+            return jsonify({'status': 'success'})
+        else:
+            return jsonify({'status': 'error', 'message': 'One or both courses not found'}), 400
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+    finally:
+        conn.close()
+
 @app.route('/professors')
 def serve_professors_html():
     return send_from_directory('.', 'professors.html')

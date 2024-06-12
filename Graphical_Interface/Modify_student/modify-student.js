@@ -633,27 +633,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function loadTeachers(selectElement) {
         const language = languageSwitch.value;
+        const timeslot = timeslotSwitch.value;
         fetch(`/returnTeachers?language=${language}`)
             .then(response => response.json())
             .then(teachers => {
                 selectElement.innerHTML = '<option value="">Select a Teacher to switch</option>';
                 teachers.forEach(teacher => {
-                    fetch(`/returnTeachers?id_teacher=${teacher[0]}`)
+                    fetch(`/returnAvailabilities?id_teacher=${teacher[0]}`)
                         .then(response => response.json())
                         .then(availabilities => {
+                            console.log(availabilities);
                             const option = document.createElement('option');
                             option.value = teacher[0];
                             option.textContent = `${teacher[2]} ${teacher[1]}`;
                             selectElement.appendChild(option);
-                            availabilities.forEach(availability => {
-                                let cpt = 0;
-                                if (availability !== timeslotSwitch.value) {
-                                    cpt = cpt + 1;
-                                }
-                                if (cpt === availabilities.length) {
-                                    option.disabled = true;
-                                }
-                            });
+                            if (!availabilities.includes(timeslot)) {
+                                option.disabled = true;
+                            }
                         });
                 });
             })
