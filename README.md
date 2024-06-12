@@ -151,8 +151,11 @@ To install this project & the dependencies, follow these steps:
     ```
 
 ## Responsibility report
+- Law:
 
+- Ethic:
 
+- Environnemental impact:
 
 
 ## Testing
