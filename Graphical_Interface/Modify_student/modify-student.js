@@ -338,7 +338,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleMySelectClassDisplay() {
         let selectElement = document.getElementById('mySelect-class');
         selectElement.innerHTML = ''; // Clear existing options
-    
+        if (student_lv2_change.textContent === 'None') {
+            englishCourseRadioButton.checked = true;
+        }
         if (englishCourseRadioButton.checked) {
             selectElement.style.display = 'block';
             let option = document.createElement('option');
@@ -450,22 +452,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 fetch(`/students_groups?student_id=${studentEmail}`)
                     .then(response => response.json())
                     .then(groups => {
+                        const numberOfGroups = groups.length;
                         const student_english_class = groups[0][1];
-                        const student_lv2_class = groups[1][1];
-                        if (student) {
+                        if (numberOfGroups === 1) {
                             studentDetailsChange.style.display = 'block';
                             document.getElementById('student-name-change').textContent = student.Surname;
                             document.getElementById('student-firstname-change').textContent = student.Name;
                             document.getElementById('student-promo-change').textContent = student.Class;
                             document.getElementById('student-email-change').textContent = student.Email;
                             document.getElementById('student-english-change').textContent = student_english_class;
-                            document.getElementById('student-lv2-change').textContent = student_lv2_class;
-                            studentClassChange.style.display = 'block';
+                            document.getElementById('student-lv2-change').textContent = 'None';
                             toggleMySelectClassDisplay();
                             buttonChange.removeAttribute('disabled');
                         } else {
                             studentDetailsChange.style.display = 'none';
                             buttonDelete.setAttribute('disabled', 'disabled');
+                        }
+                        if (numberOfGroups === 2) {
+                            const student_lv2_class = groups[1][1];
+                            console.log(student_lv2_class);
+                            if (student) {
+                                studentDetailsChange.style.display = 'block';
+                                document.getElementById('student-name-change').textContent = student.Surname;
+                                document.getElementById('student-firstname-change').textContent = student.Name;
+                                document.getElementById('student-promo-change').textContent = student.Class;
+                                document.getElementById('student-email-change').textContent = student.Email;
+                                document.getElementById('student-english-change').textContent = student_english_class;
+                                document.getElementById('student-lv2-change').textContent = student_lv2_class;
+                                studentClassChange.style.display = 'block';
+                                toggleMySelectClassDisplay();
+                                buttonChange.removeAttribute('disabled');
+                            } else {
+                                studentDetailsChange.style.display = 'none';
+                                buttonDelete.setAttribute('disabled', 'disabled');
+                            }
                         }
                     });
             });
