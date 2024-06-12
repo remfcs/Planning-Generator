@@ -490,12 +490,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const buttonCreate = document.getElementById('create-teacher');
     const languageTeacher = document.getElementById('teacher-language');
+    const inputs = document.querySelectorAll('#add-teacher-form-inner input[type="text"], #add-teacher-form-inner input[type="email"], #add-teacher-form-inner select');
+    const checkboxes = document.querySelectorAll('.day-time');
 
-    buttonCreate.addEventListener('click', function() {
+    function updateButtonState() {
+        let inputsFilled = true;
+        inputs.forEach(function(input) {
+            if (!input.value) {
+                inputsFilled = false;
+            }
+        });
+
+        let languageSelected = document.getElementById('teacher-language').value !== 'Language';
+        let checkboxChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        buttonCreate.disabled = !(inputsFilled && languageSelected && checkboxChecked);
+    }
+
+    inputs.forEach(input => input.addEventListener('keyup', updateButtonState));
+    inputs.forEach(input => input.addEventListener('change', updateButtonState));
+    checkboxes.forEach(checkbox => checkbox.addEventListener('change', updateButtonState));
+
+    buttonCreate.addEventListener('click', function(event) {
+        event.preventDefault();
+        const checkedAvailabilities = [];
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                checkedAvailabilities.push(checkbox.value);
+            }
+        });
+        const teacherAvailabilities = {
+            id_teacher: `${document.getElementById('teacher-name').value.substring(0, 3)}_${languageTeacher.value.substring(0, 3)}`,
+            id_availability: checkedAvailabilities
+        }
         const data = {
-            id_teacher: `${student_lv2_class.substring(0, 3)}_${languageTeacher.substring(0, 3)}`,
+            id_teacher: `${document.getElementById('teacher-name').value.substring(0, 3)}_${languageTeacher.value.substring(0, 3)}`,
             name: document.getElementById('teacher-name').value,
-            firstname: document.getElementById('teacher-firstname').value,
+            surname: document.getElementById('teacher-firstname').value,
             email: document.getElementById('teacher-email').value,
             subject: languageTeacher.value
         };
@@ -514,7 +545,25 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log(data);
             if (data.status === 'success') {
-                alert("Teacher added successfully!");
+                fetch('/addTeacherAvailability', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(teacherAvailabilities),
+                })
+                .then(response =>{
+                    console.log("Response status: ", response.status);
+                    return response.json();
+                })
+                .then(data2 => {
+                    console.log(data2);
+                    if (data2.status === 'success') {
+                        alert("Teacher added successfully!");
+                    } else {
+                        alert("Error: " + data2.message);
+                    }
+                })
             } else {
                 alert("Error: " + data.message);
             }
