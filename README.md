@@ -151,7 +151,7 @@ To install this project & the dependencies, follow these steps:
     ```
 
 ## Responsibility report
-- Law: The application is hosted locally. All data handled by the application is processed in accordance with privacy laws, protecting the confidentiality and rights of individuals whose data is being used. 
+- Law: The application is hosted locally. All data handled by the application is processed in accordance with privacy laws, protecting the confidentiality and rights of individuals whose data is being used to respect the General Data Protection Regulation (GDPR). 
 
 - Ethic: The application does not take into account the gender or ethnicity of any student or teacher.
 
