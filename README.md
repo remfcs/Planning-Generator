@@ -57,13 +57,16 @@ To install this project & the dependencies, follow these steps:
 * Format of the file 
     ### Upload files with students, promotion and LV2
     
-        | Name of the file       | Column name needed in the file     |            |              |                    |
-        |------------------------|------------------------------------|------------|--------------|--------------------|
-        | **Student_Info**       | Nom                                | Prénom     | Mail         | Programme          |
-        |                        | + format of the file               |            |              |                    |
-        | **Student_Sondage_LV2**| Nom                                | Prénom     | Mail         | Langues            |
-        |                        | + format of the file               |            |              |                    |
-
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Name of the file                  |       Student_Info        |     + format of the file          |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Column name needed in the file    |    Nom      | Prénom      | Mail         | Programme          |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Name of the file                  |   Student_Sondage_LV2     |     + format of the file          |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
+        | Column name needed in the file    |    Nom      | Prénom      | Mail         | Langues.           |
+        |-----------------------------------|-------------|-------------|--------------|--------------------|
 
     ### Upload files of the students marks in LV1 and LV2
 
