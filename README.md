@@ -56,27 +56,25 @@ To install this project & the dependencies, follow these steps:
 
 * Format of the file 
     ### Upload files with students, promotion and LV2
-    
+
         |-----------------------------------|-------------|-------------|--------------|--------------------|
-        | Name of the file                  |       Student_Info        |     + format of the file          |
+        | __Name of the file__              |       Student_Info        |     + format of the file          |
         |-----------------------------------|-------------|-------------|--------------|--------------------|
-        | Column name needed in the file    |    Nom      | Prénom      | Mail         | Programme          |
+        | Column name needed in the file    |  Nom        |  Prénom     |  Mail        |  Programme         |
         |-----------------------------------|-------------|-------------|--------------|--------------------|
         |-----------------------------------|-------------|-------------|--------------|--------------------|
-        | Name of the file                  |   Student_Sondage_LV2     |     + format of the file          |
+        | __Name of the file__              |   Student_Sondage_LV2     |     + format of the file          |
         |-----------------------------------|-------------|-------------|--------------|--------------------|
-        | Column name needed in the file    |    Nom      | Prénom      | Mail         | Langues.           |
+        | Column name needed in the file    |  Nom        |  Prénom     |  Mail        |  Langues           |
         |-----------------------------------|-------------|-------------|--------------|--------------------|
 
     ### Upload files of the students marks in LV1 and LV2
 
-        | Name of the file       | Column name needed in the file     |            |              |                    |
-        |------------------------|------------------------------------|------------|--------------|--------------------|
-        | **Espagnol or Anglais or Allemand** | Nom                  | Prénom     | Mail         | État               |
-        |                        | + "_TT" if it’s extra-time         |            |              | Note/10,00         |
-        |                        | + format of the file               |            |              |                    |
-
-
+        |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
+        | __Name of the file__              |   Espagnol or Anglais or Allemand  | + "_TT" if it’s extra-time | + format of the file   |
+        |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
+        | Column name needed in the file    |  Nom     |  Prénom   |  Mail       |   État                     |   Note/10,00           |
+        |-----------------------------------|----------|-----------|-------------|----------------------------|------------------------|
 
 ## File Structure
     ``` 
