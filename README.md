@@ -194,9 +194,10 @@ To install this project & the dependencies, follow these steps:
 
 
 ## Contributors
-    - VERSION 1.0 (Project 4A, P2025):
-        - DUMAS DE LA ROQUE Marion
-        - FRANCIS Remy
-        - GIMOND Théo
-        - GOUTARD Léo
-        - SAMMUT Justine
+
+- VERSION 1.0 (Project 4A, P2025):
+    - DUMAS DE LA ROQUE Marion
+    - FRANCIS Remy
+    - GIMOND Théo
+    - GOUTARD Léo
+    - SAMMUT Justine
