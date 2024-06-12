@@ -9,6 +9,7 @@ echo Installation des modules nécessaires...
 pip install pdfkit
 pip install flask
 pip install pandas
+pip install xlsxwriter
 pip install numpy
 
 REM Exécuter le serveur
