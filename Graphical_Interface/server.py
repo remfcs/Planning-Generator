@@ -33,7 +33,7 @@ UPLOAD_FOLDER_INFO = os.path.join(UPLOAD_FOLDER, 'input_info')
 TEACHERS_JSON_PATH = os.path.join(UPLOAD_FOLDER, 'teachers.json')
 PROMO_AVAILABILITIES_PATH = os.path.join(UPLOAD_FOLDER, 'promo_availabilities.json')
 DATABASE_PATH = os.path.join(parent_folder, 'data', 'database.sqlite3')
-EXPORT_FOLDER = os.path.join(parent_folder, 'Student_Groups')
+EXPORT_FOLDER = os.path.join(parent_folder, 'Student_Group')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_FOLDER_INFO'] = UPLOAD_FOLDER_INFO
