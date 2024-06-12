@@ -13,7 +13,8 @@ The genesis of the project came directly from the identified need by Mary Stephe
 3. [Features](#features)
 4. [File Structure](#file-structure)
 5. [Testing](#testing)
-6. [Improvement ideas](#improvement ideas)
+6. [Improvement ideas](#Improvement-ideas)
+7. [Contributors](#Contributors)
 
 ## Installation
 To install this project & the dependencies, follow these steps:
@@ -110,10 +111,10 @@ To install this project & the dependencies, follow these steps:
         │   ├── backup_database.sqlites3        Backup Database
         │   └── database.sqlites3               Database
         │        
-        ├── dist/                               Folder with all the dependency libraries 
+        ├── dist/                               Folder with all the dependencies' libraries 
         │   └── [Other folders & files]         
         │
-        ├── env/                                Folder with all the dependency libraries 
+        ├── env/                                Folder with all file to install or update the dependencies
         │   └── [Other files]
         │
         ├── Graphical_Interface/  
@@ -183,9 +184,19 @@ To install this project & the dependencies, follow these steps:
 - User Interface part:
     - Create a visual planning for the User interface instead of a table with all the data inside.
     - Add some other features for the selection table and resolve the few last bug.
+    - Upgrade the import of data for the teachers.
 
 - Algorithm part:   
     - Associate the rooms with groups and teachers.
     - Make the pop-up and local host open only once instead of two.
     - Send the output automatically to the teachers concerned by mail.
     - Add a button to turn off the server in local when we close the page.
+
+
+## Contributors
+    - VERSION 1.0 (Project 4A, P2025):
+        - DUMAS DE LA ROQUE Marion
+        - FRANCIS Remy
+        - GIMOND Théo
+        - GOUTARD Léo
+        - SAMMUT Justine
