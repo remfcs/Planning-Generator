@@ -567,6 +567,69 @@ def change_group():
     finally:
         conn.close()
 
+@app.route('/addTeacher', methods=['POST'])
+def add_teacher():
+    data = request.get_json()
+    new_teacher = (
+        data['id_teacher'],
+        data['name'],
+        data['surname'],
+        data['email'],
+        data['subject'],
+    )
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            SELECT CASE WHEN EXISTS (
+            SELECT 1
+            FROM Teachers
+            WHERE ID_TEACHER = ?
+            ) THEN 'true' ELSE 'false' END
+            """, (data['id_teacher'],))
+        exists = cursor.fetchone()[0]
+        if exists == 'true':
+            return jsonify({'status': 'error', 'message': 'Teacher already exists'})
+        else:
+            cursor.execute("""
+                INSERT INTO Teachers (ID_TEACHER, NAME, SURNAME, MAIL, SUBJECT)
+                VALUES (?, ?, ?, ?, ?)
+                """, new_teacher)
+            conn.commit()
+            return jsonify({'status': 'success'})
+    finally:
+        conn.close()
+
+@app.route('/addTeacherAvailability', methods=['POST'])
+def add_teacher_availability():
+    data = request.get_json()
+    id_teacher = data['id_teacher']
+    id_availabilities = data['id_availability']
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    try:
+        for id_availability in id_availabilities:
+            base_id = id_availability[:4]
+            suffix = id_availability[-3:]
+            if suffix == "Mor":
+                suffix_range = range(1, 4)  # Morning times: 1, 2, 3
+            if suffix == "Aft":
+                suffix_range = range(4, 7)  # Afternoon times: 4, 5, 6
+            for i in suffix_range:
+                full_id = f"{base_id}{i}"
+                teacher_availability = (id_teacher, full_id, 1)
+                cursor.execute("""
+                    INSERT INTO Availability_Teachers (ID_Teacher, ID_Availability, ACTIVE)
+                    VALUES (?, ?, ?, ?, ?)
+                    """, teacher_availability)
+        conn.commit()
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'status': 'error', 'message': str(e)})
+    finally:
+        conn.close()
+
 @app.route('/professors')
 def serve_professors_html():
     return send_from_directory('.', 'professors.html')

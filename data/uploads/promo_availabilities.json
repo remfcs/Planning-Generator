@@ -1,6 +1,8 @@
 {
     "BEE": {
-        "1A": [],
+        "1A": [
+            "Thursday Morning"
+        ],
         "2A": []
     },
     "FT": {
@@ -10,8 +12,6 @@
     "FG": {
         "1A": [],
         "2A": [],
-        "3A": [
-            "Tuesday Afternoon"
-        ]
+        "3A": []
     }
 }
