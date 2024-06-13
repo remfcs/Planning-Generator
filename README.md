@@ -151,11 +151,11 @@ To install this project & the dependencies, follow these steps:
     ```
 
 ## Responsibility report
-- Law: The application is hosted locally. All data handled by the application is processed in accordance with privacy laws, protecting the confidentiality and rights of individuals whose data is being used to respect the General Data Protection Regulation (GDPR). 
+- __Law__: The application is hosted locally. All data handled by the application is processed in accordance with privacy laws, protecting the confidentiality and rights of individuals whose data is being used to respect the General Data Protection Regulation (GDPR). 
 
-- Ethic: The application does not take into account the gender or ethnicity of any student or teacher.
+- __Ethic__: The application does not take into account the gender or ethnicity of any student or teacher.
 
-- Environnemental impact: The application aims to minimize its environmental impact by ensuring it only consumes energy when it is actively used. This design choice helps reduce unnecessary energy consumption, making the application more eco-friendly. Additionally, the application leverages efficient algorithms and data management techniques to ensure optimal performance, further contributing to reduced energy usage.
+- __Environnemental impact__: The application aims to minimize its environmental impact by ensuring it only consumes energy when it is actively used. This design choice helps reduce unnecessary energy consumption, making the application more eco-friendly. Additionally, the application leverages efficient algorithms and data management techniques to ensure optimal performance, further contributing to reduced energy usage.
 
 
 ## Testing
