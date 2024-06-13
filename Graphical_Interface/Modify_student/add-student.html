@@ -213,16 +213,41 @@
         <!-- Change Teacher Time Slot Form -->
         <div class="content" id="switch-teacher-timeslot-form" style="display:none;">
             <h2>Change a teacher of time slot</h2>
-            <form id="change-teacher-timeslot-form-inner">
-                <input type="text" id="change-teacher-name" class="form-control" placeholder="Teacher Name" required>
-                <select id="current-slot" class="form-control" required>
-                    <option value="">Current Slot</option>
+            <form id="switch-teacher-timeslot-form-inner">
+                <select id="timeslot-select" class="form-control" required>
+                    <option value="">Select Timeslot</option>
+                    <option value="Tue_1">Tuesday 1</option>
+                    <option value="Tue_2">Tuesday 2</option>
+                    <option value="Tue_3">Tuesday 3</option>
+                    <option value="Thu_1">Thursday 1</option>
+                    <option value="Thu_2">Thursday 2</option>
+                    <option value="Thu_3">Thursday 3</option>
                 </select>
-                <select id="new-slot" class="form-control" required>
-                    <option value="">New Slot</option>
+                <select id="language-select" class="form-control" required>
+                    <option value="">Select Language</option>
+                    <option value="ANGLAIS">English</option>
+                    <option value="ESPAGNOL">Spanish</option>
+                    <option value="ALLEMAND">German</option>
+                    <option value="CHINOIS">Chinese</option>
                 </select>
-                <button type="submit" class="btn btn-primary">Change time slot</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
+                <select id="first-teacher-select" class="form-control" required>
+                    <option value="">Select the first Teacher to switch</option>
+                </select>
+                <div id="first-teacher-info" style="display:none;">
+                    <h3>First Teacher details</h3>
+                    <p>Name: <span id="first-teacher-name">None</span></p>
+                    <p>Course at this timeslot: <span id="first-teacher-course">None</span></p>
+                </div>
+                <select id="second-teacher-select" class="form-control" required>
+                    <option value="">Select the second Teacher to switch</option>
+                </select>
+                <div id="second-teacher-info" style="display:none;">
+                    <h3>Second Teacher details</h3>
+                    <p>Name: <span id="second-teacher-name">None</span></p>
+                    <p>Course at this timeslot: <span id="second-teacher-course">None</span></p>
+                </div>
+                <button type="button" id="switch-button" class="btn btn-primary">Switch</button>
+                <button type="reset" id="reset-button-switch" class="btn btn-secondary">Reset</button>
             </form>
         </div>
     </div>
