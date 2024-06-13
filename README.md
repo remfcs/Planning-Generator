@@ -1,4 +1,4 @@
-# Planning Tailor
+# Planning Taylor
 
 ## Description
 In this case, we are examining a project initiated to enhance the efficiency of language section planning, specifically designed for Mary Stephenson, the responsible party for the language section. This initiative roots from the critical need to address the significant time and effort expended in the creation and updating of LV1/LV2 planning, which Mary found unsatisfactory due to its reliance on manual processes such as the use of post-it notes or Excel spreadsheets. These methods, while traditional, are prone to errors, time-consuming, and lack the flexibility required for efficient schedule management.
