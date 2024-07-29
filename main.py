@@ -2,12 +2,6 @@ import sqlite3
 from algo_feature import conflict_function, db_file_function, database_function, read_folder_function, create_groups_function
 from back_up import back_up
 
-
-"""
-    À faire :
-    # TODO faire le doc de la maintenance 
-"""
-
 Data = 'data/database.sqlite3'
 
 #depot_info_folder = './data/xlsx/input_info'
